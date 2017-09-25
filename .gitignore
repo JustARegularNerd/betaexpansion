@@ -1,0 +1,11 @@
+jars
+src
+!betaexpansion/net/minecraft/src
+cleansrc
+
+builds
+reobf
+
+mcp
+
+*.pyc
