@@ -22,7 +22,7 @@ else
         f=${f#$SOURCE_DIR}
         if [ ! -f "$CLEAN_SOURCE_DIR$f" ]; then
             printf "> found new file ${f##*/}\n"
-            cp "$SOURCE_DIR$f" "$DEST_DIR"
+            cp "$SOURCE_DIR$f" "$DEST_DIR/${f#*/*/}"
             ((COUNT++))
         else
             MD5=$(md5sum < "$SOURCE_DIR$f")
