@@ -13,7 +13,7 @@ public class ItemBattleAxe extends ItemTool
 
     protected ItemBattleAxe(int i, EnumToolMaterial enumtoolmaterial)
     {
-        super(i, 3, enumtoolmaterial, mod_BetaExpansion.axeEffective);
+        super(i, 3, enumtoolmaterial, ItemAxe.blocksEffectiveAgainst, ItemAxe.materialsEffectiveAgainst);
         setMaxDamage((int)(enumtoolmaterial.getMaxUses()*1.5F));
     }
 

@@ -126,12 +126,16 @@ public class GuiCreateWorld extends GuiScreen
             mc.theWorld.worldInfo.setSeason(worldSettings.seasons?worldSettings.startSeason:-1);
             mc.theWorld.worldInfo.setSeasonOffset(worldSettings.startSeason);
             mc.theWorld.worldInfo.setSeasonLength(worldSettings.seasonLength);
-            if(!worldSettings.seasons)
+        	ColorizerGrass.avg = 0;
+        	ColorizerFoliage.avg = 0;
+            if(worldSettings.seasons)
             {
-        		ColorizerGrass.avg = 0.0f;
-        		ColorizerFoliage.avg = 0.0f;
-        		ColorizerGrass.func_28181_a(mc.renderEngine.func_28149_a(mod_BetaExpansion.grassTextures[1]));
-        		ColorizerFoliage.func_28152_a(mc.renderEngine.func_28149_a(mod_BetaExpansion.foliageTextures[1]));
+            	ColorizerGrass.current = worldSettings.startSeason;
+            	ColorizerFoliage.current = worldSettings.startSeason;
+            }else
+            {
+            	ColorizerGrass.current = 1;
+            	ColorizerFoliage.current = 1;
             }
             mc.displayGuiScreen(null);
         }

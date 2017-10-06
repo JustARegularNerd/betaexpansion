@@ -387,9 +387,9 @@ public abstract class EntityPlayer extends EntityLiving
         worldObj.entityJoinedWorld(entityitem);
     }
 
-    public float getCurrentPlayerStrVsBlock(Block block)
+    public float getCurrentPlayerStrVsBlock(Block block, int i)
     {
-        float f = inventory.getStrVsBlock(block);
+        float f = inventory.getStrVsBlock(block, i);
         if(isInsideOfMaterial(Material.water))
         {
             f /= 5F;
@@ -401,9 +401,9 @@ public abstract class EntityPlayer extends EntityLiving
         return f;
     }
 
-    public boolean canHarvestBlock(Block block)
+    public boolean canHarvestBlock(Block block, int i)
     {
-        return inventory.canHarvestBlock(block);
+        return inventory.canHarvestBlock(block, i);
     }
 
     public void readEntityFromNBT(NBTTagCompound nbttagcompound)

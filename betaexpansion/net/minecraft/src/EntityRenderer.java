@@ -519,23 +519,15 @@ public class EntityRenderer
         {
             mc.renderViewEntity = mc.thePlayer;
         }
-        if(mc.theWorld.updateTextures && mc.theWorld.worldInfo.getSeason() != -1)
-        {
-        	mc.theWorld.updateTextures = false;
-        	long updateTimes = (mc.theWorld.worldInfo.getWorldTime()/((mc.theWorld.worldInfo.getSeasonLength() * 24000L)/8L))%8;
-        	if(updateTimes%8 > 0)
-        	{
-        		ColorizerGrass.avg = 0.125f*updateTimes;
-        		ColorizerFoliage.avg = 0.125f*updateTimes;
-        		ColorizerGrass.func_28181_b(mc.renderEngine.func_28149_a(mod_BetaExpansion.grassTextures[(mc.theWorld.worldInfo.getSeason()+1)%4]));
-        		ColorizerFoliage.func_28152_b(mc.renderEngine.func_28149_a(mod_BetaExpansion.foliageTextures[(mc.theWorld.worldInfo.getSeason()+1)%4]));
-        	}else
-        	{
-        		ColorizerGrass.avg = 0.0f;
-        		ColorizerFoliage.avg = 0.0f;
-        		ColorizerGrass.func_28181_a(mc.renderEngine.func_28149_a(mod_BetaExpansion.grassTextures[mc.theWorld.worldInfo.getSeason()]));
-        		ColorizerFoliage.func_28152_a(mc.renderEngine.func_28149_a(mod_BetaExpansion.foliageTextures[mc.theWorld.worldInfo.getSeason()]));
-        	}
+        if(mc.theWorld.updateSeasonColors && mc.theWorld.worldInfo.getSeason() != -1)
+        {        	
+        	mc.theWorld.updateSeasonColors = false;
+        	double seasonLength = ((double)(mc.theWorld.worldInfo.getSeasonLength() * 24000D));
+        	int currentSeason = (int)((((long)mc.theWorld.worldInfo.getWorldTime()/seasonLength)+mc.theWorld.worldInfo.getSeasonOffset())%4);
+        	ColorizerGrass.avg = (float)(((double)mc.theWorld.worldInfo.getWorldTime()%seasonLength)/seasonLength);
+        	ColorizerFoliage.avg = (float)(((double)mc.theWorld.worldInfo.getWorldTime()%seasonLength)/seasonLength);
+        	ColorizerGrass.current = currentSeason;
+        	ColorizerFoliage.current = currentSeason;
             for(int j = 0; j < mc.theWorld.worldAccesses.size(); j++)
             {
                 ((IWorldAccess)mc.theWorld.worldAccesses.get(j)).updateAllRenderers();
@@ -992,10 +984,11 @@ public class EntityRenderer
         if(mc.theWorld.worldInfo.getSeason() != -1)
         {
         	long ticks = (mc.theWorld.worldInfo.getSeasonLength() * 24000L);
-        	int cur = mc.theWorld.worldInfo.getSeason();
+        	double seasonLength = ((double)(mc.theWorld.worldInfo.getSeasonLength() * 24000D));
+        	int currentSeason = (int)((((long)mc.theWorld.worldInfo.getWorldTime()/seasonLength)+mc.theWorld.worldInfo.getSeasonOffset())%4);
         	float v = (float)(ticks-(mc.theWorld.getWorldTime()%ticks))/(float)ticks;
-        	float[] c = mod_BetaExpansion.saturation[cur];
-        	float[] c2 = mod_BetaExpansion.saturation[(cur+1)%4];
+        	float[] c = mod_BetaExpansion.saturation[currentSeason];
+        	float[] c2 = mod_BetaExpansion.saturation[(currentSeason+1)%4];
         	float avg = (fogColorRed + fogColorGreen + fogColorBlue) / 3f;
         	fogColorRed = lerp(1.0f-v,lerp(1.0f-c[0], fogColorRed, avg),lerp(1.0f-c2[0], fogColorRed, avg));
         	fogColorGreen = lerp(1.0f-v,lerp(1.0f-c[1], fogColorGreen, avg),lerp(1.0f-c2[1], fogColorGreen, avg));

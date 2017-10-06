@@ -49,8 +49,8 @@ public class TexturePackList
             mc.renderGlobal.loadRenderers(false);
             mc.currentScreen.fontRenderer = mc.fontRenderer;
             ColorizerWater.func_28182_a(mc.renderEngine.func_28149_a("/misc/watercolor.png"));
-            ColorizerGrass.func_28181_a(mc.renderEngine.func_28149_a("/misc/grasscolor.png"));
-            ColorizerFoliage.func_28152_a(mc.renderEngine.func_28149_a("/misc/foliagecolor.png"));
+            ColorizerGrass.loadColorData(mc.renderEngine);
+            ColorizerFoliage.loadColorData(mc.renderEngine);
             return true;
         }
     }

@@ -417,12 +417,13 @@ public class World
     public Material getBlockMaterial(int i, int j, int k)
     {
         int l = getBlockId(i, j, k);
+        int j1 = getBlockMetadata(i,j,k);
         if(l == 0)
         {
             return Material.air;
         } else
         {
-            return Block.blocksList[l].blockMaterial;
+            return Block.blocksList[l].getBlockMaterial(j1);
         }
     }
 
@@ -2033,20 +2034,19 @@ public class World
     	{
     		return;
     	}
-    	long interval = worldInfo.getSeasonLength() * 24000L;
-    	long offset = worldInfo.getSeasonOffset();
-    	long t = ((worldInfo.getWorldTime()/interval)+offset)%4;
-    	long updateTimes = ((worldInfo.getWorldTime()/(interval/8L))+(offset*2))%8;
-    	if(updateTimes != prevTime)
+    	int updatesPerSeason = 8;
+    	long seasonLength = ((worldInfo.getSeasonLength() * 24000L));
+    	long seasonOffset = worldInfo.getSeasonOffset();
+    	int currentSeason = (int)(((worldInfo.getWorldTime()/seasonLength)+seasonOffset)%4);
+    	long current = (worldInfo.getWorldTime()/(seasonLength/updatesPerSeason))*(seasonLength/updatesPerSeason);
+    	if(current != prevTime)
     	{
-    		avg = 0.125f*(updateTimes%8);
-    		updateTextures = true;
+    		updateSeasonColors = true;
     	}
-    	prevTime = updateTimes;
-    	if(t!=worldInfo.getSeason() && worldInfo.getSeason() > -1)
+    	prevTime = current;
+    	if((int)currentSeason!=worldInfo.getSeason() && worldInfo.getSeason() > -1)
     	{
-    		updateTextures = true;
-    		worldInfo.setSeason((int)t);
+    		worldInfo.setSeason((int)currentSeason);
     	}
     }
     
@@ -2987,7 +2987,6 @@ public class World
     private int soundCounter;
     private List field_1012_M;
     public boolean multiplayerWorld;
-    public boolean updateTextures = false;
-    public float avg = 0;
+    public boolean updateSeasonColors = false;
     private long prevTime = 0;
 }

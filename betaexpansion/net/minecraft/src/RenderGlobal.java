@@ -190,17 +190,18 @@ public class RenderGlobal
         Block.leaves.setGraphicsLevel(mc.gameSettings.g_Leaves == 2 || (mc.gameSettings.fancyGraphics && mc.gameSettings.g_Leaves != 1));
         if(mc.theWorld!=null)
         {
-        	if(mc.theWorld.worldInfo.getSeason() == -1)
+        	if(mc.theWorld.worldInfo.getSeason() != -1)
         	{
-            	ColorizerGrass.func_28181_a(mc.renderEngine.func_28149_a(mod_BetaExpansion.grassTextures[1]));
-            	ColorizerFoliage.func_28152_a(mc.renderEngine.func_28149_a(mod_BetaExpansion.foliageTextures[1]));
+            	double seasonLength = ((double)(mc.theWorld.worldInfo.getSeasonLength() * 24000D));
+            	int currentSeason = (int)((((long)mc.theWorld.worldInfo.getWorldTime()/seasonLength)+mc.theWorld.worldInfo.getSeasonOffset())%4);
+            	ColorizerGrass.avg = (float)(((double)mc.theWorld.worldInfo.getWorldTime()%seasonLength)/seasonLength);
+            	ColorizerFoliage.avg = (float)(((double)mc.theWorld.worldInfo.getWorldTime()%seasonLength)/seasonLength);
+            	ColorizerGrass.current = currentSeason;
+            	ColorizerFoliage.current = currentSeason;
         	}else
         	{
-        		int i = mc.theWorld.worldInfo.getSeason();
-        		ColorizerGrass.func_28181_a(mc.renderEngine.func_28149_a(mod_BetaExpansion.grassTextures[i]));
-        		ColorizerFoliage.func_28152_a(mc.renderEngine.func_28149_a(mod_BetaExpansion.foliageTextures[i]));
-        		ColorizerGrass.func_28181_b(mc.renderEngine.func_28149_a(mod_BetaExpansion.grassTextures[(i+1)%4]));
-        		ColorizerFoliage.func_28152_b(mc.renderEngine.func_28149_a(mod_BetaExpansion.foliageTextures[(i+1)%4]));
+            	ColorizerGrass.avg = 0;
+            	ColorizerFoliage.avg = 0;
         	}
         }
         renderDistance = mc.gameSettings.renderDistance;
@@ -706,10 +707,11 @@ public class RenderGlobal
         if(mc.theWorld.worldInfo.getSeason() != -1)
         {
         	long ticks = (mc.theWorld.worldInfo.getSeasonLength() * 24000L);
-        	int cur = mc.theWorld.worldInfo.getSeason();
+        	double seasonLength = ((double)(mc.theWorld.worldInfo.getSeasonLength() * 24000D));
+        	int currentSeason = (int)((((long)mc.theWorld.worldInfo.getWorldTime()/seasonLength)+mc.theWorld.worldInfo.getSeasonOffset())%4);
         	float v = (float)(ticks-(mc.theWorld.getWorldTime()%ticks))/(float)ticks;
-        	float[] c = mod_BetaExpansion.saturation[cur];
-        	float[] c2 = mod_BetaExpansion.saturation[(cur+1)%4];
+        	float[] c = mod_BetaExpansion.saturation[currentSeason];
+        	float[] c2 = mod_BetaExpansion.saturation[(currentSeason+1)%4];
         	float avg = (f1 + f2 + f3) / 3f;
         	f1 = lerp(1.0f-v,lerp(1.0f-c[0], f1, avg),lerp(1.0f-c2[0], f1, avg));
         	f2 = lerp(1.0f-v,lerp(1.0f-c[1], f2, avg),lerp(1.0f-c2[1], f2, avg));
@@ -1620,7 +1622,8 @@ public class RenderGlobal
             if(i2 > 0)
             {
                 Block block = Block.blocksList[i2];
-                mc.sndManager.playSound(block.stepSound.stepSoundDir(), (float)j + 0.5F, (float)k + 0.5F, (float)l + 0.5F, (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+                int n = worldObj.getBlockMetadata(j, k, l);
+                mc.sndManager.playSound(block.getStepSound(n).stepSoundDir(), (float)j + 0.5F, (float)k + 0.5F, (float)l + 0.5F, (block.getStepSound(n).getVolume() + 1.0F) / 2.0F, block.getStepSound(n).getPitch() * 0.8F);
             }
             mc.effectRenderer.addBlockDestroyEffects(j, k, l, i1 & 0xff, i1 >> 8 & 0xff);
             break;

@@ -440,7 +440,8 @@ public abstract class EntityLiving extends Entity
             int j = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset), MathHelper.floor_double(posZ));
             if(j > 0)
             {
-                StepSound stepsound = Block.blocksList[j].stepSound;
+                int j1 = worldObj.getBlockMetadata(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset), MathHelper.floor_double(posZ));
+                StepSound stepsound = Block.blocksList[j].getStepSound(j1);
                 worldObj.playSoundAtEntity(this, stepsound.func_1145_d(), stepsound.getVolume() * 0.5F, stepsound.getPitch() * 0.75F);
             }
         }

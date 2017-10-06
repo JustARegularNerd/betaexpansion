@@ -20,7 +20,7 @@ public class BEItems {
     public static Item battleAxeDiamond;
     public static Item berry;
     public static Item pieSlice;
-    static
+    public static void init()
     {
 		origItemsList = Item.itemsList.clone();
 		spyGlass = (new ItemSpyglass(1500)).setIconCoord(0,0).setItemName("spyGlass");

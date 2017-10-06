@@ -8,30 +8,6 @@ public class mod_BetaExpansion extends BaseMod
 	{
 		origBlocksList = BEBlocks.origBlocksList;
 		origItemsList = BEItems.origItemsList;
-		try {
-			String s = ItemTool.class.getDeclaredFields()[0].getName();
-			ModLoader.setPrivateValue(ItemTool.class, Item.pickaxeDiamond, s, pickaxeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.pickaxeGold, s, pickaxeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.pickaxeSteel, s, pickaxeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.pickaxeStone, s, pickaxeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.pickaxeWood, s, pickaxeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.shovelDiamond, s, shovelEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.shovelGold, s, shovelEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.shovelSteel, s, shovelEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.shovelStone, s, shovelEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.shovelWood, s, shovelEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.axeDiamond, s, axeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.axeGold, s, axeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.axeSteel, s, axeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.axeStone, s, axeEffective);
-			ModLoader.setPrivateValue(ItemTool.class, Item.axeWood, s, axeEffective);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
 		BERecipes.init();
 		ModLoader.AddLocalization("key.attack", "Attack");
 		ModLoader.AddLocalization("key.use", "Use Item");
@@ -99,17 +75,4 @@ public class mod_BetaExpansion extends BaseMod
 	public static boolean[] canBlockGrass;
 	public static String version = "2.2";
 	public static int protocolVersion = 2;
-	public static Block[] pickaxeEffective = (new Block[] {
-			Block.cobblestone, Block.stairDouble, Block.stairSingle, Block.stone, Block.sandStone, Block.cobblestoneMossy, Block.oreIron, Block.blockSteel, Block.oreCoal, Block.blockGold, 
-			Block.oreGold, Block.oreDiamond, Block.blockDiamond, Block.ice, Block.netherrack, Block.oreLapis, Block.blockLapis, Block.stoneOvenActive, Block.stoneOvenIdle,
-			Block.brick, Block.dispenser, Block.stairCompactCobblestone, Block.mobSpawner, Block.oreRedstone, Block.oreRedstoneGlowing, Block.doorSteel, Block.pressurePlateStone,
-			Block.rail, Block.railDetector, Block.railPowered, BEBlocks.sandstoneBrick, BEBlocks.redSandstone, BEBlocks.stoneBrick, BEBlocks.brickStairs, BEBlocks.stoneBrickStairs
-	});
-	public static Block[] shovelEffective = (new Block[] {
-			Block.grass, Block.dirt, Block.sand, Block.gravel, Block.snow, Block.blockSnow, Block.blockClay, Block.tilledField, Block.slowSand, BEBlocks.redSand
-	});
-	public static Block[] axeEffective = (new Block[] {
-			Block.planks, Block.bookShelf, Block.wood, Block.chest, Block.trapdoor, Block.doorWood, Block.workbench, Block.fence, Block.jukebox, Block.stairCompactPlanks,
-			Block.pumpkin, Block.signPost, Block.signWall, Block.musicBlock, Block.pressurePlatePlanks, Block.pumpkinLantern, BEBlocks.pumpkinLampActive, BEBlocks.pumpkinLampIdle
-	});
 }

@@ -2,25 +2,25 @@ package net.minecraft.src;
 
 public class BEBlocks {
 	public static Block[] origBlocksList;
-	public static final Block stoneBrick;
-	public static final Block sandstoneBrick;
-	public static final Block appleLeaves;
-	public static final Block appleSapling;
-	public static final Block redSand;
-	public static final Block redSandstone;
-	public static final Block launcherBase;
-	public static final Block launcherExtension;
-	public static final Block ropeLadder;
-	public static final Block wetSponge;
-	public static final Block brickStairs;
-	public static final Block stoneBrickStairs;
-	public static final Block cryingObsidianIdle;
-	public static final Block cryingObsidianActive;
-	public static final Block berryBush;
-	public static final Block blockPie;
-	public static final Block pumpkinLampIdle;
-	public static final Block pumpkinLampActive;
-	static
+	public static Block stoneBrick;
+	public static Block sandstoneBrick;
+	public static Block appleLeaves;
+	public static Block appleSapling;
+	public static Block redSand;
+	public static Block redSandstone;
+	public static Block launcherBase;
+	public static Block launcherExtension;
+	public static Block ropeLadder;
+	public static Block wetSponge;
+	public static Block brickStairs;
+	public static Block stoneBrickStairs;
+	public static Block cryingObsidianIdle;
+	public static Block cryingObsidianActive;
+	public static Block berryBush;
+	public static Block blockPie;
+	public static Block pumpkinLampIdle;
+	public static Block pumpkinLampActive;
+	public static void init()
 	{
         brickStairs = (new BlockStairs(111, Block.brick)).setBlockName("brickStairs").disableNeighborNotifyOnMetadataChange();
 		origBlocksList = Block.blocksList.clone();
@@ -48,13 +48,6 @@ public class BEBlocks {
         Item.itemsList[launcherBase.blockID] = (new ItemPiston(launcherBase.blockID - 256));
         Item.itemsList[blockPie.blockID] = (new ItemPie(blockPie.blockID - 256)).setItemName("pie");
 
-        for(int i = 0; i < 256; i++)
-        {
-            if(Block.blocksList[i] != null && Item.itemsList[i] == null)
-            {
-                Item.itemsList[i] = new ItemBlock(i - 256);
-            }
-        }
 		ModLoader.AddName(stoneBrick, "Stone Bricks");
 		ModLoader.AddName(appleLeaves, "Apple Leaves");
 		ModLoader.AddName(appleSapling, "Apple Sapling");
