@@ -2287,11 +2287,11 @@ public class RenderBlocks
             {
                 f7 = f13 = f19 = f25 = aoLightValueYNeg;
             }
-            aoMult((flag1 ? f : 1.0F) * bottomFaceBrightness, (flag1 ? f1 : 1.0F) * bottomFaceBrightness, (flag1 ? f2 : 1.0F) * bottomFaceBrightness, f7, f13, f19, f25);
+            setAOValues((flag1 ? f : 1.0F) * bottomFaceBrightness, (flag1 ? f1 : 1.0F) * bottomFaceBrightness, (flag1 ? f2 : 1.0F) * bottomFaceBrightness, f7, f13, f19, f25);
             renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
             if(block == BEBlocks.appleLeaves)
             {
-                aoMult(bottomFaceBrightness, bottomFaceBrightness, bottomFaceBrightness, f7, f13, f19, f25);
+                setAOValues(bottomFaceBrightness, bottomFaceBrightness, bottomFaceBrightness, f7, f13, f19, f25);
                 renderBottomFace(block, i, j, k, 37);
             }
             flag = true;
@@ -2346,12 +2346,12 @@ public class RenderBlocks
             {
                 f8 = f14 = f20 = f26 = aoLightValueYPos;
             }
-            aoMult(flag2 ? f : topFaceBrightness, flag2 ? f1 : topFaceBrightness, flag2 ? f2 : topFaceBrightness, f8, f14, f20, f26);
+            setAOValues(flag2 ? f : topFaceBrightness, flag2 ? f1 : topFaceBrightness, flag2 ? f2 : topFaceBrightness, f8, f14, f20, f26);
             int l = block.getBlockTexture(blockAccess, i, j, k, 1);
             renderTopFace(block, i, j, k, l);
             if(block == BEBlocks.appleLeaves)
             {
-                aoMult(topFaceBrightness, topFaceBrightness, topFaceBrightness, f8, f14, f20, f26);
+                setAOValues(topFaceBrightness, topFaceBrightness, topFaceBrightness, f8, f14, f20, f26);
                 renderTopFace(block, i, j, k, 37);
             }
             flag = true;
@@ -2406,51 +2406,41 @@ public class RenderBlocks
             {
                 f9 = f15 = f21 = f27 = aoLightValueZNeg;
             }
-            aoMult((flag3 ? f : 1.0F) * eastWestFaceBrightness, (flag3 ? f1 : 1.0F) * eastWestFaceBrightness, (flag3 ? f2 : 1.0F) * eastWestFaceBrightness, f9, f15, f21, f27);
+            setAOValues((flag3 ? f : 1.0F) * eastWestFaceBrightness, (flag3 ? f1 : 1.0F) * eastWestFaceBrightness, (flag3 ? f2 : 1.0F) * eastWestFaceBrightness, f9, f15, f21, f27);
             int i1 = block.getBlockTexture(blockAccess, i, j, k, 2);
-            if(grassSide)
+            if(grassSide && block == Block.grass)
             {
-            	if(i1 == 68 && blockAccess.getBlockId(i, j, k-1) == Block.snow.blockID)
+            	if(((BlockGrass)block).isBlockSideSnowy(blockAccess, i, j, k) && blockAccess.getBlockId(i, j, k-1) == Block.snow.blockID)
             	{
-            		i1 = 66;
-            	}else
-            		if(i1 == 3 && blockAccess.getBlockId(i, j-1, k-1) == Block.grass.blockID)
+            		if(i1 != 68)
             		{
-            			colorRedTopLeft *= f;
-            			colorRedBottomLeft *= f;
-            			colorRedBottomRight *= f;
-            			colorRedTopRight *= f;
-            			colorGreenTopLeft *= f1;
-            			colorGreenBottomLeft *= f1;
-            			colorGreenBottomRight *= f1;
-            			colorGreenTopRight *= f1;
-            			colorBlueTopLeft *= f2;
-            			colorBlueBottomLeft *= f2;
-            			colorBlueBottomRight *= f2;
-            			colorBlueTopRight *= f2;
-            			i1 = 0;
+            			i1 = 73;
+            		}else
+            		{
+            			i1 = 66;
+            		}
+            	}else
+            		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i, j-1, k-1) == Block.grass.blockID)
+            		{
+                    	aoMultRGB(f, f1, f2);
+            			if(i1 != 3)
+            			{
+            				i1 = 55;
+            			}else
+            			{
+            				i1 = 0;
+            			}
             		}
             }
             renderEastFace(block, i, j, k, i1);
-            if((fancyGrass || cfgGrassFix) && i1 == 3 && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (i1 != 55 && i1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
-                colorRedTopLeft *= f;
-                colorRedBottomLeft *= f;
-                colorRedBottomRight *= f;
-                colorRedTopRight *= f;
-                colorGreenTopLeft *= f1;
-                colorGreenBottomLeft *= f1;
-                colorGreenBottomRight *= f1;
-                colorGreenTopRight *= f1;
-                colorBlueTopLeft *= f2;
-                colorBlueBottomLeft *= f2;
-                colorBlueBottomRight *= f2;
-                colorBlueTopRight *= f2;
-                renderEastFace(block, i, j, k, 38);
+            	aoMultRGB(f, f1, f2);
+                renderEastFace(block, i, j, k, i1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
-                aoMult(eastWestFaceBrightness, eastWestFaceBrightness, eastWestFaceBrightness, f9, f15, f21, f27);
+                setAOValues(eastWestFaceBrightness, eastWestFaceBrightness, eastWestFaceBrightness, f9, f15, f21, f27);
                 renderEastFace(block, i, j, k, 37);
             }
             flag = true;
@@ -2505,51 +2495,41 @@ public class RenderBlocks
             {
                 f10 = f16 = f22 = f28 = aoLightValueZPos;
             }
-            aoMult((flag4 ? f : 1.0F) * eastWestFaceBrightness, (flag4 ? f1 : 1.0F) * eastWestFaceBrightness, (flag4 ? f2 : 1.0F) * eastWestFaceBrightness, f10, f16, f22, f28);
+            setAOValues((flag4 ? f : 1.0F) * eastWestFaceBrightness, (flag4 ? f1 : 1.0F) * eastWestFaceBrightness, (flag4 ? f2 : 1.0F) * eastWestFaceBrightness, f10, f16, f22, f28);
             int j1 = block.getBlockTexture(blockAccess, i, j, k, 3);
-            if(grassSide)
+            if(grassSide && block == Block.grass)
             {
-            	if(j1 == 68 && blockAccess.getBlockId(i, j, k+1) == Block.snow.blockID)
+            	if(((BlockGrass)block).isBlockSideSnowy(blockAccess, i, j, k) && blockAccess.getBlockId(i, j, k+1) == Block.snow.blockID)
             	{
-            		j1 = 66;
-            	}else
-            		if(j1 == 3 && blockAccess.getBlockId(i, j-1, k+1) == Block.grass.blockID)
+            		if(j1 != 68)
             		{
-            			colorRedTopLeft *= f;
-            			colorRedBottomLeft *= f;
-            			colorRedBottomRight *= f;
-            			colorRedTopRight *= f;
-            			colorGreenTopLeft *= f1;
-            			colorGreenBottomLeft *= f1;
-            			colorGreenBottomRight *= f1;
-            			colorGreenTopRight *= f1;
-            			colorBlueTopLeft *= f2;
-            			colorBlueBottomLeft *= f2;
-            			colorBlueBottomRight *= f2;
-            			colorBlueTopRight *= f2;
-            			j1 = 0;
+            			j1 = 73;
+            		}else
+            		{
+            			j1 = 66;
+            		}
+            	}else
+            		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i, j-1, k+1) == Block.grass.blockID)
+            		{
+                    	aoMultRGB(f, f1, f2);
+            			if(j1 != 3)
+            			{
+            				j1 = 55;
+            			}else
+            			{
+            				j1 = 0;
+            			}
             		}
             }
             renderWestFace(block, i, j, k, j1);
-            if((fancyGrass || cfgGrassFix) && j1 == 3 && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (j1 != 55 && j1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
-                colorRedTopLeft *= f;
-                colorRedBottomLeft *= f;
-                colorRedBottomRight *= f;
-                colorRedTopRight *= f;
-                colorGreenTopLeft *= f1;
-                colorGreenBottomLeft *= f1;
-                colorGreenBottomRight *= f1;
-                colorGreenTopRight *= f1;
-                colorBlueTopLeft *= f2;
-                colorBlueBottomLeft *= f2;
-                colorBlueBottomRight *= f2;
-                colorBlueTopRight *= f2;
-                renderWestFace(block, i, j, k, 38);
+            	aoMultRGB(f, f1, f2);
+                renderWestFace(block, i, j, k, j1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
-                aoMult(eastWestFaceBrightness, eastWestFaceBrightness, eastWestFaceBrightness, f10, f16, f22, f28);
+                setAOValues(eastWestFaceBrightness, eastWestFaceBrightness, eastWestFaceBrightness, f10, f16, f22, f28);
                 renderWestFace(block, i, j, k, 37);
             }
             flag = true;
@@ -2604,52 +2584,42 @@ public class RenderBlocks
             {
                 f11 = f17 = f23 = f29 = aoLightValueXNeg;
             }
-            aoMult((flag5 ? f : 1.0F) * northSouthFaceBrightness, (flag5 ? f1 : 1.0F) * northSouthFaceBrightness, (flag5 ? f2 : 1.0F) * northSouthFaceBrightness, f11, f17, f23, f29);
+            setAOValues((flag5 ? f : 1.0F) * northSouthFaceBrightness, (flag5 ? f1 : 1.0F) * northSouthFaceBrightness, (flag5 ? f2 : 1.0F) * northSouthFaceBrightness, f11, f17, f23, f29);
             int k1 = block.getBlockTexture(blockAccess, i, j, k, 4);
             
-            if(grassSide)
+            if(grassSide && block == Block.grass)
             {
-            	if(k1 == 68 && blockAccess.getBlockId(i-1, j, k) == Block.snow.blockID)
+            	if(((BlockGrass)block).isBlockSideSnowy(blockAccess, i, j, k) && blockAccess.getBlockId(i-1, j, k) == Block.snow.blockID)
             	{
-            		k1 = 66;
-            	}else
-            		if(k1 == 3 && blockAccess.getBlockId(i-1, j-1, k) == Block.grass.blockID)
+            		if(k1 != 68)
             		{
-            			colorRedTopLeft *= f;
-            			colorRedBottomLeft *= f;
-            			colorRedBottomRight *= f;
-            			colorRedTopRight *= f;
-            			colorGreenTopLeft *= f1;
-            			colorGreenBottomLeft *= f1;
-            			colorGreenBottomRight *= f1;
-            			colorGreenTopRight *= f1;
-            			colorBlueTopLeft *= f2;
-            			colorBlueBottomLeft *= f2;
-            			colorBlueBottomRight *= f2;
-            			colorBlueTopRight *= f2;
-            			k1 = 0;
+            			k1 = 73;
+            		}else
+            		{
+            			k1 = 66;
+            		}
+            	}else
+            		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i-1, j-1, k) == Block.grass.blockID)
+            		{
+                    	aoMultRGB(f, f1, f2);
+            			if(k1 != 3)
+            			{
+            				k1 = 55;
+            			}else
+            			{
+            				k1 = 0;
+            			}
             		}
             }
             renderNorthFace(block, i, j, k, k1);
-            if((fancyGrass || cfgGrassFix) && k1 == 3 && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (k1 != 55 && k1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
-                colorRedTopLeft *= f;
-                colorRedBottomLeft *= f;
-                colorRedBottomRight *= f;
-                colorRedTopRight *= f;
-                colorGreenTopLeft *= f1;
-                colorGreenBottomLeft *= f1;
-                colorGreenBottomRight *= f1;
-                colorGreenTopRight *= f1;
-                colorBlueTopLeft *= f2;
-                colorBlueBottomLeft *= f2;
-                colorBlueBottomRight *= f2;
-                colorBlueTopRight *= f2;
-                renderNorthFace(block, i, j, k, 38);
+            	aoMultRGB(f, f1, f2);
+                renderNorthFace(block, i, j, k, k1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
-                aoMult(northSouthFaceBrightness, northSouthFaceBrightness, northSouthFaceBrightness, f11, f17, f23, f29);
+                setAOValues(northSouthFaceBrightness, northSouthFaceBrightness, northSouthFaceBrightness, f11, f17, f23, f29);
                 renderNorthFace(block, i, j, k, 37);
             }
             flag = true;
@@ -2704,51 +2674,41 @@ public class RenderBlocks
             {
                 f12 = f18 = f24 = f30 = aoLightValueXPos;
             }
-            aoMult((flag6 ? f : 1.0F) * northSouthFaceBrightness, (flag6 ? f1 : 1.0F) * northSouthFaceBrightness, (flag6 ? f2 : 1.0F) * northSouthFaceBrightness, f12, f18, f24, f30);
+            setAOValues((flag6 ? f : 1.0F) * northSouthFaceBrightness, (flag6 ? f1 : 1.0F) * northSouthFaceBrightness, (flag6 ? f2 : 1.0F) * northSouthFaceBrightness, f12, f18, f24, f30);
             int l1 = block.getBlockTexture(blockAccess, i, j, k, 5);
-            if(grassSide)
+            if(grassSide && block == Block.grass)
             {
-            	if(l1 == 68 && blockAccess.getBlockId(i+1, j, k) == Block.snow.blockID)
+            	if(((BlockGrass)block).isBlockSideSnowy(blockAccess, i, j, k) && blockAccess.getBlockId(i+1, j, k) == Block.snow.blockID)
             	{
-            		l1 = 66;
-            	}else
-            		if(l1 == 3 && blockAccess.getBlockId(i+1, j-1, k) == Block.grass.blockID)
+            		if(l1 != 68)
             		{
-            			colorRedTopLeft *= f;
-            			colorRedBottomLeft *= f;
-            			colorRedBottomRight *= f;
-            			colorRedTopRight *= f;
-            			colorGreenTopLeft *= f1;
-            			colorGreenBottomLeft *= f1;
-            			colorGreenBottomRight *= f1;
-            			colorGreenTopRight *= f1;
-            			colorBlueTopLeft *= f2;
-            			colorBlueBottomLeft *= f2;
-            			colorBlueBottomRight *= f2;
-            			colorBlueTopRight *= f2;
-            			l1 = 0;
+            			l1 = 73;
+            		}else
+            		{
+            			l1 = 66;
+            		}
+            	}else
+            		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i+1, j-1, k) == Block.grass.blockID)
+            		{
+                    	aoMultRGB(f, f1, f2);
+            			if(l1 != 3)
+            			{
+            				l1 = 55;
+            			}else
+            			{
+            				l1 = 0;
+            			}
             		}
             }
             renderSouthFace(block, i, j, k, l1);
-            if((fancyGrass || cfgGrassFix) && l1 == 3 && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (l1 != 55 && l1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
-                colorRedTopLeft *= f;
-                colorRedBottomLeft *= f;
-                colorRedBottomRight *= f;
-                colorRedTopRight *= f;
-                colorGreenTopLeft *= f1;
-                colorGreenBottomLeft *= f1;
-                colorGreenBottomRight *= f1;
-                colorGreenTopRight *= f1;
-                colorBlueTopLeft *= f2;
-                colorBlueBottomLeft *= f2;
-                colorBlueBottomRight *= f2;
-                colorBlueTopRight *= f2;
-                renderSouthFace(block, i, j, k, 38);
+            	aoMultRGB(f, f1, f2);
+                renderSouthFace(block, i, j, k, l1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
-                aoMult(northSouthFaceBrightness, northSouthFaceBrightness, northSouthFaceBrightness, f12, f18, f24, f30);
+                setAOValues(northSouthFaceBrightness, northSouthFaceBrightness, northSouthFaceBrightness, f12, f18, f24, f30);
                 renderSouthFace(block, i, j, k, 37);
             }
             flag = true;
@@ -2761,7 +2721,7 @@ public class RenderBlocks
         return flag;
     }
 
-    private void aoMult(float f, float f1, float f2, float m, float m1, float m2, float m3)
+    private void setAOValues(float f, float f1, float f2, float m, float m1, float m2, float m3)
     {
         colorRedTopLeft = colorRedBottomLeft = colorRedBottomRight = colorRedTopRight = f;
         colorGreenTopLeft = colorGreenBottomLeft = colorGreenBottomRight = colorGreenTopRight = f1;
@@ -2780,6 +2740,22 @@ public class RenderBlocks
         colorBlueTopRight *= m3;
     }
      
+    private void aoMultRGB(float f, float f1, float f2)
+    {
+        colorRedTopLeft *= f;
+        colorRedBottomLeft *= f;
+        colorRedBottomRight *= f;
+        colorRedTopRight *= f;
+        colorGreenTopLeft *= f1;
+        colorGreenBottomLeft *= f1;
+        colorGreenBottomRight *= f1;
+        colorGreenTopRight *= f1;
+        colorBlueTopLeft *= f2;
+        colorBlueBottomLeft *= f2;
+        colorBlueBottomRight *= f2;
+        colorBlueTopRight *= f2;
+    }
+    
     public boolean renderStandardBlockWithColorMultiplier(Block block, int i, int j, int k, float f, float f1, float f2)
     {
         enableAO = false;
@@ -2869,23 +2845,35 @@ public class RenderBlocks
             {
                 tessellator.setColorOpaque_F(f11 * f22 * f, f14 * f22 * f1, f17 * f22 * f2);
             }
-            if(grassSide)
+            if(grassSide && block == Block.grass)
             {
-            	if(l == 68 && blockAccess.getBlockId(i, j, k-1) == Block.snow.blockID)
+            	if(((BlockGrass)block).isBlockSideSnowy(blockAccess, i, j, k) && blockAccess.getBlockId(i, j, k-1) == Block.snow.blockID)
             	{
-            		l = 66;
+            		if(l != 68)
+            		{
+            			l = 73;
+            		}else
+            		{
+            			l = 66;
+            		}
             	}else
-            	if(l == 3 && blockAccess.getBlockId(i, j-1, k-1) == Block.grass.blockID)
+            	if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i, j-1, k-1) == Block.grass.blockID)
             	{
-            		l = 0;
+        			if(l != 3)
+        			{
+        				l = 55;
+        			}else
+        			{
+        				l = 0;
+        			}
                     tessellator.setColorOpaque_F(f11 * f22 * f, f14 * f22 * f1, f17 * f22 * f2);
             	}
             }
             renderEastFace(block, i, j, k, l);
-            if((fancyGrass || cfgGrassFix) && l == 3 && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (l != 55 && l != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(f11 * f22 * f, f14 * f22 * f1, f17 * f22 * f2);
-                renderEastFace(block, i, j, k, 38);
+                renderEastFace(block, i, j, k, l == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
@@ -2907,23 +2895,35 @@ public class RenderBlocks
             {
                 tessellator.setColorOpaque_F(f11 * f23 * f, f14 * f23 * f1, f17 * f23 * f2);
             }
-            if(grassSide)
+            if(grassSide && block == Block.grass)
             {
-            	if(i1 == 68 && blockAccess.getBlockId(i, j, k+1) == Block.snow.blockID)
+            	if(((BlockGrass)block).isBlockSideSnowy(blockAccess, i, j, k) && blockAccess.getBlockId(i, j, k+1) == Block.snow.blockID)
             	{
-            		i1 = 66;
+            		if(i1 != 68)
+            		{
+            			i1 = 73;
+            		}else
+            		{
+            			i1 = 66;
+            		}
             	}else
-            	if(i1 == 3 && blockAccess.getBlockId(i, j-1, k+1) == Block.grass.blockID)
+            	if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i, j-1, k+1) == Block.grass.blockID)
             	{
-            		i1 = 0;
+        			if(i1 != 3)
+        			{
+        				i1 = 55;
+        			}else
+        			{
+        				i1 = 0;
+        			}
                     tessellator.setColorOpaque_F(f11 * f23 * f, f14 * f23 * f1, f17 * f23 * f2);
             	}
             }
             renderWestFace(block, i, j, k, i1);
-            if((fancyGrass || cfgGrassFix) && i1 == 3 && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (i1 != 55 && i1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(f11 * f23 * f, f14 * f23 * f1, f17 * f23 * f2);
-                renderWestFace(block, i, j, k, 38);
+                renderWestFace(block, i, j, k, i1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
@@ -2945,23 +2945,35 @@ public class RenderBlocks
             {
                 tessellator.setColorOpaque_F(f12 * f24 * f, f15 * f24 * f1, f18 * f24 * f2);
             }
-            if(grassSide)
+            if(grassSide && block == Block.grass)
             {
-            	if(j1 == 68 && blockAccess.getBlockId(i - 1, j, k) == Block.snow.blockID)
+            	if(((BlockGrass)block).isBlockSideSnowy(blockAccess, i, j, k) && blockAccess.getBlockId(i - 1, j, k) == Block.snow.blockID)
             	{
-            		j1 = 66;
+            		if(j1 != 68)
+            		{
+            			j1 = 73;
+            		}else
+            		{
+            			j1 = 66;
+            		}
             	}else
-            	if(j1 == 3 && blockAccess.getBlockId(i - 1, j-1, k) == Block.grass.blockID)
+            	if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i - 1, j-1, k) == Block.grass.blockID)
             	{
-            		j1 = 0;
+        			if(j1 != 3)
+        			{
+        				j1 = 55;
+        			}else
+        			{
+        				j1 = 0;
+        			}
                     tessellator.setColorOpaque_F(f12 * f24 * f, f15 * f24 * f1, f18 * f24 * f2);
             	}
             }
             renderNorthFace(block, i, j, k, j1);
-            if((fancyGrass || cfgGrassFix) && j1 == 3 && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (j1 != 55 && j1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(f12 * f24 * f, f15 * f24 * f1, f18 * f24 * f2);
-                renderNorthFace(block, i, j, k, 38);
+                renderNorthFace(block, i, j, k, j1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
@@ -2983,23 +2995,35 @@ public class RenderBlocks
             {
                 tessellator.setColorOpaque_F(f12 * f25 * f, f15 * f25 * f1, f18 * f25 * f2);
             }
-            if(grassSide)
+            if(grassSide && block == Block.grass)
             {
-            	if(k1 == 68 && blockAccess.getBlockId(i + 1, j, k) == Block.snow.blockID)
+            	if(((BlockGrass)block).isBlockSideSnowy(blockAccess, i, j, k) && blockAccess.getBlockId(i + 1, j, k) == Block.snow.blockID)
             	{
-            		k1 = 66;
+            		if(k1 != 68)
+            		{
+            			k1 = 73;
+            		}else
+            		{
+            			k1 = 66;
+            		}
             	}else
-            	if(k1 == 3 && blockAccess.getBlockId(i + 1, j-1, k) == Block.grass.blockID)
+            	if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i + 1, j-1, k) == Block.grass.blockID)
             	{
-            		k1 = 0;
+        			if(k1 != 3)
+        			{
+        				k1 = 55;
+        			}else
+        			{
+        				k1 = 0;
+        			}
                     tessellator.setColorOpaque_F(f12 * f25 * f, f15 * f25 * f1, f18 * f25 * f2);
             	}
             }
             renderSouthFace(block, i, j, k, k1);
-            if((fancyGrass || cfgGrassFix) && k1 == 3 && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (k1 != 55 && k1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(f12 * f25 * f, f15 * f25 * f1, f18 * f25 * f2);
-                renderSouthFace(block, i, j, k, 38);
+                renderSouthFace(block, i, j, k, k1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {

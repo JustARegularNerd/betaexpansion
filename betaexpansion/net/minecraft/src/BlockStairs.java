@@ -185,9 +185,9 @@ public class BlockStairs extends Block
         return modelBlock.getBlockBrightness(iblockaccess, i, j, k);
     }
 
-    public float getExplosionResistance(Entity entity)
+    public float getExplosionResistance(Entity entity, int i)
     {
-        return modelBlock.getExplosionResistance(entity);
+        return modelBlock.getExplosionResistance(entity, i);
     }
 
     public int getRenderBlockPass()

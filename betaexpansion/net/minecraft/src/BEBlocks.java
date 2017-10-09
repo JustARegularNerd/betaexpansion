@@ -47,6 +47,8 @@ public class BEBlocks {
         Item.itemsList[appleSapling.blockID] = (new ItemAppleSapling(appleSapling.blockID - 256));
         Item.itemsList[launcherBase.blockID] = (new ItemPiston(launcherBase.blockID - 256));
         Item.itemsList[blockPie.blockID] = (new ItemPie(blockPie.blockID - 256)).setItemName("pie");
+        Item.itemsList[Block.grass.blockID] = (new ItemGrass(Block.grass.blockID - 256));
+        Item.itemsList[Block.dirt.blockID] = (new ItemDirt(Block.dirt.blockID - 256));
 
 		ModLoader.AddName(stoneBrick, "Stone Bricks");
 		ModLoader.AddName(appleLeaves, "Apple Leaves");

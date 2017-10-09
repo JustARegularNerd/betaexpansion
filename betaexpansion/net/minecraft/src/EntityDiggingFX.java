@@ -11,24 +11,24 @@ package net.minecraft.src;
 public class EntityDiggingFX extends EntityFX
 {
 
-    public EntityDiggingFX(World world, double d, double d1, double d2, 
+    public EntityDiggingFX(World world, int i, int j, int k, double d, double d1, double d2, 
             double d3, double d4, double d5, Block block, 
-            int i, int j)
+            int i1, int j1)
     {
         super(world, d, d1, d2, d3, d4, d5);
         field_32001_o = 0;
         field_4082_a = block;
-        meta = j;
-        particleTextureIndex = block.getBlockTextureFromSideAndMetadata(0, j);
+        meta = j1;
+        particleTextureIndex = block.getBlockTexture((IBlockAccess)world, i, j, k, i1);
         particleGravity = block.blockParticleGravity;
         particleRed = particleGreen = particleBlue = 0.6F;
         particleScale /= 2.0F;
-        field_32001_o = i;
+        field_32001_o = i1;
     }
 
     public EntityDiggingFX func_4041_a(int i, int j, int k)
     {
-        if(field_4082_a == Block.grass)
+        if(field_4082_a == Block.grass && field_32001_o != 1)
         {
             return this;
         } else
@@ -43,7 +43,7 @@ public class EntityDiggingFX extends EntityFX
 
     public int getFXLayer()
     {
-    	if((field_4082_a.blockID == 43 || field_4082_a.blockID == 44) && meta%6 == 5)
+    	if(((field_4082_a.blockID == 43 || field_4082_a.blockID == 44) && meta%6 == 5) || ((field_4082_a.blockID == 2 || field_4082_a.blockID == 3) && meta > 0 && meta < 4))
     	{
     		return 4;
     	}

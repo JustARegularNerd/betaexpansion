@@ -116,7 +116,7 @@ public class ChunkProviderGenerate
 
     }
 
-    public void replaceBlocksForBiome(int i, int j, byte abyte0[], BiomeGenBase abiomegenbase[])
+    public void replaceBlocksForBiome(int i, int j, byte abyte0[], NibbleArray data, BiomeGenBase abiomegenbase[])
     {
         double d = 0.03125D;
         sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
@@ -133,6 +133,8 @@ public class ChunkProviderGenerate
                 int j1 = -1;
                 byte byte1 = biomegenbase.topBlock;
                 byte byte2 = biomegenbase.fillerBlock;
+                byte meta1 = biomegenbase.topBlockMeta;
+                byte meta2 = biomegenbase.fillerBlockMeta;
                 for(int k1 = 127; k1 >= 0; k1--)
                 {
                     int l1 = (l * 16 + k) * 128 + k1;
@@ -187,9 +189,11 @@ public class ChunkProviderGenerate
                         if(k1 >= seaLevel - 1)
                         {
                             abyte0[l1] = byte1;
+                            data.setNibble(l, k1, k, meta1);
                         } else
                         {
                             abyte0[l1] = byte2;
+                            data.setNibble(l, k1, k, meta2);
                         }
                         continue;
                     }
@@ -199,6 +203,7 @@ public class ChunkProviderGenerate
                     }
                     j1--;
                     abyte0[l1] = byte2;
+                    data.setNibble(l, k1, k, meta2);
                     if(j1 == 0 && byte2 == Block.sand.blockID)
                     {
                         j1 = rand.nextInt(4);
@@ -225,7 +230,7 @@ public class ChunkProviderGenerate
         biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
         double ad[] = worldObj.getWorldChunkManager().temperature;
         generateTerrain(i, j, abyte0, biomesForGeneration, ad);
-        replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
+        replaceBlocksForBiome(i, j, abyte0, chunk.data, biomesForGeneration);
         field_902_u.func_867_a(this, worldObj, i, j, abyte0);
         chunk.func_1024_c();
         return chunk;

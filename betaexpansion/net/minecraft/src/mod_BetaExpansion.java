@@ -45,7 +45,7 @@ public class mod_BetaExpansion extends BaseMod
     {
         return d1 + d * (d2 - d1);
     }
-    
+	
     public static boolean debugMode = false;
 	public static Block[] origBlocksList;
 	public static Item[] origItemsList;

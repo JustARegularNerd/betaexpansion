@@ -23,6 +23,8 @@ public class BiomeGenBase
     {
         topBlock = (byte)Block.grass.blockID;
         fillerBlock = (byte)Block.dirt.blockID;
+        topBlockMeta = 0;
+        fillerBlockMeta = 0;
         field_6502_q = 0x4ee031;
         spawnableMonsterList = new ArrayList();
         spawnableCreatureList = new ArrayList();
@@ -59,6 +61,15 @@ public class BiomeGenBase
 
         desert.topBlock = desert.fillerBlock = (byte)Block.sand.blockID;
         iceDesert.topBlock = iceDesert.fillerBlock = (byte)Block.sand.blockID;
+        forest.topBlockMeta = forest.fillerBlockMeta = 3;
+        hell.topBlockMeta = hell.fillerBlockMeta = 1;
+        plains.topBlockMeta = plains.fillerBlockMeta = 0;
+        tundra.topBlockMeta = tundra.fillerBlockMeta = 2;
+        taiga.topBlockMeta = taiga.fillerBlockMeta = 2;
+        sky.topBlockMeta = sky.fillerBlockMeta = 2;
+        rainforest.topBlockMeta = rainforest.fillerBlockMeta = 3;
+        swampland.topBlockMeta = swampland.fillerBlockMeta = 3;
+        savanna.topBlockMeta = savanna.fillerBlockMeta = 0;
     }
 
     public WorldGenerator getRandomWorldGenForTrees(Random random)
@@ -225,6 +236,8 @@ public class BiomeGenBase
     public int color;
     public byte topBlock;
     public byte fillerBlock;
+    public byte topBlockMeta;
+    public byte fillerBlockMeta;
     public int field_6502_q;
     protected List spawnableMonsterList;
     protected List spawnableCreatureList;

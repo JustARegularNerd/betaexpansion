@@ -100,5 +100,23 @@ public class BERecipes {
         ModLoader.AddRecipe(new ItemStack(BEItems.battleAxeDiamond, 1), new Object[] {
                 "###", "#X#", " X ", Character.valueOf('#'), new ItemStack(Item.diamond, 1), Character.valueOf('X'), Item.stick
             });
+        ModLoader.AddRecipe(new ItemStack(Block.dirt, 1, 0), new Object[] {
+                "#", Character.valueOf('#'), new ItemStack(Block.dirt, 1, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(Block.dirt, 1, 0), new Object[] {
+                "#", Character.valueOf('#'), new ItemStack(Block.dirt, 1, 2)
+            });
+        ModLoader.AddRecipe(new ItemStack(Block.dirt, 1, 0), new Object[] {
+                "#", Character.valueOf('#'), new ItemStack(Block.dirt, 1, 3)
+            });
+        ModLoader.AddRecipe(new ItemStack(Block.grass, 1, 0), new Object[] {
+                "#", Character.valueOf('#'), new ItemStack(Block.grass, 1, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(Block.grass, 1, 0), new Object[] {
+                "#", Character.valueOf('#'), new ItemStack(Block.grass, 1, 2)
+            });
+        ModLoader.AddRecipe(new ItemStack(Block.grass, 1, 0), new Object[] {
+                "#", Character.valueOf('#'), new ItemStack(Block.grass, 1, 3)
+            });
 	}
 }

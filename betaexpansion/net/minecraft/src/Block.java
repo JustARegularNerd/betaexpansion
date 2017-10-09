@@ -341,9 +341,9 @@ public class Block
         return 0;
     }
 
-    public float getExplosionResistance(Entity entity)
+    public float getExplosionResistance(Entity entity, int i)
     {
-        return blockResistance / 5F;
+        return getBlockResistance(i) / 5F;
     }
 
     public MovingObjectPosition collisionRayTrace(World world, int i, int j, int k, Vec3D vec3d, Vec3D vec3d1)
