@@ -34,6 +34,7 @@ public class mod_BetaExpansion extends BaseMod
 		canBlockGrass[Block.waterStill.blockID] = true;
 		canBlockGrass[Block.lavaMoving.blockID] = true;
 		canBlockGrass[Block.lavaStill.blockID] = true;
+		canBlockGrass[Block.ice.blockID] = true;
 	}
 	
 	public String Version()
