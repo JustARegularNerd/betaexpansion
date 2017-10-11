@@ -58,6 +58,7 @@ public class ItemPickaxe extends ItemTool
     		Block.oreGold, Block.oreDiamond, Block.blockDiamond, Block.ice, Block.netherrack, Block.oreLapis, Block.blockLapis, Block.stoneOvenActive, Block.stoneOvenIdle,
     		Block.brick, Block.dispenser, Block.stairCompactCobblestone, Block.mobSpawner, Block.oreRedstone, Block.oreRedstoneGlowing, Block.doorSteel, Block.pressurePlateStone,
     		Block.rail, Block.railDetector, Block.railPowered, BEBlocks.sandstoneBrick, BEBlocks.redSandstone, BEBlocks.stoneBrick, BEBlocks.brickStairs, BEBlocks.stoneBrickStairs,
+    		BEBlocks.table
     	});
     	materialsEffectiveAgainst = (new Material[] {
     		Material.rock, Material.iron	

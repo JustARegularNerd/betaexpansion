@@ -23,7 +23,8 @@ public class ItemAxe extends ItemTool
     {
     	blocksEffectiveAgainst = (new Block[] {
     		Block.planks, Block.bookShelf, Block.wood, Block.chest, Block.trapdoor, Block.doorWood, Block.workbench, Block.fence, Block.jukebox, Block.stairCompactPlanks,
-    		Block.pumpkin, Block.signPost, Block.signWall, Block.musicBlock, Block.pressurePlatePlanks, Block.pumpkinLantern, BEBlocks.pumpkinLampActive, BEBlocks.pumpkinLampIdle
+    		Block.pumpkin, Block.signPost, Block.signWall, Block.musicBlock, Block.pressurePlatePlanks, Block.pumpkinLantern, BEBlocks.pumpkinLampActive, BEBlocks.pumpkinLampIdle,
+    		BEBlocks.table
     	});
     	materialsEffectiveAgainst = (new Material[] {
     		Material.wood, Material.pumpkin	

@@ -160,8 +160,70 @@ public class RenderBlocks
         
         case 18: return renderBlockPistonExtension(block, i, j, k, true, true);
         
+        case 19: return renderBlockTable(block, i, j, k);
+
         default: return ModLoader.RenderWorldBlock(this, blockAccess, i, j, k, block, l);
         }
+    }
+    
+    public boolean renderBlockTable(Block block, int i, int j, int k)
+    {
+    	int l = blockAccess.getBlockMetadata(i, j, k);
+    	boolean f = blockAccess.getBlockId(i+1, j, k) == BEBlocks.table.blockID && (blockAccess.getBlockMetadata(i+1, j, k) / 8 == l / 8);
+    	boolean f1 = blockAccess.getBlockId(i-1, j, k) == BEBlocks.table.blockID && (blockAccess.getBlockMetadata(i-1, j, k) / 8 == l / 8);
+    	boolean f2 = blockAccess.getBlockId(i, j, k+1) == BEBlocks.table.blockID && (blockAccess.getBlockMetadata(i, j, k+1) / 8 == l / 8);
+    	boolean f3 = blockAccess.getBlockId(i, j, k-1) == BEBlocks.table.blockID && (blockAccess.getBlockMetadata(i, j, k-1) / 8 == l / 8);
+    	if(l > 7)
+    	{
+    		if(!(f1 || f3))
+    		{
+    			block.setBlockBounds(0.0625F, 0F, 0.0625F, 0.1875F, 0.625F, 0.1875F);
+    			renderStandardBlock(block, i, j, k);
+    		}
+    		if(!(f || f3))
+    		{
+    			block.setBlockBounds(0.8125F, 0F, 0.0625F, 0.9375F, 0.625F, 0.1875F);
+    			renderStandardBlock(block, i, j, k);
+    		}
+    		if(!(f1 || f2))
+    		{
+    			block.setBlockBounds(0.0625F, 0F, 0.8125F, 0.1875F, 0.625F, 0.9375F);
+    			renderStandardBlock(block, i, j, k);
+    		}
+    		if(!(f || f2))
+    		{
+    			block.setBlockBounds(0.8125F, 0F, 0.8125F, 0.9375F, 0.625F, 0.9375F);
+    			renderStandardBlock(block, i, j, k);
+    		}
+    		block.setBlockBounds(0F, 0.625F, 0F, 1F, 0.75F, 1F);
+    		renderStandardBlock(block, i, j, k);
+    	}else
+    	{
+    		if(!(f1 || f3))
+    		{
+    			block.setBlockBounds(0F, 0F, 0F, 0.125F, 0.875F, 0.125F);
+    			renderStandardBlock(block, i, j, k);
+    		}
+    		if(!(f || f3))
+    		{
+    			block.setBlockBounds(0.875F, 0F, 0F, 1F, 0.875F, 0.125F);
+    			renderStandardBlock(block, i, j, k);
+    		}
+    		if(!(f1 || f2))
+    		{
+    			block.setBlockBounds(0F, 0F, 0.875F, 0.125F, 0.875F, 1F);
+    			renderStandardBlock(block, i, j, k);
+    		}
+    		if(!(f || f2))
+    		{
+    			block.setBlockBounds(0.875F, 0F, 0.875F, 1F, 0.875F, 1F);
+    			renderStandardBlock(block, i, j, k);
+    		}
+    		block.setBlockBounds(0F, 0.875F, 0F, 1F, 1F, 1F);
+    		renderStandardBlock(block, i, j, k);
+    	}
+    	block.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
+        return true;
     }
     
     public boolean renderBlockBed(Block block, int i, int j, int k)
@@ -4291,6 +4353,74 @@ public class RenderBlocks
 
             block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         } else
+        if(k == 19)
+        {
+            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+            for(int i1 = 0; i1 < 5; i1++)
+            {
+            	if(i > 7)
+            	{
+            		if(i1 == 0)
+            		{
+            			block.setBlockBounds(0.0625F, 0F, 0.0625F, 0.1875F, 0.625F, 0.1875F);
+            		}
+            		if(i1 == 1)
+            		{
+            			block.setBlockBounds(0.8125F, 0F, 0.0625F, 0.9375F, 0.625F, 0.1875F);
+            		}
+            		if(i1 == 2)
+            		{
+            			block.setBlockBounds(0.0625F, 0F, 0.8125F, 0.1875F, 0.625F, 0.9375F);
+            		}
+            		if(i1 == 3)
+            		{
+            			block.setBlockBounds(0.8125F, 0F, 0.8125F, 0.9375F, 0.625F, 0.9375F);
+            		}
+            		if(i1 == 4)
+            		{
+            			block.setBlockBounds(0F, 0.625F, 0F, 1F, 0.75F, 1F);
+            		}
+            	}else
+            	{
+            		if(i1 == 0)
+            		{
+                		block.setBlockBounds(0F, 0F, 0F, 0.125F, 0.875F, 0.125F);
+            		}
+            		if(i1 == 1)
+            		{
+                		block.setBlockBounds(0.875F, 0F, 0F, 1F, 0.875F, 0.125F);
+            		}
+            		if(i1 == 2)
+            		{
+                		block.setBlockBounds(0F, 0F, 0.875F, 0.125F, 0.875F, 1F);
+            		}
+            		if(i1 == 3)
+            		{
+                		block.setBlockBounds(0.875F, 0F, 0.875F, 1F, 0.875F, 1F);
+            		}
+            		if(i1 == 4)
+            		{
+                		block.setBlockBounds(0F, 0.875F, 0F, 1F, 1F, 1F);
+            		}
+            	}
+                tessellator.startDrawingQuads();
+                tessellator.setNormal(0.0F, -1F, 0.0F);
+                renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(0, i));
+                tessellator.setNormal(0.0F, 1.0F, 0.0F);
+                renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(1, i));
+                tessellator.setNormal(0.0F, 0.0F, -1F);
+                renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(2, i));
+                tessellator.setNormal(0.0F, 0.0F, 1.0F);
+                renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(3, i));
+                tessellator.setNormal(-1F, 0.0F, 0.0F);
+                renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(4, i));
+                tessellator.setNormal(1.0F, 0.0F, 0.0F);
+                renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(5, i));
+                tessellator.draw();
+            }
+    		block.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
+            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        }else
         {
             ModLoader.RenderInvBlock(this, block, i, k);
         }
@@ -4304,6 +4434,7 @@ public class RenderBlocks
     	case 13: return true;
     	case 10: return true;
     	case 11: return true;
+    	case 19: return true;
     	default: return ModLoader.RenderBlockIsItemFull3D(i);
     	}
     }

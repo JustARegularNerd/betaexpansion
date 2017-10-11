@@ -568,6 +568,10 @@ public abstract class EntityPlayer extends EntityLiving
     {
     }
 
+    public void displayGUITable(TileEntityTable tileentitytable)
+    {
+    }
+    
     public void useCurrentItemOnEntity(Entity entity)
     {
         if(entity.interact(this))

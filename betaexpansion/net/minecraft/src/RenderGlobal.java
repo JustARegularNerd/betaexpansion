@@ -259,6 +259,7 @@ public class RenderGlobal
                     worldRenderers[x].isVisible = true;
                     worldRenderers[x].isInFrustum = true;
                     worldRenderers[x].chunkIndex = l++;
+                	worldRenderers[x].tileEntityRenderers = new ArrayList();
                     worldRenderers[x].markDirty();
                     sortedWorldRenderers[x] = worldRenderers[x];
                     worldRenderersToUpdate.add(worldRenderers[x]);

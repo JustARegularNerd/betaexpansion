@@ -20,9 +20,11 @@ public class BEBlocks {
 	public static Block blockPie;
 	public static Block pumpkinLampIdle;
 	public static Block pumpkinLampActive;
+	public static Block table;
 	public static void init()
 	{
         brickStairs = (new BlockStairs(111, Block.brick)).setBlockName("brickStairs").disableNeighborNotifyOnMetadataChange();
+		table = (new BlockTable(119, Block.planks.blockIndexInTexture)).setHardness(2.0F).setResistance(5F).setStepSound(Block.soundWoodFootstep).setBlockName("table");
 		origBlocksList = Block.blocksList.clone();
 		stoneBrick = (new BlockStoneBricks(100, 0)).setHardness(1.5F).setResistance(10F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneBrick");
 		appleLeaves = (new BlockAppleLeaves(140, 52)).setHardness(0.2F).setLightOpacity(1).setStepSound(Block.soundGrassFootstep).setBlockName("appleLeaves").disableStats().disableNeighborNotifyOnMetadataChange();
@@ -49,6 +51,7 @@ public class BEBlocks {
         Item.itemsList[blockPie.blockID] = (new ItemPie(blockPie.blockID - 256)).setItemName("pie");
         Item.itemsList[Block.grass.blockID] = (new ItemGrass(Block.grass.blockID - 256));
         Item.itemsList[Block.dirt.blockID] = (new ItemDirt(Block.dirt.blockID - 256));
+        Item.itemsList[table.blockID] = (new ItemTable(table.blockID - 256));
 
 		ModLoader.AddName(stoneBrick, "Stone Bricks");
 		ModLoader.AddName(appleLeaves, "Apple Leaves");
@@ -68,6 +71,10 @@ public class BEBlocks {
 		ModLoader.AddName(blockPie, "Pie");
 		ModLoader.AddLocalization("tile.stoneSlab.stoneBrick.name", "Stone Brick Slab");
 		ModLoader.AddLocalization("tile.stoneSlab.brick.name", "Brick Slab");
+		ModLoader.AddLocalization("tile.table.planks.name", "Wooden Table");
+		ModLoader.AddLocalization("tile.table.log.name", "Log Table");
+		ModLoader.AddLocalization("tile.table.cobblestone.name", "Cobblestone Table");
+		ModLoader.AddLocalization("tile.table.stone.name", "Stone Table");
 		ModLoader.AddLocalization("blockPie.blue.name", "Blueberry Pie");
 		ModLoader.AddLocalization("blockPie.red.name", "Raspberry Pie");
 		ModLoader.AddLocalization("tile.blockPie.blue.name", "Blueberry Pie");

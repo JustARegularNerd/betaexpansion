@@ -28,6 +28,49 @@ public class ItemRenderer
         field_28131_f = new MapItemRenderer(minecraft.fontRenderer, minecraft.gameSettings, minecraft.renderEngine);
     }
 
+    public void doRenderItem_noEntity(ItemStack itemstack, double d, double d1, double d2, 
+            float f)
+    {
+        GL11.glPushMatrix();
+        GL11.glTranslatef((float)d, (float)d1, (float)d2);
+        GL11.glEnable(32826 /*GL_RESCALE_NORMAL_EXT*/);
+        if(itemstack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
+        {
+            mc.renderEngine.bindTexture(BETextureHelper.getTextureFromIdAndMetadata(itemstack.itemID, itemstack.getItemDamage()));
+            float f4 = 0.25F;
+            GL11.glScalef(f4, f4, f4);
+            GL11.glPushMatrix();
+            renderBlocksInstance.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), f);
+            GL11.glPopMatrix();
+        } else
+        {
+            GL11.glScalef(0.3F, 0.3F, 0.3F);
+            int i = itemstack.getIconIndex();
+            mc.renderEngine.bindTexture(BETextureHelper.getTextureFromIdAndMetadata(itemstack.itemID, itemstack.getItemDamage()));
+            Tessellator tessellator = Tessellator.instance;
+            float f6 = (float)((i % 16) * 16 + 0) / 256F;
+            float f8 = (float)((i % 16) * 16 + 16) / 256F;
+            float f10 = (float)((i / 16) * 16 + 0) / 256F;
+            float f11 = (float)((i / 16) * 16 + 16) / 256F;
+            float f12 = 1.0F;
+            float f13 = 0.5F;
+            float f14 = 0.4F;
+            GL11.glPushMatrix();
+            GL11.glRotatef(180F - RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
+            tessellator.startDrawingQuads();
+            tessellator.setNormal(0.0F, 1.0F, 0.0F);
+            tessellator.addVertexWithUV(0.0F - f13, 0.0F - f14, 0.0D, f6, f11);
+            tessellator.addVertexWithUV(f12 - f13, 0.0F - f14, 0.0D, f8, f11);
+            tessellator.addVertexWithUV(f12 - f13, 1.0F - f14, 0.0D, f8, f10);
+            tessellator.addVertexWithUV(0.0F - f13, 1.0F - f14, 0.0D, f6, f10);
+            tessellator.draw();
+            GL11.glPopMatrix();
+
+        }
+        GL11.glDisable(32826 /*GL_RESCALE_NORMAL_EXT*/);
+        GL11.glPopMatrix();
+    }
+    
     public void renderItem(EntityLiving entityliving, ItemStack itemstack)
     {
         GL11.glPushMatrix();

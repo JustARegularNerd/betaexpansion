@@ -118,5 +118,41 @@ public class BERecipes {
         ModLoader.AddRecipe(new ItemStack(Block.grass, 1, 0), new Object[] {
                 "#", Character.valueOf('#'), new ItemStack(Block.grass, 1, 3)
             });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 0), new Object[] {
+                "###", "# #", "# #", Character.valueOf('#'), new ItemStack(Block.planks, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 1), new Object[] {
+                "###", "# #", "# #", Character.valueOf('#'), new ItemStack(Block.wood, 1, 0)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 2), new Object[] {
+                "###", "# #", "# #", Character.valueOf('#'), new ItemStack(Block.wood, 1, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 3), new Object[] {
+                "###", "# #", "# #", Character.valueOf('#'), new ItemStack(Block.wood, 1, 2)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 4), new Object[] {
+                "###", "# #", "# #", Character.valueOf('#'), new ItemStack(Block.cobblestone, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 5), new Object[] {
+                "###", "# #", "# #", Character.valueOf('#'), new ItemStack(Block.stone, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 8), new Object[] {
+                "###", "# #", Character.valueOf('#'), new ItemStack(Block.planks, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 9), new Object[] {
+                "###", "# #", Character.valueOf('#'), new ItemStack(Block.wood, 1, 0)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 10), new Object[] {
+                "###", "# #", Character.valueOf('#'), new ItemStack(Block.wood, 1, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 11), new Object[] {
+                "###", "# #", Character.valueOf('#'), new ItemStack(Block.wood, 1, 2)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 12), new Object[] {
+                "###", "# #", Character.valueOf('#'), new ItemStack(Block.cobblestone, 1)
+            });
+        ModLoader.AddRecipe(new ItemStack(BEBlocks.table, 1, 13), new Object[] {
+                "###", "# #", Character.valueOf('#'), new ItemStack(Block.stone, 1)
+            });
 	}
 }

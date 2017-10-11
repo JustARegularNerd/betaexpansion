@@ -117,7 +117,7 @@ public class RenderItem extends Render
         GL11.glDisable(32826 /*GL_RESCALE_NORMAL_EXT*/);
         GL11.glPopMatrix();
     }
-
+    
     public void drawItemIntoGui(FontRenderer fontrenderer, RenderEngine renderengine, int i, int j, int k, int l, int i1)
     {
         if(i < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[i].getRenderType()))
