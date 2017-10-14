@@ -19,7 +19,7 @@ public class EntityDiggingFX extends EntityFX
         field_32001_o = 0;
         field_4082_a = block;
         meta = j1;
-        particleTextureIndex = block.getBlockTexture((IBlockAccess)world, i, j, k, i1);
+        particleTextureIndex = block.getBlockTexture((IBlockAccess)world, i, j, k, 2);
         particleGravity = block.blockParticleGravity;
         particleRed = particleGreen = particleBlue = 0.6F;
         particleScale /= 2.0F;
@@ -28,7 +28,7 @@ public class EntityDiggingFX extends EntityFX
 
     public EntityDiggingFX func_4041_a(int i, int j, int k)
     {
-        if(field_4082_a == Block.grass && field_32001_o != 1)
+        if(field_4082_a == Block.grass)
         {
             return this;
         } else
