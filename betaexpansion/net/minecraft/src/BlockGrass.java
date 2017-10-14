@@ -11,7 +11,6 @@ import java.util.Random;
 //            ColorizerGrass, World
 
 public class BlockGrass extends Block
-implements ITexInfo
 {
 
     protected BlockGrass(int i)

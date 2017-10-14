@@ -11,7 +11,6 @@ import java.util.Random;
 //            Block, Material, World, IBlockAccess
 
 public class BlockStep extends Block
-implements ITexInfo
 {
 
     public BlockStep(int i, boolean flag)

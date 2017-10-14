@@ -10,7 +10,7 @@ public class BETextureHelper {
 	{
 		if(i < 256)
 		{
-			if(BEBlocks.origBlocksList[i] == null || (Block.blocksList[i] instanceof ITexInfo && ((ITexInfo)Block.blocksList[i]).getRenderPass(mc.theWorld, i, j) == 2) ||
+			if(BEBlocks.origBlocksList[i] == null || Block.blocksList[i].getRenderPass(mc.theWorld, i, j) == 2 ||
 					Block.blocksList[i].getRenderBlockPass() == 2)
 			{
 				return mc.renderEngine.getTexture(block_path);
@@ -35,7 +35,7 @@ public class BETextureHelper {
 		getTextureFromIdAndMetadata(i,j);
 		if(i < 256)
 		{
-			if(BEBlocks.origBlocksList[i] == null || (Block.blocksList[i] instanceof ITexInfo && ((ITexInfo)Block.blocksList[i]).getRenderPass(mc.theWorld, i, j) == 2) ||
+			if(BEBlocks.origBlocksList[i] == null || Block.blocksList[i].getRenderPass(mc.theWorld, i, j) == 2 ||
 					Block.blocksList[i].getRenderBlockPass() == 2)
 			{
 				return block_path;

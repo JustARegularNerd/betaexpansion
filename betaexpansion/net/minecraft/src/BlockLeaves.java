@@ -13,7 +13,6 @@ import java.util.Random;
 //            Entity
 
 public class BlockLeaves extends BlockLeavesBase
-implements ITexInfo
 {
 
     protected BlockLeaves(int i, int j)

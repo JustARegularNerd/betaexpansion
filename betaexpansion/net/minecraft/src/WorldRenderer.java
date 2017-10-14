@@ -118,11 +118,7 @@ public class WorldRenderer
                             continue;
                         }
                         Block block = Block.blocksList[i3];
-                        int j3 = block.getRenderBlockPass();
-                        if(block instanceof ITexInfo)
-                        {
-                        	j3 = ((ITexInfo)block).getRenderPass(worldObj, i3, chunkcache.getBlockMetadata(l2, j2, k2));
-                        }
+                        int j3 = block.getRenderPass(worldObj, i3, chunkcache.getBlockMetadata(l2, j2, k2));
                         if(j3 != i2)
                         {
                             flag = true;

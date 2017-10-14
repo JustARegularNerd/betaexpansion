@@ -637,6 +637,11 @@ public class Block
     	return getBlockProperties(i).blockHardness;
     }
     
+	public int getRenderPass(World world, int i, int j)
+    {
+		return getRenderBlockPass();
+    }
+    
     public static final StepSound soundPowderFootstep;
     public static final StepSound soundWoodFootstep;
     public static final StepSound soundGravelFootstep;

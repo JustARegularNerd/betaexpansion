@@ -9,7 +9,6 @@ package net.minecraft.src;
 //            Block, Material
 
 public class BlockDirt extends Block
-implements ITexInfo
 {
 
     protected BlockDirt(int i, int j)
