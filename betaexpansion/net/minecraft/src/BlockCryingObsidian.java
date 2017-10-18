@@ -18,6 +18,15 @@ public class BlockCryingObsidian extends BlockStone
     	isActivated = flag;
     }
     
+    public int getBlockTextureFromSideAndMetadata(int i, int j)
+    {
+    	if(i < 2)
+    	{
+    		return blockIndexInTexture + 1;
+    	}
+    	return blockIndexInTexture;
+    }
+    
     public void onNeighborBlockChange(World world, int i, int j, int k, int l)
     {
         if(isActivated)

@@ -2476,7 +2476,7 @@ public class RenderBlocks
             	{
             		if(i1 != 68)
             		{
-            			i1 = 73;
+            			i1 = 55;
             		}else
             		{
             			i1 = 66;
@@ -2487,7 +2487,7 @@ public class RenderBlocks
                     	aoMultRGB(f, f1, f2);
             			if(i1 != 3)
             			{
-            				i1 = 55;
+            				i1 = 38;
             			}else
             			{
             				i1 = 0;
@@ -2495,7 +2495,7 @@ public class RenderBlocks
             		}
             }
             renderEastFace(block, i, j, k, i1);
-            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (i1 != 55 && i1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (i1 != 38 && i1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
             	aoMultRGB(f, f1, f2);
                 renderEastFace(block, i, j, k, i1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
@@ -2565,7 +2565,7 @@ public class RenderBlocks
             	{
             		if(j1 != 68)
             		{
-            			j1 = 73;
+            			j1 = 55;
             		}else
             		{
             			j1 = 66;
@@ -2576,7 +2576,7 @@ public class RenderBlocks
                     	aoMultRGB(f, f1, f2);
             			if(j1 != 3)
             			{
-            				j1 = 55;
+            				j1 = 38;
             			}else
             			{
             				j1 = 0;
@@ -2584,7 +2584,7 @@ public class RenderBlocks
             		}
             }
             renderWestFace(block, i, j, k, j1);
-            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (j1 != 55 && j1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (j1 != 38 && j1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
             	aoMultRGB(f, f1, f2);
                 renderWestFace(block, i, j, k, j1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
@@ -2655,7 +2655,7 @@ public class RenderBlocks
             	{
             		if(k1 != 68)
             		{
-            			k1 = 73;
+            			k1 = 55;
             		}else
             		{
             			k1 = 66;
@@ -2666,7 +2666,7 @@ public class RenderBlocks
                     	aoMultRGB(f, f1, f2);
             			if(k1 != 3)
             			{
-            				k1 = 55;
+            				k1 = 38;
             			}else
             			{
             				k1 = 0;
@@ -2674,7 +2674,7 @@ public class RenderBlocks
             		}
             }
             renderNorthFace(block, i, j, k, k1);
-            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (k1 != 55 && k1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (k1 != 38 && k1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
             	aoMultRGB(f, f1, f2);
                 renderNorthFace(block, i, j, k, k1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
@@ -2744,7 +2744,7 @@ public class RenderBlocks
             	{
             		if(l1 != 68)
             		{
-            			l1 = 73;
+            			l1 = 55;
             		}else
             		{
             			l1 = 66;
@@ -2755,7 +2755,7 @@ public class RenderBlocks
                     	aoMultRGB(f, f1, f2);
             			if(l1 != 3)
             			{
-            				l1 = 55;
+            				l1 = 38;
             			}else
             			{
             				l1 = 0;
@@ -2763,7 +2763,7 @@ public class RenderBlocks
             		}
             }
             renderSouthFace(block, i, j, k, l1);
-            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (l1 != 55 && l1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (l1 != 38 && l1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
             	aoMultRGB(f, f1, f2);
                 renderSouthFace(block, i, j, k, l1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
@@ -2913,7 +2913,7 @@ public class RenderBlocks
             	{
             		if(l != 68)
             		{
-            			l = 73;
+            			l = 55;
             		}else
             		{
             			l = 66;
@@ -2923,7 +2923,7 @@ public class RenderBlocks
             	{
         			if(l != 3)
         			{
-        				l = 55;
+        				l = 38;
         			}else
         			{
         				l = 0;
@@ -2932,7 +2932,7 @@ public class RenderBlocks
             	}
             }
             renderEastFace(block, i, j, k, l);
-            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (l != 55 && l != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (l != 38 && l != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(f11 * f22 * f, f14 * f22 * f1, f17 * f22 * f2);
                 renderEastFace(block, i, j, k, l == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
@@ -2963,7 +2963,7 @@ public class RenderBlocks
             	{
             		if(i1 != 68)
             		{
-            			i1 = 73;
+            			i1 = 55;
             		}else
             		{
             			i1 = 66;
@@ -2973,7 +2973,7 @@ public class RenderBlocks
             	{
         			if(i1 != 3)
         			{
-        				i1 = 55;
+        				i1 = 38;
         			}else
         			{
         				i1 = 0;
@@ -2982,7 +2982,7 @@ public class RenderBlocks
             	}
             }
             renderWestFace(block, i, j, k, i1);
-            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (i1 != 55 && i1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (i1 != 38 && i1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(f11 * f23 * f, f14 * f23 * f1, f17 * f23 * f2);
                 renderWestFace(block, i, j, k, i1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
@@ -3013,7 +3013,7 @@ public class RenderBlocks
             	{
             		if(j1 != 68)
             		{
-            			j1 = 73;
+            			j1 = 55;
             		}else
             		{
             			j1 = 66;
@@ -3023,7 +3023,7 @@ public class RenderBlocks
             	{
         			if(j1 != 3)
         			{
-        				j1 = 55;
+        				j1 = 38;
         			}else
         			{
         				j1 = 0;
@@ -3032,7 +3032,7 @@ public class RenderBlocks
             	}
             }
             renderNorthFace(block, i, j, k, j1);
-            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (j1 != 55 && j1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (j1 != 38 && j1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(f12 * f24 * f, f15 * f24 * f1, f18 * f24 * f2);
                 renderNorthFace(block, i, j, k, j1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
@@ -3063,7 +3063,7 @@ public class RenderBlocks
             	{
             		if(k1 != 68)
             		{
-            			k1 = 73;
+            			k1 = 55;
             		}else
             		{
             			k1 = 66;
@@ -3073,7 +3073,7 @@ public class RenderBlocks
             	{
         			if(k1 != 3)
         			{
-        				k1 = 55;
+        				k1 = 38;
         			}else
         			{
         				k1 = 0;
@@ -3082,7 +3082,7 @@ public class RenderBlocks
             	}
             }
             renderSouthFace(block, i, j, k, k1);
-            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (k1 != 55 && k1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
+            if(block == Block.grass && (fancyGrass || cfgGrassFix) && (k1 != 38 && k1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(f12 * f25 * f, f15 * f25 * f1, f18 * f25 * f2);
                 renderSouthFace(block, i, j, k, k1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));

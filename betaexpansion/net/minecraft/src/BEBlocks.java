@@ -37,8 +37,8 @@ public class BEBlocks {
         ropeLadder = (new BlockRopeLadder(109, 6)).setHardness(0.4F).setStepSound(Block.soundWoodFootstep).setBlockName("ropeLadder").disableNeighborNotifyOnMetadataChange();
         wetSponge = (new BlockWetSponge(110, 22)).setHardness(0.6F).setStepSound(Block.soundGrassFootstep).setBlockName("wetSponge");
         stoneBrickStairs = (new BlockStairs(112, stoneBrick)).setBlockName("stoneBrickStairs").disableNeighborNotifyOnMetadataChange();
-        cryingObsidianIdle = (new BlockCryingObsidian(113, 38, false)).setHardness(10F).setResistance(2000F).setStepSound(Block.soundStoneFootstep).setBlockName("cryingObsidian");
-        cryingObsidianActive = (new BlockCryingObsidian(114, 38, true)).setHardness(10F).setResistance(2000F).setLightValue(0.8F).setStepSound(Block.soundStoneFootstep).setBlockName("cryingObsidian");
+        cryingObsidianIdle = (new BlockCryingObsidian(113, 84, false)).setHardness(10F).setResistance(2000F).setStepSound(Block.soundStoneFootstep).setBlockName("cryingObsidian");
+        cryingObsidianActive = (new BlockCryingObsidian(114, 84, true)).setHardness(10F).setResistance(2000F).setLightValue(0.8F).setStepSound(Block.soundStoneFootstep).setBlockName("cryingObsidian");
         berryBush = (new BlockBerryBush(115, 7)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setBlockName("berryBush");
         blockPie = (new BlockPie(116, 64)).setHardness(0.5F).setStepSound(Block.soundClothFootstep).setBlockName("blockPie").disableStats().disableNeighborNotifyOnMetadataChange();
         pumpkinLampIdle = (new BlockPumpkinLamp(117, false)).setHardness(1.0F).setStepSound(Block.soundWoodFootstep).setBlockName("pumpkinLampIdle").disableNeighborNotifyOnMetadataChange();

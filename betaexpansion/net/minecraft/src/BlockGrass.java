@@ -37,7 +37,7 @@ public class BlockGrass extends Block
     	{
     		if(l == 1)
     		{
-    			return 55;
+    			return 38;
     		}
     		if(l == 0)
     		{
