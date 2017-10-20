@@ -74,7 +74,7 @@ public class BlockGrass extends Block
             {
                 return;
             }
-            world.setBlockWithNotify(i, j, k, Block.dirt.blockID);
+            world.setBlockAndMetadataWithNotify(i, j, k, Block.dirt.blockID, world.getBlockMetadata(i, j, k));
         } else
         if(world.getBlockLightValue(i, j + 1, k) >= 9)
         {
@@ -84,7 +84,7 @@ public class BlockGrass extends Block
             int k1 = world.getBlockId(l, i1 + 1, j1);
             if(world.getBlockId(l, i1, j1) == Block.dirt.blockID && world.getBlockLightValue(l, i1 + 1, j1) >= 4 && Block.lightOpacity[k1] <= 2)
             {
-                world.setBlockWithNotify(l, i1, j1, Block.grass.blockID);
+                world.setBlockAndMetadataWithNotify(l, i1, j1, Block.grass.blockID, world.getBlockMetadata(l, i1, j1));
             }
         }
     }
