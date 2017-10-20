@@ -31,7 +31,8 @@ public class ItemSpade extends ItemTool
     static 
     {
     	blocksEffectiveAgainst = (new Block[] {
-    		Block.grass, Block.dirt, Block.sand, Block.gravel, Block.snow, Block.blockSnow, Block.blockClay, Block.tilledField, Block.slowSand, BEBlocks.redSand
+    		Block.grass, Block.dirt, Block.sand, Block.gravel, Block.snow, Block.blockSnow, Block.blockClay, Block.tilledField, Block.slowSand, BEBlocks.redSand,
+    		BEBlocks.tilledFieldDry, BEBlocks.tilledFieldCool, BEBlocks.tilledFieldWarm
     	});
     	materialsEffectiveAgainst = (new Material[] {
     		Material.grassMaterial, Material.ground, Material.clay, Material.sand, Material.snow, Material.builtSnow	

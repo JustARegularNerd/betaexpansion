@@ -21,6 +21,10 @@ public class BEBlocks {
 	public static Block pumpkinLampIdle;
 	public static Block pumpkinLampActive;
 	public static Block table;
+	public static Block tilledFieldDry;
+	public static Block tilledFieldCool;
+	public static Block tilledFieldWarm;
+
 	public static void init()
 	{
         brickStairs = (new BlockStairs(111, Block.brick)).setBlockName("brickStairs").disableNeighborNotifyOnMetadataChange();
@@ -43,6 +47,9 @@ public class BEBlocks {
         blockPie = (new BlockPie(116, 64)).setHardness(0.5F).setStepSound(Block.soundClothFootstep).setBlockName("blockPie").disableStats().disableNeighborNotifyOnMetadataChange();
         pumpkinLampIdle = (new BlockPumpkinLamp(117, false)).setHardness(1.0F).setStepSound(Block.soundWoodFootstep).setBlockName("pumpkinLampIdle").disableNeighborNotifyOnMetadataChange();
         pumpkinLampActive = (new BlockPumpkinLamp(118, true)).setHardness(1.0F).setStepSound(Block.soundWoodFootstep).setBlockName("pumpkinLampActive").disableNeighborNotifyOnMetadataChange();
+        tilledFieldDry = (new BlockFarmland(120, 1)).setHardness(0.6F).setStepSound(Block.soundGravelFootstep).setBlockName("farmland");
+        tilledFieldCool = (new BlockFarmland(121, 2)).setHardness(0.6F).setStepSound(Block.soundGravelFootstep).setBlockName("farmland");
+        tilledFieldWarm = (new BlockFarmland(122, 3)).setHardness(0.6F).setStepSound(Block.soundGravelFootstep).setBlockName("farmland");
 
         Item.itemsList[stoneBrick.blockID] = (new ItemStoneBrick(stoneBrick.blockID - 256));
         Item.itemsList[sandstoneBrick.blockID] = (new ItemStoneBrick(sandstoneBrick.blockID - 256));

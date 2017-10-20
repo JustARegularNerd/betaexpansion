@@ -24,7 +24,7 @@ public class BlockCrops extends BlockFlower
 
     protected boolean canThisPlantGrowOnThisBlockID(int i)
     {
-        return i == Block.tilledField.blockID;
+        return Block.blocksList[i] instanceof BlockFarmland;
     }
 
     public void updateTick(World world, int i, int j, int k, Random random)
@@ -71,7 +71,7 @@ public class BlockCrops extends BlockFlower
             {
                 int j3 = world.getBlockId(l2, j - 1, i3);
                 float f1 = 0.0F;
-                if(j3 == Block.tilledField.blockID)
+                if(Block.blocksList[j3] instanceof BlockFarmland)
                 {
                     f1 = 1.0F;
                     if(world.getBlockMetadata(l2, j - 1, i3) > 0)

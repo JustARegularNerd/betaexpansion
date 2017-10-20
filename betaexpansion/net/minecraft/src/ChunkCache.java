@@ -94,7 +94,7 @@ public class ChunkCache
         if(flag)
         {
             int l = getBlockId(i, j, k);
-            if(l == Block.stairSingle.blockID || l == Block.tilledField.blockID || l == Block.stairCompactPlanks.blockID || l == Block.stairCompactCobblestone.blockID)
+            if(l == Block.stairSingle.blockID || Block.blocksList[l] instanceof BlockFarmland || l == Block.stairCompactPlanks.blockID || l == Block.stairCompactCobblestone.blockID)
             {
                 int k1 = getLightValueExt(i, j + 1, k, false);
                 int i2 = getLightValueExt(i + 1, j, k, false);
