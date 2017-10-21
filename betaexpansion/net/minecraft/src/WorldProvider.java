@@ -55,7 +55,7 @@ public abstract class WorldProvider
     public boolean canCoordinateBeSpawn(int i, int j)
     {
         int k = worldObj.getFirstUncoveredBlock(i, j);
-        return k == Block.sand.blockID;
+        return k == Block.sand.blockID || k == BEBlocks.redSand.blockID;
     }
 
     public float calculateCelestialAngle(long l, float f)

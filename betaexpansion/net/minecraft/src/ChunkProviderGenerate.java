@@ -359,6 +359,45 @@ public class ChunkProviderGenerate
         long l2 = (rand.nextLong() / 2L) * 2L + 1L;
         rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getRandomSeed());
         double d = 0.25D;
+        
+        generatedTemperatures = worldObj.getWorldChunkManager().getTemperatures(generatedTemperatures, k + 8, l + 8, 16, 16);
+        for(int j19 = k + 8; j19 < k + 8 + 16; j19++)
+        {
+            for(int j22 = l + 8; j22 < l + 8 + 16; j22++)
+            {
+                int i24 = j19 - (k + 8);
+                int j25 = j22 - (l + 8);
+                int k25 = worldObj.findTopSolidBlock(j19, j22);
+                double d1 = generatedTemperatures[i24 * 16 + j25] - ((double)(k25 - 64) / 64D) * 0.29999999999999999D;
+                int x = i24 * 16 + j25;
+                if(x > worldObj.getWorldChunkManager().humidity.length - 1)
+                {
+                	x = worldObj.getWorldChunkManager().humidity.length - 1;
+                }
+                double d2 = worldObj.getWorldChunkManager().humidity[x];
+                if(d1 > 0.98D && d2 < 0.15D && k25 -1 > 0 && k25 - 1 < 128 && worldObj.getBlockId(j19, k25-1, j22) == Block.sand.blockID && biomegenbase == BiomeGenBase.desert)
+                {
+                	boolean flag = false;
+                	k25--;
+                	while(!flag)
+                	{
+                		if(worldObj.getBlockId(j19, k25, j22) == Block.sand.blockID)
+                		{
+                			worldObj.setBlockWithNotify(j19, k25, j22, BEBlocks.redSand.blockID);
+                		}else
+                    	if(worldObj.getBlockId(j19, k25, j22) == Block.sandStone.blockID)
+                    	{
+                			worldObj.setBlockWithNotify(j19, k25, j22, BEBlocks.redSandstone.blockID);
+                    	}else
+                    	{
+                    		flag = true;
+                    	}
+                		k25--;
+                	}
+                }
+            }
+        }
+        
         if(rand.nextInt(4) == 0)
         {
             int i1 = k + rand.nextInt(16) + 8;
@@ -712,7 +751,6 @@ public class ChunkProviderGenerate
         	}
         }
         
-        generatedTemperatures = worldObj.getWorldChunkManager().getTemperatures(generatedTemperatures, k + 8, l + 8, 16, 16);
         for(int j19 = k + 8; j19 < k + 8 + 16; j19++)
         {
             for(int j22 = l + 8; j22 < l + 8 + 16; j22++)
@@ -721,40 +759,13 @@ public class ChunkProviderGenerate
                 int j25 = j22 - (l + 8);
                 int k25 = worldObj.findTopSolidBlock(j19, j22);
                 double d1 = generatedTemperatures[i24 * 16 + j25] - ((double)(k25 - 64) / 64D) * 0.29999999999999999D;
-                int x = i24 * 16 + j25;
-                if(x > worldObj.getWorldChunkManager().humidity.length - 1)
-                {
-                	x = worldObj.getWorldChunkManager().humidity.length - 1;
-                }
-                double d2 = worldObj.getWorldChunkManager().humidity[x];
                 int max = mod_BetaExpansion.maxSnow.get(biomegenbase);
                 if(d1 < 0.5D && k25 > 0 && k25 < 128 && worldObj.isAirBlock(j19, k25, j22) && worldObj.getBlockMaterial(j19, k25 - 1, j22).getIsSolid() 
                 		&& worldObj.getBlockMaterial(j19, k25 - 1, j22) != Material.ice)
                 {
                     worldObj.setBlockAndMetadataWithNotify(j19, k25, j22, Block.snow.blockID, max + 8);
                 }
-                if(d1 > 0.98D && d2 < 0.15D && k25 -1 > 0 && k25 - 1 < 128 && worldObj.getBlockId(j19, k25-1, j22) == Block.sand.blockID && biomegenbase == BiomeGenBase.desert)
-                {
-                	boolean flag = false;
-                	k25--;
-                	while(!flag)
-                	{
-                		if(worldObj.getBlockId(j19, k25, j22) == Block.sand.blockID)
-                		{
-                			worldObj.setBlockWithNotify(j19, k25, j22, BEBlocks.redSand.blockID);
-                		}else
-                    	if(worldObj.getBlockId(j19, k25, j22) == Block.sandStone.blockID)
-                    	{
-                			worldObj.setBlockWithNotify(j19, k25, j22, BEBlocks.redSandstone.blockID);
-                    	}else
-                    	{
-                    		flag = true;
-                    	}
-                		k25--;
-                	}
-                }
             }
-
         }
 
         BlockSand.fallInstantly = false;
