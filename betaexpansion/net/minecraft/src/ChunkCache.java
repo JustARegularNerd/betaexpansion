@@ -75,6 +75,17 @@ public class ChunkCache
         return worldObj.worldProvider.lightBrightnessTable[i1];
     }
 
+    public int getRenderBrightness(int i, int j, int k, int l)
+    {
+        int i1 = worldObj.getRenderLightValue(EnumSkyBlock.Sky, i, j, k);
+        int j1 = worldObj.getRenderLightValue(EnumSkyBlock.Block, i, j, k);
+        if(j1 < l)
+        {
+            j1 = l;
+        }
+        return i1 << 20 | j1 << 4;
+    }
+    
     public float getLightBrightness(int i, int j, int k)
     {
         return worldObj.worldProvider.lightBrightnessTable[getLightValue(i, j, k)];

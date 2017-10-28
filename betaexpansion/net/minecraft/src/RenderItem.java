@@ -66,7 +66,7 @@ public class RenderItem extends Render
                     float f9 = ((random.nextFloat() * 2.0F - 1.0F) * 0.2F) / f4;
                     GL11.glTranslatef(f5, f7, f9);
                 }
-                renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entityitem.getEntityBrightness(f1));
+                renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), 1.0F);
                 GL11.glPopMatrix();
             }
 
@@ -89,7 +89,7 @@ public class RenderItem extends Render
                 float f15 = (float)(k >> 16 & 0xff) / 255F;
                 float f17 = (float)(k >> 8 & 0xff) / 255F;
                 float f19 = (float)(k & 0xff) / 255F;
-                float f21 = entityitem.getEntityBrightness(f1);
+                float f21 = 1.0F;
                 GL11.glColor4f(f15 * f21, f17 * f21, f19 * f21, 1.0F);
             }
             for(int l = 0; l < byte0; l++)

@@ -719,7 +719,7 @@ label0:
     private HashMap textureNameToImageMap;
     public HashMap textureSizeIdMap;
     private IntBuffer singleIntBuffer;
-    private ByteBuffer imageData;
+    public ByteBuffer imageData;
     private java.util.List textureList;
     private Map urlToImageDataMap;
     private GameSettings options;

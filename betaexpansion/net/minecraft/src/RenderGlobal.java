@@ -673,10 +673,12 @@ public class RenderGlobal
 
     public void renderAllRenderLists(int i, double d)
     {
+        mc.entityRenderer.enableLightmap();
         for(int j = 0; j < allRenderLists.length; j++)
         {
             allRenderLists[j].func_860_a();
         }
+        mc.entityRenderer.disableLightmap();
     }
 
     public void updateClouds()

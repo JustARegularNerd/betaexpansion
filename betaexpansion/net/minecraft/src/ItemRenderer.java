@@ -6,6 +6,7 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 // Referenced classes of package net.minecraft.src:
 //            RenderBlocks, MapItemRenderer, ItemStack, Block, 
@@ -77,7 +78,7 @@ public class ItemRenderer
         if(itemstack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
         {
         	GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, BETextureHelper.getTextureFromIdAndMetadata(itemstack.itemID, itemstack.getItemDamage()));
-            renderBlocksInstance.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entityliving.getEntityBrightness(1.0F));
+            renderBlocksInstance.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), 1.0F);
         } else
         {
         	double size;
@@ -204,17 +205,20 @@ public class ItemRenderer
             GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationYaw - x4) * 0.1F, 0.0F, 1.0F, 0.0F);
         }
         ItemStack itemstack = itemToRender;
-        float f3 = mc.theWorld.getLightBrightness(MathHelper.floor_double(((EntityPlayer) (entityplayersp)).posX), MathHelper.floor_double(((EntityPlayer) (entityplayersp)).posY), MathHelper.floor_double(((EntityPlayer) (entityplayersp)).posZ));
+        int i1 = mc.theWorld.getRenderBrightness(MathHelper.floor_double(((EntityPlayer) (entityplayersp)).posX), MathHelper.floor_double(((EntityPlayer) (entityplayersp)).posY), MathHelper.floor_double(((EntityPlayer) (entityplayersp)).posZ), 0);
+        int k = i1 % 0x10000;
+        int l = i1 / 0x10000;
+        GL13.glMultiTexCoord2f(33985 /*GL_TEXTURE1_ARB*/, (float)k / 1.0F, (float)l / 1.0F);
         if(itemstack != null)
         {
             int i = Item.itemsList[itemstack.itemID].getColorFromDamage(itemstack.getItemDamage());
             float f7 = (float)(i >> 16 & 0xff) / 255F;
             float f11 = (float)(i >> 8 & 0xff) / 255F;
             float f15 = (float)(i & 0xff) / 255F;
-            GL11.glColor4f(f3 * f7, f3 * f11, f3 * f15, 1.0F);
+            GL11.glColor4f(f7, f11, f15, 1.0F);
         } else
         {
-            GL11.glColor4f(f3, f3, f3, 1.0F);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
         if(itemstack != null && itemstack.itemID == Item.mapItem.shiftedIndex)
         {
@@ -396,8 +400,7 @@ public class ItemRenderer
     private void renderInsideOfBlock(float f, int i)
     {
         Tessellator tessellator = Tessellator.instance;
-        float f1 = mc.thePlayer.getEntityBrightness(f);
-        f1 = 0.1F;
+        float f1 = 0.1F;
         GL11.glColor4f(f1, f1, f1, 0.5F);
         GL11.glPushMatrix();
         float f2 = -1F;

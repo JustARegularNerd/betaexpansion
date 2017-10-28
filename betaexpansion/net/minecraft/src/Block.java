@@ -152,6 +152,16 @@ public class Block
         return iblockaccess.getBrightness(i, j, k, lightValue[blockID]);
     }
 
+    public int getRenderBrightness(IBlockAccess iblockaccess, int i, int j, int k)
+    {
+        return iblockaccess.getRenderBrightness(i, j, k, lightValue[blockID]);
+    }
+    
+    public float getAOBrightness(IBlockAccess iblockaccess, int i, int j, int k)
+    {
+        return iblockaccess.isBlockOpaqueCube(i, j, k) ? 0.05F : 1.0F;
+    }
+    
     public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l)
     {
         if(l == 0 && minY > 0.0D)

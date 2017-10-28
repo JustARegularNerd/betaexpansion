@@ -244,8 +244,10 @@ public class RenderBlocks
         float f13 = bottomFaceBrightness;
         float f14 = eastWestFaceBrightness;
         float f15 = northSouthFaceBrightness;
-        float f16 = block.getBlockBrightness(blockAccess, i, j, k);
-        tessellator.setColorOpaque_F(f7 * f16, f10 * f16, f13 * f16);
+        int n0 = block.getRenderBrightness(blockAccess, i, j, k);
+        int n1 = block.getRenderBrightness(blockAccess, i, j + 1, k);
+        tessellator.setBrightness(n0);
+        tessellator.setColorOpaque_F(f7, f10, f13);
         int j1 = block.getBlockTexture(blockAccess, i, j, k, 0);
         int k1 = (j1 & 0xf) << 4;
         int l1 = j1 & 0xf0;
@@ -262,8 +264,8 @@ public class RenderBlocks
         tessellator.addVertexWithUV(d4, d6, d7, d, d2);
         tessellator.addVertexWithUV(d5, d6, d7, d1, d2);
         tessellator.addVertexWithUV(d5, d6, d8, d1, d3);
-        float f17 = block.getBlockBrightness(blockAccess, i, j + 1, k);
-        tessellator.setColorOpaque_F(f4 * f17, f5 * f17, f6 * f17);
+        tessellator.setBrightness(n1);
+        tessellator.setColorOpaque_F(f4, f5, f6);
         k1 = block.getBlockTexture(blockAccess, i, j, k, 1);
         l1 = (k1 & 0xf) << 4;
         d = k1 & 0xf0;
@@ -313,7 +315,7 @@ public class RenderBlocks
         tessellator.addVertexWithUV(d22, d23, d24, d13, d15);
         tessellator.addVertexWithUV(d21, d23, d24, d14, d16);
         tessellator.addVertexWithUV(d21, d23, d25, d18, d20);
-        f17 = ModelBed.field_22280_a[i1];
+        float f17 = ModelBed.field_22280_a[i1];
         if(flag)
         {
             f17 = ModelBed.field_22280_a[ModelBed.field_22279_b[i1]];
@@ -335,45 +337,29 @@ public class RenderBlocks
         }
         if(f17 != 2.0F && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2)))
         {
-            float f18 = block.getBlockBrightness(blockAccess, i, j, k - 1);
-            if(block.minZ > 0.0D)
-            {
-                f18 = f16;
-            }
-            tessellator.setColorOpaque_F(f8 * f18, f11 * f18, f14 * f18);
+            tessellator.setBrightness(block.minZ <= 0.0D ? block.getRenderBrightness(blockAccess, i, j, k - 1) : n0);
+            tessellator.setColorOpaque_F(f8, f11, f14);
             flipTexture = k1 == 2;
             renderEastFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 2));
         }
         if(f17 != 3F && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3)))
         {
-            float f19 = block.getBlockBrightness(blockAccess, i, j, k + 1);
-            if(block.maxZ < 1.0D)
-            {
-                f19 = f16;
-            }
-            tessellator.setColorOpaque_F(f8 * f19, f11 * f19, f14 * f19);
+            tessellator.setBrightness(block.maxZ >= 1.0D ? block.getRenderBrightness(blockAccess, i, j, k + 1) : n0);
+            tessellator.setColorOpaque_F(f8, f11, f14);
             flipTexture = k1 == 3;
             renderWestFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 3));
         }
         if(f17 != 4F && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4)))
         {
-            float f20 = block.getBlockBrightness(blockAccess, i - 1, j, k);
-            if(block.minX > 0.0D)
-            {
-                f20 = f16;
-            }
-            tessellator.setColorOpaque_F(f9 * f20, f12 * f20, f15 * f20);
+            tessellator.setBrightness(block.minZ <= 0.0D ? block.getRenderBrightness(blockAccess, i - 1, j, k) : n0);
+            tessellator.setColorOpaque_F(f9, f12, f15);
             flipTexture = k1 == 4;
             renderNorthFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 4));
         }
         if(f17 != 5F && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5)))
         {
-            float f21 = block.getBlockBrightness(blockAccess, i + 1, j, k);
-            if(block.maxX < 1.0D)
-            {
-                f21 = f16;
-            }
-            tessellator.setColorOpaque_F(f9 * f21, f12 * f21, f15 * f21);
+            tessellator.setBrightness(block.maxZ >= 1.0D ? block.getRenderBrightness(blockAccess, i + 1, j, k) : n0);
+            tessellator.setColorOpaque_F(f9, f12, f15);
             flipTexture = k1 == 5;
             renderSouthFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 5));
         }
@@ -385,12 +371,8 @@ public class RenderBlocks
     {
         int l = blockAccess.getBlockMetadata(i, j, k);
         Tessellator tessellator = Tessellator.instance;
-        float f = block.getBlockBrightness(blockAccess, i, j, k);
-        if(Block.lightValue[block.blockID] > 0)
-        {
-            f = 1.0F;
-        }
-        tessellator.setColorOpaque_F(f, f, f);
+        tessellator.setBrightness(Block.lightValue[block.blockID] == 0 ? block.getRenderBrightness(blockAccess, i, j, k) : (15 << 20 | 15 << 4));
+        tessellator.setColorOpaque_F(1, 1, 1);
         double d = 0.40000000596046448D;
         double d1 = 0.5D - d;
         double d2 = 0.20000000298023224D;
@@ -423,6 +405,7 @@ public class RenderBlocks
         int j1 = (l & 0xc) >> 2;
         renderStandardBlock(block, i, j, k);
         Tessellator tessellator = Tessellator.instance;
+        tessellator.setBrightness((15 << 20 | 15 << 4));
         float f = block.getBlockBrightness(blockAccess, i, j, k);
         if(Block.lightValue[block.blockID] > 0)
         {
@@ -662,7 +645,7 @@ public class RenderBlocks
     	}
     }
 
-    public void func_31076_a(double d, double d1, double d2, double d3, double d4, double d5, float f, double d6)
+    public void func_31076_a(double d, double d1, double d2, double d3, double d4, double d5, float f, double d6, int i1)
     {
         int i = 108;
         if(overrideBlockTexture >= 0)
@@ -676,6 +659,7 @@ public class RenderBlocks
         double d8 = (float)(k + 0) / 256F;
         double d9 = (((double)j + d6)) / 256D;
         double d10 = ((double)((float)k + 4F)) / 256D;
+        tessellator.setBrightness(i1);
         tessellator.setColorOpaque_F(f, f, f);
         tessellator.addVertexWithUV(d, d3, d4, d9, d8);
         tessellator.addVertexWithUV(d, d2, d4, d7, d8);
@@ -683,7 +667,7 @@ public class RenderBlocks
         tessellator.addVertexWithUV(d1, d3, d5, d9, d10);
     }
 
-    public void func_31081_b(double d, double d1, double d2, double d3, double d4, double d5, float f, double d6)
+    public void func_31081_b(double d, double d1, double d2, double d3, double d4, double d5, float f, double d6, int i1)
     {
         int i = 108;
         if(overrideBlockTexture >= 0)
@@ -697,6 +681,7 @@ public class RenderBlocks
         double d8 = (float)(k + 0) / 256F;
         double d9 = (((double)j + d6) - 0.01D) / 256D;
         double d10 = ((double)((float)k + 4F) - 0.01D) / 256D;
+        tessellator.setBrightness(i1);
         tessellator.setColorOpaque_F(f, f, f);
         tessellator.addVertexWithUV(d, d2, d5, d9, d8);
         tessellator.addVertexWithUV(d, d2, d4, d7, d8);
@@ -704,7 +689,7 @@ public class RenderBlocks
         tessellator.addVertexWithUV(d1, d3, d5, d9, d10);
     }
 
-    public void func_31077_c(double d, double d1, double d2, double d3, double d4, double d5, float f, double d6)
+    public void func_31077_c(double d, double d1, double d2, double d3, double d4, double d5, float f, double d6, int i1)
     {
         int i = 108;
         if(overrideBlockTexture >= 0)
@@ -718,6 +703,7 @@ public class RenderBlocks
         double d8 = (float)(k + 0) / 256F;
         double d9 = (((double)j + d6) - 0.01D) / 256D;
         double d10 = ((double)((float)k + 4F) - 0.01D) / 256D;
+        tessellator.setBrightness(i1);
         tessellator.setColorOpaque_F(f, f, f);
         tessellator.addVertexWithUV(d1, d2, d4, d9, d8);
         tessellator.addVertexWithUV(d, d2, d4, d7, d8);
@@ -737,7 +723,7 @@ public class RenderBlocks
         Tessellator tessellator = Tessellator.instance;
         int l = blockAccess.getBlockMetadata(i, j, k);
         int i1 = BlockPistonExtension.func_31050_c(l);
-        float f = block.getBlockBrightness(blockAccess, i, j, k);
+        int n0 = block.getRenderBrightness(blockAccess, i, j, k);
         float f1 = flag ? 1.0F : 0.5F;
         double d = flag ? 16D : 8D;
         switch(i1)
@@ -752,32 +738,32 @@ public class RenderBlocks
             if(launcher)
             {
             	overrideBlockTexture = BEBlocks.launcherExtension.blockIndexInTexture + 1;
-            	func_31076_a((float)i + 0.5625F, (float)i + 0.8125F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.8125F, (float)k + 0.8125F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.8125F, (float)i + 0.5625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.5625F, (float)k + 0.5625F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.5625F, (float)i + 0.5625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.5625F, (float)k + 0.8125F, f * 0.6F, d);
-            	func_31076_a((float)i + 0.8125F, (float)i + 0.8125F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.8125F, (float)k + 0.5625F, f * 0.6F, d);
+            	func_31076_a((float)i + 0.5625F, (float)i + 0.8125F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.8125F, (float)k + 0.8125F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.8125F, (float)i + 0.5625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.5625F, (float)k + 0.5625F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.5625F, (float)i + 0.5625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.5625F, (float)k + 0.8125F, 0.6F, d, n0);
+            	func_31076_a((float)i + 0.8125F, (float)i + 0.8125F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.8125F, (float)k + 0.5625F, 0.6F, d, n0);
 
-            	func_31076_a((float)i + 0.1875F, (float)i + 0.4375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.8125F, (float)k + 0.8125F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.4375F, (float)i + 0.1875F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.5625F, (float)k + 0.5625F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.1875F, (float)i + 0.1875F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.5625F, (float)k + 0.8125F, f * 0.6F, d);
-            	func_31076_a((float)i + 0.4375F, (float)i + 0.4375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.8125F, (float)k + 0.5625F, f * 0.6F, d);
+            	func_31076_a((float)i + 0.1875F, (float)i + 0.4375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.8125F, (float)k + 0.8125F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.4375F, (float)i + 0.1875F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.5625F, (float)k + 0.5625F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.1875F, (float)i + 0.1875F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.5625F, (float)k + 0.8125F, 0.6F, d, n0);
+            	func_31076_a((float)i + 0.4375F, (float)i + 0.4375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.8125F, (float)k + 0.5625F, 0.6F, d, n0);
 
-            	func_31076_a((float)i + 0.1875F, (float)i + 0.4375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.4375F, (float)k + 0.4375F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.4375F, (float)i + 0.1875F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.1875F, (float)k + 0.1875F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.1875F, (float)i + 0.1875F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.1875F, (float)k + 0.4375F, f * 0.6F, d);
-            	func_31076_a((float)i + 0.4375F, (float)i + 0.4375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.4375F, (float)k + 0.1875F, f * 0.6F, d);
+            	func_31076_a((float)i + 0.1875F, (float)i + 0.4375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.4375F, (float)k + 0.4375F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.4375F, (float)i + 0.1875F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.1875F, (float)k + 0.1875F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.1875F, (float)i + 0.1875F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.1875F, (float)k + 0.4375F, 0.6F, d, n0);
+            	func_31076_a((float)i + 0.4375F, (float)i + 0.4375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.4375F, (float)k + 0.1875F, 0.6F, d, n0);
 
-            	func_31076_a((float)i + 0.5625F, (float)i + 0.8125F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.4375F, (float)k + 0.4375F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.8125F, (float)i + 0.5625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.1875F, (float)k + 0.1875F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.5625F, (float)i + 0.5625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.1875F, (float)k + 0.4375F, f * 0.6F, d);
-            	func_31076_a((float)i + 0.8125F, (float)i + 0.8125F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.4375F, (float)k + 0.1875F, f * 0.6F, d);
+            	func_31076_a((float)i + 0.5625F, (float)i + 0.8125F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.4375F, (float)k + 0.4375F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.8125F, (float)i + 0.5625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.1875F, (float)k + 0.1875F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.5625F, (float)i + 0.5625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.1875F, (float)k + 0.4375F, 0.6F, d, n0);
+            	func_31076_a((float)i + 0.8125F, (float)i + 0.8125F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.4375F, (float)k + 0.1875F, 0.6F, d, n0);
             	overrideBlockTexture = -1;
             }else
             {
-                func_31076_a((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.625F, (float)k + 0.625F, f * 0.8F, d);
-                func_31076_a((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.375F, (float)k + 0.375F, f * 0.8F, d);
-                func_31076_a((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.375F, (float)k + 0.625F, f * 0.6F, d);
-                func_31076_a((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.625F, (float)k + 0.375F, f * 0.6F, d);
+                func_31076_a((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.625F, (float)k + 0.625F, 0.8F, d, n0);
+                func_31076_a((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.375F, (float)k + 0.375F, 0.8F, d, n0);
+                func_31076_a((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.375F, (float)k + 0.625F, 0.6F, d, n0);
+                func_31076_a((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.25F, (float)j + 0.25F + f1, (float)k + 0.625F, (float)k + 0.375F, 0.6F, d, n0);
             }
             break;
 
@@ -787,32 +773,32 @@ public class RenderBlocks
             if(launcher)
             {
             	overrideBlockTexture = BEBlocks.launcherExtension.blockIndexInTexture + 1;
-            	func_31076_a((float)i + 0.5625F, (float)i + 0.8125F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.8125F, (float)k + 0.8125F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.8125F, (float)i + 0.5625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.5625F, (float)k + 0.5625F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.5625F, (float)i + 0.5625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.5625F, (float)k + 0.8125F, f * 0.6F, d);
-            	func_31076_a((float)i + 0.8125F, (float)i + 0.8125F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.8125F, (float)k + 0.5625F, f * 0.6F, d);
+            	func_31076_a((float)i + 0.5625F, (float)i + 0.8125F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.8125F, (float)k + 0.8125F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.8125F, (float)i + 0.5625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.5625F, (float)k + 0.5625F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.5625F, (float)i + 0.5625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.5625F, (float)k + 0.8125F, 0.6F, d, n0);
+            	func_31076_a((float)i + 0.8125F, (float)i + 0.8125F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.8125F, (float)k + 0.5625F, 0.6F, d, n0);
 
-            	func_31076_a((float)i + 0.1875F, (float)i + 0.4375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.8125F, (float)k + 0.8125F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.4375F, (float)i + 0.1875F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.5625F, (float)k + 0.5625F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.1875F, (float)i + 0.1875F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.5625F, (float)k + 0.8125F, f * 0.6F, d);
-            	func_31076_a((float)i + 0.4375F, (float)i + 0.4375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.8125F, (float)k + 0.5625F, f * 0.6F, d);
+            	func_31076_a((float)i + 0.1875F, (float)i + 0.4375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.8125F, (float)k + 0.8125F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.4375F, (float)i + 0.1875F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.5625F, (float)k + 0.5625F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.1875F, (float)i + 0.1875F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.5625F, (float)k + 0.8125F, 0.6F, d, n0);
+            	func_31076_a((float)i + 0.4375F, (float)i + 0.4375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.8125F, (float)k + 0.5625F, 0.6F, d, n0);
 
-            	func_31076_a((float)i + 0.1875F, (float)i + 0.4375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.4375F, (float)k + 0.4375F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.4375F, (float)i + 0.1875F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.1875F, (float)k + 0.1875F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.1875F, (float)i + 0.1875F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.1875F, (float)k + 0.4375F, f * 0.6F, d);
-            	func_31076_a((float)i + 0.4375F, (float)i + 0.4375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.4375F, (float)k + 0.1875F, f * 0.6F, d);
+            	func_31076_a((float)i + 0.1875F, (float)i + 0.4375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.4375F, (float)k + 0.4375F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.4375F, (float)i + 0.1875F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.1875F, (float)k + 0.1875F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.1875F, (float)i + 0.1875F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.1875F, (float)k + 0.4375F, 0.6F, d, n0);
+            	func_31076_a((float)i + 0.4375F, (float)i + 0.4375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.4375F, (float)k + 0.1875F, 0.6F, d, n0);
 
-            	func_31076_a((float)i + 0.5625F, (float)i + 0.8125F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.4375F, (float)k + 0.4375F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.8125F, (float)i + 0.5625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.1875F, (float)k + 0.1875F, f * 0.8F, d);
-            	func_31076_a((float)i + 0.5625F, (float)i + 0.5625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.1875F, (float)k + 0.4375F, f * 0.6F, d);
-            	func_31076_a((float)i + 0.8125F, (float)i + 0.8125F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.4375F, (float)k + 0.1875F, f * 0.6F, d);
+            	func_31076_a((float)i + 0.5625F, (float)i + 0.8125F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.4375F, (float)k + 0.4375F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.8125F, (float)i + 0.5625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.1875F, (float)k + 0.1875F, 0.8F, d, n0);
+            	func_31076_a((float)i + 0.5625F, (float)i + 0.5625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.1875F, (float)k + 0.4375F, 0.6F, d, n0);
+            	func_31076_a((float)i + 0.8125F, (float)i + 0.8125F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.4375F, (float)k + 0.1875F, 0.6F, d, n0);
             	overrideBlockTexture = -1;
             }else
             {
-                func_31076_a((float)i + 0.375F, (float)i + 0.625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.625F, (float)k + 0.625F, f * 0.8F, d);
-                func_31076_a((float)i + 0.625F, (float)i + 0.375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.375F, (float)k + 0.375F, f * 0.8F, d);
-                func_31076_a((float)i + 0.375F, (float)i + 0.375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.375F, (float)k + 0.625F, f * 0.6F, d);
-                func_31076_a((float)i + 0.625F, (float)i + 0.625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.625F, (float)k + 0.375F, f * 0.6F, d);
+                func_31076_a((float)i + 0.375F, (float)i + 0.625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.625F, (float)k + 0.625F, 0.8F, d, n0);
+                func_31076_a((float)i + 0.625F, (float)i + 0.375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.375F, (float)k + 0.375F, 0.8F, d, n0);
+                func_31076_a((float)i + 0.375F, (float)i + 0.375F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.375F, (float)k + 0.625F, 0.6F, d, n0);
+                func_31076_a((float)i + 0.625F, (float)i + 0.625F, (((float)j - 0.25F) + 1.0F) - f1, ((float)j - 0.25F) + 1.0F, (float)k + 0.625F, (float)k + 0.375F, 0.6F, d, n0);
             }
             break;
 
@@ -825,36 +811,36 @@ public class RenderBlocks
             {
             	overrideBlockTexture = BEBlocks.launcherExtension.blockIndexInTexture + 1;
             	tessellator.setTranslationF(0.1875f, 0.1875f, 0f);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.5F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f, d);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.5F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 1.0F, d, n0);
             	tessellator.setTranslationF(-0.1875f, -0.1875f, 0f);
             	tessellator.setTranslationF(0.1875f, -0.1875f, 0f);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.5F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f, d);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.5F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 1.0F, d, n0);
             	tessellator.setTranslationF(-0.1875f, 0.1875f, 0f);
             	tessellator.setTranslationF(-0.1875f, 0.1875f, 0f);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.5F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f, d);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.5F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 1.0F, d, n0);
             	tessellator.setTranslationF(0.1875f, -0.1875f, 0f);
             	tessellator.setTranslationF(-0.1875f, -0.1875f, 0f);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.5F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f, d);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.5F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 1.0F, d, n0);
             	tessellator.setTranslationF(0.1875f, 0.1875f, 0f);
             	overrideBlockTexture = -1;
             }else
             {
-            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.6F, d);
-            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, f * 0.5F, d);
-            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, f, d);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.6F, d, n0);
+            	func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.25F, (float)k + 0.25F + f1, 0.5F, d, n0);
+            	func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.25F, (float)k + 0.25F + f1, 1.0F, d, n0);
             }
             break;
 
@@ -869,36 +855,36 @@ public class RenderBlocks
             {
             	overrideBlockTexture = BEBlocks.launcherExtension.blockIndexInTexture + 1;
             	tessellator.setTranslationF(0.1875f, 0.1875f, 0f);
-                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.5F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f, d);
+                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.5F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 1.0F, d, n0);
             	tessellator.setTranslationF(-0.1875f, -0.1875f, 0f);
             	tessellator.setTranslationF(0.1875f, -0.1875f, 0f);
-                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.5F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f, d);
+                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.5F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 1.0F, d, n0);
             	tessellator.setTranslationF(-0.1875f, 0.1875f, 0f);
             	tessellator.setTranslationF(-0.1875f, 0.1875f, 0f);
-                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.5F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f, d);
+                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.5F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 1.0F, d, n0);
             	tessellator.setTranslationF(0.1875f, -0.1875f, 0f);
             	tessellator.setTranslationF(-0.1875f, -0.1875f, 0f);
-                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.5F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f, d);
+                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.5F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 1.0F, d, n0);
             	tessellator.setTranslationF(0.1875f, 0.1875f, 0f);
             	overrideBlockTexture = -1;
             }else
             {
-                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.6F, d);
-                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f * 0.5F, d);
-                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, f, d);
+                func_31081_b((float)i + 0.375F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.6F, d, n0);
+                func_31081_b((float)i + 0.375F, (float)i + 0.625F, (float)j + 0.375F, (float)j + 0.375F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 0.5F, d, n0);
+                func_31081_b((float)i + 0.625F, (float)i + 0.375F, (float)j + 0.625F, (float)j + 0.625F, (((float)k - 0.25F) + 1.0F) - f1, ((float)k - 0.25F) + 1.0F, 1.0F, d, n0);
             }
             break;
 
@@ -913,36 +899,36 @@ public class RenderBlocks
             {
             	overrideBlockTexture = BEBlocks.launcherExtension.blockIndexInTexture + 1;
             	tessellator.setTranslationF(0f, 0.1875f, 0.1875f);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             	tessellator.setTranslationF(0f, -0.1875f, -0.1875f);
             	tessellator.setTranslationF(0f, 0.1875f, -0.1875f);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             	tessellator.setTranslationF(0f, -0.1875f, 0.1875f);
             	tessellator.setTranslationF(0f, -0.1875f, 0.1875f);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             	tessellator.setTranslationF(0f, 0.1875f, -0.1875f);
             	tessellator.setTranslationF(0f, -0.1875f, -0.1875f);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             	tessellator.setTranslationF(0f, 0.1875f, 0.1875f);
             	overrideBlockTexture = -1;
             }else
             {
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((float)i + 0.25F, (float)i + 0.25F + f1, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             }
             break;
 
@@ -957,36 +943,36 @@ public class RenderBlocks
             {
             	overrideBlockTexture = BEBlocks.launcherExtension.blockIndexInTexture + 1;
             	tessellator.setTranslationF(0f, 0.1875f, 0.1875f);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             	tessellator.setTranslationF(0f, -0.1875f, -0.1875f);
             	tessellator.setTranslationF(0f, 0.1875f, -0.1875f);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             	tessellator.setTranslationF(0f, -0.1875f, 0.1875f);
             	tessellator.setTranslationF(0f, -0.1875f, 0.1875f);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             	tessellator.setTranslationF(0f, 0.1875f, -0.1875f);
             	tessellator.setTranslationF(0f, -0.1875f, -0.1875f);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             	tessellator.setTranslationF(0f, 0.1875f, 0.1875f);
             	overrideBlockTexture = -1;
             }else
             {
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, f * 0.5F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, f, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, f * 0.6F, d);
-                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, f * 0.6F, d);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.375F, 0.5F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.625F, 1.0F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.375F, (float)j + 0.625F, (float)k + 0.375F, (float)k + 0.375F, 0.6F, d, n0);
+                func_31077_c((((float)i - 0.25F) + 1.0F) - f1, ((float)i - 0.25F) + 1.0F, (float)j + 0.625F, (float)j + 0.375F, (float)k + 0.625F, (float)k + 0.625F, 0.6F, d, n0);
             }
             break;
         }
@@ -1043,7 +1029,8 @@ public class RenderBlocks
         {
             overrideBlockTexture = -1;
         }
-        float f3 = block.getBlockBrightness(blockAccess, i, j, k);
+        tessellator.setBrightness(block.getRenderBrightness(blockAccess, i, j, k));
+        float f3 = 1.0F;
         if(Block.lightValue[block.blockID] > 0)
         {
             f3 = 1.0F;
@@ -1197,7 +1184,8 @@ public class RenderBlocks
         {
             l = overrideBlockTexture;
         }
-        float f = block.getBlockBrightness(blockAccess, i, j, k);
+        float f = 1.0F;
+        tessellator.setBrightness(block.getRenderBrightness(blockAccess, i, j, k));
         tessellator.setColorOpaque_F(f, f, f);
         int i1 = (l & 0xf) << 4;
         int j1 = l & 0xf0;
@@ -1421,7 +1409,8 @@ public class RenderBlocks
         {
             i1 = overrideBlockTexture;
         }
-        float f = block.getBlockBrightness(blockAccess, i, j, k);
+        float f = 1.0F;
+        tessellator.setBrightness(block.getRenderBrightness(blockAccess, i, j, k));
         float af[] = redstoneColors[l];
         float f1 = af[0];
         float f2 = af[1];
@@ -1622,7 +1611,8 @@ public class RenderBlocks
         {
             l &= 7;
         }
-        float f = blockrail.getBlockBrightness(blockAccess, i, j, k);
+        float f = 1.0F;
+        tessellator.setBrightness(blockrail.getRenderBrightness(blockAccess, i, j, k));
         tessellator.setColorOpaque_F(f, f, f);
         int j1 = (i1 & 0xf) << 4;
         int k1 = i1 & 0xf0;
@@ -1694,7 +1684,8 @@ public class RenderBlocks
         {
             l = overrideBlockTexture;
         }
-        float f = block.getBlockBrightness(blockAccess, i, j, k);
+        float f = 1.0F;
+        tessellator.setBrightness(block.getRenderBrightness(blockAccess, i, j, k));
         tessellator.setColorOpaque_F(f, f, f);
         int i1 = (l & 0xf) << 4;
         int j1 = l & 0xf0;
@@ -1770,7 +1761,7 @@ public class RenderBlocks
     public boolean renderBlockReed(Block block, int i, int j, int k)
     {
         Tessellator tessellator = Tessellator.instance;
-        float f = block.getBlockBrightness(blockAccess, i, j, k);
+        int i1 = block.getRenderBrightness(blockAccess, i, j, k);
         int l = block.colorMultiplier(blockAccess, i, j, k);
         float f1 = (float)(l >> 16 & 0xff) / 255F;
         float f2 = (float)(l >> 8 & 0xff) / 255F;
@@ -1784,7 +1775,8 @@ public class RenderBlocks
             f2 = f5;
             f3 = f6;
         }
-        tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
+        tessellator.setBrightness(i1);
+        tessellator.setColorOpaque_F(f1, f2, f3);
         double d = i;
         double d1 = j;
         double d2 = k;
@@ -1803,8 +1795,8 @@ public class RenderBlocks
     public boolean renderBlockCrops(Block block, int i, int j, int k)
     {
         Tessellator tessellator = Tessellator.instance;
-        float f = block.getBlockBrightness(blockAccess, i, j, k);
-        tessellator.setColorOpaque_F(f, f, f);
+        int i1 = block.getRenderBrightness(blockAccess, i, j, k);
+        tessellator.setBrightness(i1);
         renderBlockCrops_do(block, blockAccess.getBlockMetadata(i, j, k), i, (double)j - 0.0625D, k, false);
         return true;
     }
@@ -2038,8 +2030,9 @@ public class RenderBlocks
             }
             float f14 = (MathHelper.sin(f12) * (8F/x)) / 256F;
             float f16 = (MathHelper.cos(f12) * (8F/x)) / 256F;
-            float f18 = block.getBlockBrightness(blockAccess, i, j, k);
-            tessellator.setColorOpaque_F(f4 * f18 * f, f4 * f18 * f1, f4 * f18 * f2);
+            int n0 = block.getRenderBrightness(blockAccess, i, j + 1, k);
+            tessellator.setBrightness(n0);
+            tessellator.setColorOpaque_F(f4 * f, f4 * f1, f4 * f2);
             tessellator.addVertexWithUV(i + 0, (float)j + f7, k + 0, d2 - (double)f16 - (double)f14, (d3 - (double)f16) + (double)f14);
             tessellator.addVertexWithUV(i + 0, (float)j + f8, k + 1, (d2 - (double)f16) + (double)f14, d3 + (double)f16 + (double)f14);
             tessellator.addVertexWithUV(i + 1, (float)j + f9, k + 1, d2 + (double)f16 + (double)f14, (d3 + (double)f16) - (double)f14);
@@ -2047,8 +2040,9 @@ public class RenderBlocks
         }
         if(renderAllFaces || flag1)
         {
-            float f11 = block.getBlockBrightness(blockAccess, i, j - 1, k);
-            tessellator.setColorOpaque_F(f3 * f11, f3 * f11, f3 * f11);
+            int n0 = block.getRenderBrightness(blockAccess, i, j - 1, k);
+            tessellator.setBrightness(n0);
+            tessellator.setColorOpaque_F(f3, f3, f3);
             renderBottomFace(block, i, j, k, block.getBlockTextureFromSide(0));
             flag2 = true;
         }
@@ -2125,7 +2119,8 @@ public class RenderBlocks
                 double d6 = ((float)(k3) +(1.0F - f13) * (16F/x)) / 256F;
                 double d7 = ((float)(k3) +(1.0F - f15) * (16F/x)) / 256F;
                 double d8 = (double)(k3 + (16F/x)) / 256D;
-                float f22 = block.getBlockBrightness(blockAccess, l1, j2, l2);
+                tessellator.setBrightness(block.getRenderBrightness(blockAccess, l1, j2, l2));
+                float f22 = 1.0F;
                 if(k1 < 2)
                 {
                     f22 *= f5;
@@ -2189,48 +2184,16 @@ public class RenderBlocks
         float f3 = 0.6F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        float f4 = block.getBlockBrightness(world, i, j, k);
-        float f5 = block.getBlockBrightness(world, i, j - 1, k);
-        if(f5 < f4)
-        {
-            f5 = f4;
-        }
-        tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
+        tessellator.setBrightness(block.getRenderBrightness(world, i, j, k));
+        tessellator.setColorOpaque_F(f, f, f);
         renderBottomFace(block, -0.5D, -0.5D, -0.5D, block.getBlockTextureFromSide(0));
-        f5 = block.getBlockBrightness(world, i, j + 1, k);
-        if(f5 < f4)
-        {
-            f5 = f4;
-        }
-        tessellator.setColorOpaque_F(f1 * f5, f1 * f5, f1 * f5);
+        tessellator.setColorOpaque_F(f1, f1, f1);
         renderTopFace(block, -0.5D, -0.5D, -0.5D, block.getBlockTextureFromSide(1));
-        f5 = block.getBlockBrightness(world, i, j, k - 1);
-        if(f5 < f4)
-        {
-            f5 = f4;
-        }
-        tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
+        tessellator.setColorOpaque_F(f2, f2, f2);
         renderEastFace(block, -0.5D, -0.5D, -0.5D, block.getBlockTextureFromSide(2));
-        f5 = block.getBlockBrightness(world, i, j, k + 1);
-        if(f5 < f4)
-        {
-            f5 = f4;
-        }
-        tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
         renderWestFace(block, -0.5D, -0.5D, -0.5D, block.getBlockTextureFromSide(3));
-        f5 = block.getBlockBrightness(world, i - 1, j, k);
-        if(f5 < f4)
-        {
-            f5 = f4;
-        }
-        tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
+        tessellator.setColorOpaque_F(f3, f3, f3);
         renderNorthFace(block, -0.5D, -0.5D, -0.5D, block.getBlockTextureFromSide(4));
-        f5 = block.getBlockBrightness(world, i + 1, j, k);
-        if(f5 < f4)
-        {
-            f5 = f4;
-        }
-        tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
         renderSouthFace(block, -0.5D, -0.5D, -0.5D, block.getBlockTextureFromSide(5));
         tessellator.draw();
     }
@@ -2262,7 +2225,7 @@ public class RenderBlocks
             return renderStandardBlockWithColorMultiplier(block, i, j, k, f, f1, f2);
         }
     }
-
+    
     public boolean renderStandardBlockWithAmbientOcclusion(Block block, int i, int j, int k, float f, float f1, float f2)
     {
         enableAO = true;
@@ -2273,12 +2236,18 @@ public class RenderBlocks
         boolean flag4 = true;
         boolean flag5 = true;
         boolean flag6 = true;
-        aoLightValueXNeg = block.getBlockBrightness(blockAccess, i - 1, j, k);
-        aoLightValueYNeg = block.getBlockBrightness(blockAccess, i, j - 1, k);
-        aoLightValueZNeg = block.getBlockBrightness(blockAccess, i, j, k - 1);
-        aoLightValueXPos = block.getBlockBrightness(blockAccess, i + 1, j, k);
-        aoLightValueYPos = block.getBlockBrightness(blockAccess, i, j + 1, k);
-        aoLightValueZPos = block.getBlockBrightness(blockAccess, i, j, k + 1);
+        aoLightValueXNeg = block.getAOBrightness(blockAccess, i - 1, j, k);
+        aoLightValueYNeg = block.getAOBrightness(blockAccess, i, j - 1, k);
+        aoLightValueZNeg = block.getAOBrightness(blockAccess, i, j, k - 1);
+        aoLightValueXPos = block.getAOBrightness(blockAccess, i + 1, j, k);
+        aoLightValueYPos = block.getAOBrightness(blockAccess, i, j + 1, k);
+        aoLightValueZPos = block.getAOBrightness(blockAccess, i, j, k + 1);
+        int n0 = block.getRenderBrightness(blockAccess, i - 1, j, k);
+        int n1 = block.getRenderBrightness(blockAccess, i, j - 1, k);
+        int n2 = block.getRenderBrightness(blockAccess, i, j, k - 1);
+        int n3 = block.getRenderBrightness(blockAccess, i + 1, j, k);
+        int n4 = block.getRenderBrightness(blockAccess, i, j + 1, k);
+        int n5 = block.getRenderBrightness(blockAccess, i, j, k + 1);
         field_22338_U = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j + 1, k)];
         field_22359_ac = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j - 1, k)];
         field_22334_Y = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j, k + 1)];
@@ -2308,43 +2277,59 @@ public class RenderBlocks
             if(field_22352_G > 0)
             {
                 j--;
-                field_22376_n = block.getBlockBrightness(blockAccess, i - 1, j, k);
-                field_22374_p = block.getBlockBrightness(blockAccess, i, j, k - 1);
-                field_22373_q = block.getBlockBrightness(blockAccess, i, j, k + 1);
-                field_22371_s = block.getBlockBrightness(blockAccess, i + 1, j, k);
+                field_22376_n = block.getAOBrightness(blockAccess, i - 1, j, k);
+                field_22374_p = block.getAOBrightness(blockAccess, i, j, k - 1);
+                field_22373_q = block.getAOBrightness(blockAccess, i, j, k + 1);
+                field_22371_s = block.getAOBrightness(blockAccess, i + 1, j, k);
+                field_35935_Q = block.getRenderBrightness(blockAccess, i - 1, j, k);
+                field_35937_S = block.getRenderBrightness(blockAccess, i, j, k - 1);
+                field_35932_T = block.getRenderBrightness(blockAccess, i, j, k + 1);
+                field_35934_V = block.getRenderBrightness(blockAccess, i + 1, j, k);
                 if(field_22361_ab || field_22357_ad)
                 {
-                    field_22377_m = block.getBlockBrightness(blockAccess, i - 1, j, k - 1);;
+                    field_22377_m = block.getAOBrightness(blockAccess, i - 1, j, k - 1);;
+                    field_35936_P = block.getRenderBrightness(blockAccess, i - 1, j, k - 1);
                 } else
                 {
                     field_22377_m = field_22376_n;
+                    field_35936_P = field_35935_Q;
                 }
                 if(field_22355_ae || field_22357_ad)
                 {
-                    field_22375_o = block.getBlockBrightness(blockAccess, i - 1, j, k + 1);;
+                    field_22375_o = block.getAOBrightness(blockAccess, i - 1, j, k + 1);;
+                    field_35938_R = block.getRenderBrightness(blockAccess, i - 1, j, k + 1);
                 } else
                 {
                     field_22375_o = field_22376_n;
+                    field_35938_R = field_35935_Q;
                 }
                 if(field_22361_ab || field_22359_ac)
                 {
-                    field_22372_r = block.getBlockBrightness(blockAccess, i + 1, j, k - 1);;
+                    field_22372_r = block.getAOBrightness(blockAccess, i + 1, j, k - 1);;
+                    field_35931_U = block.getRenderBrightness(blockAccess, i + 1, j, k - 1);
                 } else
                 {
                     field_22372_r = field_22371_s;
+                    field_35931_U = field_35934_V;
                 }
                 if(field_22355_ae || field_22359_ac)
                 {
-                    field_22370_t = block.getBlockBrightness(blockAccess, i + 1, j, k + 1);;
+                    field_22370_t = block.getAOBrightness(blockAccess, i + 1, j, k + 1);;
+                    field_35933_W = block.getRenderBrightness(blockAccess, i + 1, j, k + 1);
                 } else
                 {
                     field_22370_t = field_22371_s;
+                    field_35933_W = field_35934_V;
                 }
                 j++;
                 f7 = (field_22375_o + field_22376_n + field_22373_q + aoLightValueYNeg) / 4F;
                 f25 = (field_22373_q + aoLightValueYNeg + field_22370_t + field_22371_s) / 4F;
                 f19 = (aoLightValueYNeg + field_22374_p + field_22371_s + field_22372_r) / 4F;
                 f13 = (field_22376_n + field_22377_m + aoLightValueYNeg + field_22374_p) / 4F;
+                brightnessTopLeft = aoAverage(field_35938_R, field_35935_Q, field_35932_T, n1);
+                brightnessTopRight = aoAverage(field_35932_T, field_35933_W, field_35934_V, n1);
+                brightnessBottomRight = aoAverage(field_35937_S, field_35934_V, field_35931_U, n1);
+                brightnessBottomLeft = aoAverage(field_35935_Q, field_35936_P, field_35937_S, n1);
             } else
             {
                 f7 = f13 = f19 = f25 = aoLightValueYNeg;
@@ -2367,43 +2352,59 @@ public class RenderBlocks
             if(field_22352_G > 0)
             {
                 j++;
-                field_22368_v = block.getBlockBrightness(blockAccess, i - 1, j, k);;
-                field_22364_z = block.getBlockBrightness(blockAccess, i + 1, j, k);;
-                field_22366_x = block.getBlockBrightness(blockAccess, i, j, k - 1);;
-                field_22362_A = block.getBlockBrightness(blockAccess, i, j, k + 1);;
+                field_22368_v = block.getAOBrightness(blockAccess, i - 1, j, k);;
+                field_22364_z = block.getAOBrightness(blockAccess, i + 1, j, k);;
+                field_22366_x = block.getAOBrightness(blockAccess, i, j, k - 1);;
+                field_22362_A = block.getAOBrightness(blockAccess, i, j, k + 1);;
+                field_35939_Y = block.getRenderBrightness(blockAccess, i - 1, j, k);
+                field_35949_ac = block.getRenderBrightness(blockAccess, i + 1, j, k);
+                field_35951_aa = block.getRenderBrightness(blockAccess, i, j, k - 1);
+                field_35950_ad = block.getRenderBrightness(blockAccess, i, j, k + 1);
                 if(field_22339_T || field_22337_V)
                 {
-                    field_22369_u = block.getBlockBrightness(blockAccess, i - 1, j, k - 1);;
+                    field_22369_u = block.getAOBrightness(blockAccess, i - 1, j, k - 1);;
+                    field_35940_X = block.getRenderBrightness(blockAccess, i - 1, j, k - 1);
                 } else
                 {
                     field_22369_u = field_22368_v;
+                    field_35940_X = field_35939_Y;
                 }
                 if(field_22339_T || field_22338_U)
                 {
-                    field_22365_y = block.getBlockBrightness(blockAccess, i + 1, j, k - 1);;
+                    field_22365_y = block.getAOBrightness(blockAccess, i + 1, j, k - 1);;
+                    field_35952_ab = block.getRenderBrightness(blockAccess, i + 1, j, k - 1);
                 } else
                 {
                     field_22365_y = field_22364_z;
+                    field_35952_ab = field_35949_ac;
                 }
                 if(field_22336_W || field_22337_V)
                 {
-                    field_22367_w = block.getBlockBrightness(blockAccess, i - 1, j, k + 1);;
+                    field_22367_w = block.getAOBrightness(blockAccess, i - 1, j, k + 1);;
+                    field_35941_Z = block.getRenderBrightness(blockAccess, i - 1, j, k + 1);
                 } else
                 {
                     field_22367_w = field_22368_v;
+                    field_35941_Z = field_35939_Y;
                 }
                 if(field_22336_W || field_22338_U)
                 {
-                    field_22360_B = block.getBlockBrightness(blockAccess, i + 1, j, k + 1);;
+                    field_22360_B = block.getAOBrightness(blockAccess, i + 1, j, k + 1);;
+                    field_35955_ae = block.getRenderBrightness(blockAccess, i + 1, j, k + 1);
                 } else
                 {
                     field_22360_B = field_22364_z;
+                    field_35955_ae = field_35949_ac;
                 }
                 j--;
                 f26 = (field_22367_w + field_22368_v + field_22362_A + aoLightValueYPos) / 4F;
                 f8 = (field_22362_A + aoLightValueYPos + field_22360_B + field_22364_z) / 4F;
                 f14 = (aoLightValueYPos + field_22366_x + field_22364_z + field_22365_y) / 4F;
                 f20 = (field_22368_v + field_22369_u + aoLightValueYPos + field_22366_x) / 4F;
+                brightnessTopRight = aoAverage(field_35941_Z, field_35939_Y, field_35950_ad, n4);
+                brightnessTopLeft = aoAverage(field_35950_ad, field_35955_ae, field_35949_ac, n4);
+                brightnessBottomLeft = aoAverage(field_35951_aa, field_35949_ac, field_35952_ab, n4);
+                brightnessBottomRight = aoAverage(field_35939_Y, field_35940_X, field_35951_aa, n4);
             } else
             {
                 f8 = f14 = f20 = f26 = aoLightValueYPos;
@@ -2427,43 +2428,59 @@ public class RenderBlocks
             if(field_22352_G > 0)
             {
                 k--;
-                field_22358_C = block.getBlockBrightness(blockAccess, i - 1, j, k);
-                field_22374_p = block.getBlockBrightness(blockAccess, i, j - 1, k);
-                field_22366_x = block.getBlockBrightness(blockAccess, i, j + 1, k);
-                field_22356_D = block.getBlockBrightness(blockAccess, i + 1, j, k);
+                field_22358_C = block.getAOBrightness(blockAccess, i - 1, j, k);
+                field_22374_p = block.getAOBrightness(blockAccess, i, j - 1, k);
+                field_22366_x = block.getAOBrightness(blockAccess, i, j + 1, k);
+                field_22356_D = block.getAOBrightness(blockAccess, i + 1, j, k);
+                field_35956_af = block.getRenderBrightness(blockAccess, i - 1, j, k);
+                field_35937_S = block.getRenderBrightness(blockAccess, i, j - 1, k);
+                field_35951_aa = block.getRenderBrightness(blockAccess, i, j + 1, k);
+                field_35953_ag = block.getRenderBrightness(blockAccess, i + 1, j, k);
                 if(field_22335_X || field_22361_ab)
                 {
-                    field_22377_m = block.getBlockBrightness(blockAccess, i - 1, j - 1, k);
+                    field_22377_m = block.getAOBrightness(blockAccess, i - 1, j - 1, k);
+                    field_35936_P = block.getRenderBrightness(blockAccess, i - 1, j - 1, k);
                 } else
                 {
                     field_22377_m = field_22358_C;
+                    field_35936_P = field_35956_af;
                 }
                 if(field_22335_X || field_22339_T)
                 {
-                    field_22369_u = block.getBlockBrightness(blockAccess, i - 1, j + 1, k);
+                    field_22369_u = block.getAOBrightness(blockAccess, i - 1, j + 1, k);
+                    field_35940_X = block.getRenderBrightness(blockAccess, i - 1, j + 1, k);
                 } else
                 {
                     field_22369_u = field_22358_C;
+                    field_35940_X = field_35956_af;
                 }
                 if(field_22363_aa || field_22361_ab)
                 {
-                    field_22372_r = block.getBlockBrightness(blockAccess, i + 1, j - 1, k);
+                    field_22372_r = block.getAOBrightness(blockAccess, i + 1, j - 1, k);
+                    field_35931_U = block.getRenderBrightness(blockAccess, i + 1, j - 1, k);
                 } else
                 {
                     field_22372_r = field_22356_D;
+                    field_35931_U = field_35953_ag;
                 }
                 if(field_22363_aa || field_22339_T)
                 {
-                    field_22365_y = block.getBlockBrightness(blockAccess, i + 1, j + 1, k);
+                    field_22365_y = block.getAOBrightness(blockAccess, i + 1, j + 1, k);
+                    field_35952_ab = block.getRenderBrightness(blockAccess, i + 1, j + 1, k);
                 } else
                 {
                     field_22365_y = field_22356_D;
+                    field_35952_ab = field_35953_ag;
                 }
                 k++;
                 f9 = (field_22358_C + field_22369_u + aoLightValueZNeg + field_22366_x) / 4F;
                 f15 = (aoLightValueZNeg + field_22366_x + field_22356_D + field_22365_y) / 4F;
                 f21 = (field_22374_p + aoLightValueZNeg + field_22372_r + field_22356_D) / 4F;
                 f27 = (field_22377_m + field_22358_C + field_22374_p + aoLightValueZNeg) / 4F;
+                brightnessTopLeft = aoAverage(field_35956_af, field_35940_X, field_35951_aa, n2);
+                brightnessBottomLeft = aoAverage(field_35951_aa, field_35953_ag, field_35952_ab, n2);
+                brightnessBottomRight = aoAverage(field_35937_S, field_35931_U, field_35953_ag, n2);
+                brightnessTopRight = aoAverage(field_35936_P, field_35956_af, field_35937_S, n2);
             } else
             {
                 f9 = f15 = f21 = f27 = aoLightValueZNeg;
@@ -2516,43 +2533,59 @@ public class RenderBlocks
             if(field_22352_G > 0)
             {
                 k++;
-                field_22354_E = block.getBlockBrightness(blockAccess, i - 1, j, k);
-                field_22353_F = block.getBlockBrightness(blockAccess, i + 1, j, k);
-                field_22373_q = block.getBlockBrightness(blockAccess, i, j - 1, k);
-                field_22362_A = block.getBlockBrightness(blockAccess, i, j + 1, k);
+                field_22354_E = block.getAOBrightness(blockAccess, i - 1, j, k);
+                field_22353_F = block.getAOBrightness(blockAccess, i + 1, j, k);
+                field_22373_q = block.getAOBrightness(blockAccess, i, j - 1, k);
+                field_22362_A = block.getAOBrightness(blockAccess, i, j + 1, k);
+                field_35954_ah = block.getRenderBrightness(blockAccess, i - 1, j, k);
+                field_35945_ai = block.getRenderBrightness(blockAccess, i + 1, j, k);
+                field_35932_T = block.getRenderBrightness(blockAccess, i, j - 1, k);
+                field_35950_ad = block.getRenderBrightness(blockAccess, i, j + 1, k);
                 if(field_22333_Z || field_22355_ae)
                 {
-                    field_22375_o = block.getBlockBrightness(blockAccess, i - 1, j - 1, k);
+                    field_22375_o = block.getAOBrightness(blockAccess, i - 1, j - 1, k);
+                    field_35938_R = block.getRenderBrightness(blockAccess, i - 1, j - 1, k);
                 } else
                 {
                     field_22375_o = field_22354_E;
+                    field_35938_R = field_35954_ah;
                 }
                 if(field_22333_Z || field_22336_W)
                 {
-                    field_22367_w = block.getBlockBrightness(blockAccess, i - 1, j + 1, k);
+                    field_22367_w = block.getAOBrightness(blockAccess, i - 1, j + 1, k);
+                    field_35941_Z = block.getRenderBrightness(blockAccess, i - 1, j + 1, k);
                 } else
                 {
                     field_22367_w = field_22354_E;
+                    field_35941_Z = field_35954_ah;
                 }
                 if(field_22334_Y || field_22355_ae)
                 {
-                    field_22370_t = block.getBlockBrightness(blockAccess, i + 1, j - 1, k);
+                    field_22370_t = block.getAOBrightness(blockAccess, i + 1, j - 1, k);
+                    field_35933_W = block.getRenderBrightness(blockAccess, i + 1, j - 1, k);
                 } else
                 {
                     field_22370_t = field_22353_F;
+                    field_35933_W = field_35945_ai;
                 }
                 if(field_22334_Y || field_22336_W)
                 {
-                    field_22360_B = block.getBlockBrightness(blockAccess, i + 1, j + 1, k);
+                    field_22360_B = block.getAOBrightness(blockAccess, i + 1, j + 1, k);
+                    field_35955_ae = block.getRenderBrightness(blockAccess, i + 1, j + 1, k);
                 } else
                 {
                     field_22360_B = field_22353_F;
+                    field_35955_ae = field_35945_ai;
                 }
                 k--;
                 f10 = (field_22354_E + field_22367_w + aoLightValueZPos + field_22362_A) / 4F;
                 f28 = (aoLightValueZPos + field_22362_A + field_22353_F + field_22360_B) / 4F;
                 f22 = (field_22373_q + aoLightValueZPos + field_22370_t + field_22353_F) / 4F;
                 f16 = (field_22375_o + field_22354_E + field_22373_q + aoLightValueZPos) / 4F;
+                brightnessTopLeft = aoAverage(field_35954_ah, field_35941_Z, field_35950_ad, n5);
+                brightnessTopRight = aoAverage(field_35950_ad, field_35945_ai, field_35955_ae, n5);
+                brightnessBottomRight = aoAverage(field_35932_T, field_35933_W, field_35945_ai, n5);
+                brightnessBottomLeft = aoAverage(field_35938_R, field_35954_ah, field_35932_T, n5);
             } else
             {
                 f10 = f16 = f22 = f28 = aoLightValueZPos;
@@ -2605,43 +2638,59 @@ public class RenderBlocks
             if(field_22352_G > 0)
             {
                 i--;
-                field_22376_n = block.getBlockBrightness(blockAccess, i, j - 1, k);;
-                field_22358_C = block.getBlockBrightness(blockAccess, i, j, k - 1);;
-                field_22354_E = block.getBlockBrightness(blockAccess, i, j, k + 1);;
-                field_22368_v = block.getBlockBrightness(blockAccess, i, j + 1, k);;
+                field_22376_n = block.getAOBrightness(blockAccess, i, j - 1, k);;
+                field_22358_C = block.getAOBrightness(blockAccess, i, j, k - 1);;
+                field_22354_E = block.getAOBrightness(blockAccess, i, j, k + 1);;
+                field_22368_v = block.getAOBrightness(blockAccess, i, j + 1, k);;
+                field_35935_Q = block.getRenderBrightness(blockAccess, i, j - 1, k);
+                field_35956_af = block.getRenderBrightness(blockAccess, i, j, k - 1);
+                field_35954_ah = block.getRenderBrightness(blockAccess, i, j, k + 1);
+                field_35939_Y = block.getRenderBrightness(blockAccess, i, j + 1, k);
                 if(field_22335_X || field_22357_ad)
                 {
-                    field_22377_m = block.getBlockBrightness(blockAccess, i, j - 1, k - 1);;
+                    field_22377_m = block.getAOBrightness(blockAccess, i, j - 1, k - 1);;
+                    field_35936_P = block.getRenderBrightness(blockAccess, i, j - 1, k - 1);
                 } else
                 {
                     field_22377_m = field_22358_C;
+                    field_35936_P = field_35956_af;
                 }
                 if(field_22333_Z || field_22357_ad)
                 {
-                    field_22375_o = block.getBlockBrightness(blockAccess, i, j - 1, k + 1);;
+                    field_22375_o = block.getAOBrightness(blockAccess, i, j - 1, k + 1);;
+                    field_35938_R = block.getRenderBrightness(blockAccess, i, j - 1, k + 1);
                 } else
                 {
                     field_22375_o = field_22354_E;
+                    field_35938_R = field_35954_ah;
                 }
                 if(field_22335_X || field_22337_V)
                 {
-                    field_22369_u = block.getBlockBrightness(blockAccess, i, j + 1, k - 1);;
+                    field_22369_u = block.getAOBrightness(blockAccess, i, j + 1, k - 1);;
+                    field_35940_X = block.getRenderBrightness(blockAccess, i, j + 1, k - 1);
                 } else
                 {
                     field_22369_u = field_22358_C;
+                    field_35940_X = field_35956_af;
                 }
                 if(field_22333_Z || field_22337_V)
                 {
-                    field_22367_w = block.getBlockBrightness(blockAccess, i, j + 1, k + 1);;
+                    field_22367_w = block.getAOBrightness(blockAccess, i, j + 1, k + 1);;
+                    field_35941_Z = block.getRenderBrightness(blockAccess, i, j + 1, k + 1);
                 } else
                 {
                     field_22367_w = field_22354_E;
+                    field_35941_Z = field_35954_ah;
                 }
                 i++;
                 f29 = (field_22376_n + field_22375_o + aoLightValueXNeg + field_22354_E) / 4F;
                 f11 = (aoLightValueXNeg + field_22354_E + field_22368_v + field_22367_w) / 4F;
                 f17 = (field_22358_C + aoLightValueXNeg + field_22369_u + field_22368_v) / 4F;
                 f23 = (field_22377_m + field_22376_n + field_22358_C + aoLightValueXNeg) / 4F;
+                brightnessTopRight = aoAverage(field_35935_Q, field_35938_R, field_35954_ah, n0);
+                brightnessTopLeft = aoAverage(field_35954_ah, field_35939_Y, field_35941_Z, n0);
+                brightnessBottomLeft = aoAverage(field_35956_af, field_35940_X, field_35939_Y, n0);
+                brightnessBottomRight = aoAverage(field_35936_P, field_35935_Q, field_35956_af, n0);
             } else
             {
                 f11 = f17 = f23 = f29 = aoLightValueXNeg;
@@ -2695,43 +2744,59 @@ public class RenderBlocks
             if(field_22352_G > 0)
             {
                 i++;
-                field_22371_s = block.getBlockBrightness(blockAccess, i, j - 1, k);;
-                field_22356_D = block.getBlockBrightness(blockAccess, i, j, k - 1);;
-                field_22353_F = block.getBlockBrightness(blockAccess, i, j, k + 1);;
-                field_22364_z = block.getBlockBrightness(blockAccess, i, j + 1, k);;
+                field_22371_s = block.getAOBrightness(blockAccess, i, j - 1, k);;
+                field_22356_D = block.getAOBrightness(blockAccess, i, j, k - 1);;
+                field_22353_F = block.getAOBrightness(blockAccess, i, j, k + 1);;
+                field_22364_z = block.getAOBrightness(blockAccess, i, j + 1, k);;
+                field_35934_V = block.getRenderBrightness(blockAccess, i, j - 1, k);
+                field_35953_ag = block.getRenderBrightness(blockAccess, i, j, k - 1);
+                field_35945_ai = block.getRenderBrightness(blockAccess, i, j, k + 1);
+                field_35949_ac = block.getRenderBrightness(blockAccess, i, j + 1, k);
                 if(field_22359_ac || field_22363_aa)
                 {
-                    field_22372_r = block.getBlockBrightness(blockAccess, i, j - 1, k - 1);;
+                    field_22372_r = block.getAOBrightness(blockAccess, i, j - 1, k - 1);;
+                    field_35931_U = block.getRenderBrightness(blockAccess, i, j - 1, k - 1);
                 } else
                 {
                     field_22372_r = field_22356_D;
+                    field_35931_U = field_35953_ag;
                 }
                 if(field_22359_ac || field_22334_Y)
                 {
-                    field_22370_t = block.getBlockBrightness(blockAccess, i, j - 1, k + 1);;
+                    field_22370_t = block.getAOBrightness(blockAccess, i, j - 1, k + 1);;
+                    field_35933_W = block.getRenderBrightness(blockAccess, i, j - 1, k + 1);
                 } else
                 {
                     field_22370_t = field_22353_F;
+                    field_35933_W = field_35945_ai;
                 }
                 if(field_22338_U || field_22363_aa)
                 {
-                    field_22365_y = block.getBlockBrightness(blockAccess, i, j + 1, k - 1);;
+                    field_22365_y = block.getAOBrightness(blockAccess, i, j + 1, k - 1);;
+                    field_35952_ab = block.getRenderBrightness(blockAccess, i, j + 1, k - 1);
                 } else
                 {
                     field_22365_y = field_22356_D;
+                    field_35952_ab = field_35953_ag;
                 }
                 if(field_22338_U || field_22334_Y)
                 {
-                    field_22360_B = block.getBlockBrightness(blockAccess, i, j + 1, k + 1);;
+                    field_22360_B = block.getAOBrightness(blockAccess, i, j + 1, k + 1);;
+                    field_35955_ae = block.getRenderBrightness(blockAccess, i, j + 1, k + 1);
                 } else
                 {
                     field_22360_B = field_22353_F;
+                    field_35955_ae = field_35945_ai;
                 }
                 i--;
                 f12 = (field_22371_s + field_22370_t + aoLightValueXPos + field_22353_F) / 4F;
                 f30 = (aoLightValueXPos + field_22353_F + field_22364_z + field_22360_B) / 4F;
                 f24 = (field_22356_D + aoLightValueXPos + field_22365_y + field_22364_z) / 4F;
                 f18 = (field_22372_r + field_22371_s + field_22356_D + aoLightValueXPos) / 4F;
+                brightnessTopLeft = aoAverage(field_35934_V, field_35933_W, field_35945_ai, n3);
+                brightnessTopRight = aoAverage(field_35945_ai, field_35949_ac, field_35955_ae, n3);
+                brightnessBottomRight = aoAverage(field_35953_ag, field_35952_ab, field_35949_ac, n3);
+                brightnessBottomLeft = aoAverage(field_35931_U, field_35934_V, field_35953_ag, n3);
             } else
             {
                 f12 = f18 = f24 = f30 = aoLightValueXPos;
@@ -2783,6 +2848,23 @@ public class RenderBlocks
         return flag;
     }
 
+    private int aoAverage(int i, int j, int k, int l)
+    {
+        if(i == 0)
+        {
+            i = l;
+        }
+        if(j == 0)
+        {
+            j = l;
+        }
+        if(k == 0)
+        {
+            k = l;
+        }
+        return i + j + k + l >> 2 & 0xff00ff;
+    }
+    
     private void setAOValues(float f, float f1, float f2, float m, float m1, float m2, float m3)
     {
         colorRedTopLeft = colorRedBottomLeft = colorRedBottomRight = colorRedTopRight = f;
@@ -2857,55 +2939,50 @@ public class RenderBlocks
             f17 *= f2;
             f18 *= f2;
         }
-        float f19 = block.getBlockBrightness(blockAccess, i, j, k);
+        int n0 = block.getRenderBrightness(blockAccess, i, j, k);
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0))
         {
-            float f20 = block.getBlockBrightness(blockAccess, i, j - 1, k);
-            tessellator.setColorOpaque_F(f10 * f20, f13 * f20, f16 * f20);
+            int n1 = block.getRenderBrightness(blockAccess, i, j - 1, k);
+            tessellator.setBrightness(n1);
+            tessellator.setColorOpaque_F(f10, f13, f16);
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f10 * f20 * f, f13 * f20 * f1, f16 * f20 * f2);
+                tessellator.setColorOpaque_F(f10 * f, f13 * f1, f16 * f2);
             }
             renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f10 * f20, f13 * f20, f16 * f20);
+                tessellator.setColorOpaque_F(f10, f13, f16);
                 renderBottomFace(block, i, j, k, 37);
             }
             flag = true;
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1))
         {
-            float f21 = block.getBlockBrightness(blockAccess, i, j + 1, k);
-            if(block.maxY != 1.0D && !block.blockMaterial.getIsLiquid())
-            {
-                f21 = f19;
-            }
-            tessellator.setColorOpaque_F(f7 * f21, f8 * f21, f9 * f21);
+        	int n2 = block.getRenderBrightness(blockAccess, i, j + 1, k);
+        	tessellator.setBrightness(block.maxY >= 1.0D ? n2 : n0);
+            tessellator.setColorOpaque_F(f7, f8, f9);
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f7 * f21 * f, f8 * f21 * f1, f9 * f21 * f2);
+                tessellator.setColorOpaque_F(f7 * f, f8 * f1, f9 * f2);
             }
             renderTopFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 1));
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f7 * f21, f8 * f21, f9 * f21);
+                tessellator.setColorOpaque_F(f7, f8, f9);
                 renderTopFace(block, i, j, k, 37);
             }
             flag = true;
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2))
         {
-            float f22 = block.getBlockBrightness(blockAccess, i, j, k - 1);
-            if(block.minZ > 0.0D)
-            {
-                f22 = f19;
-            }
-            tessellator.setColorOpaque_F(f11 * f22, f14 * f22, f17 * f22);
+        	int n3 = block.getRenderBrightness(blockAccess, i, j, k - 1);
+        	tessellator.setBrightness(block.minZ <= 0.0D ? n3 : n0);
+            tessellator.setColorOpaque_F(f11, f14, f17);
             int l = block.getBlockTexture(blockAccess, i, j, k, 2);
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f11 * f22 * f, f14 * f22 * f1, f17 * f22 * f2);
+                tessellator.setColorOpaque_F(f11 * f, f14 * f1, f17 * f2);
             }
             if(grassSide && block == Block.grass)
             {
@@ -2928,34 +3005,31 @@ public class RenderBlocks
         			{
         				l = 0;
         			}
-                    tessellator.setColorOpaque_F(f11 * f22 * f, f14 * f22 * f1, f17 * f22 * f2);
+                    tessellator.setColorOpaque_F(f11 * f, f14 * f1, f17 * f2);
             	}
             }
             renderEastFace(block, i, j, k, l);
             if(block == Block.grass && (fancyGrass || cfgGrassFix) && (l != 38 && l != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
-                tessellator.setColorOpaque_F(f11 * f22 * f, f14 * f22 * f1, f17 * f22 * f2);
+                tessellator.setColorOpaque_F(f11 * f, f14 * f1, f17 * f2);
                 renderEastFace(block, i, j, k, l == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f11 * f22, f14 * f22, f17 * f22);
+                tessellator.setColorOpaque_F(f11, f14, f17);
                 renderEastFace(block, i, j, k, 37);
             }
             flag = true;
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3))
         {
-            float f23 = block.getBlockBrightness(blockAccess, i, j, k + 1);
-            if(block.maxZ < 1.0D)
-            {
-                f23 = f19;
-            }
-            tessellator.setColorOpaque_F(f11 * f23, f14 * f23, f17 * f23);
+        	int n4 = block.getRenderBrightness(blockAccess, i, j, k + 1);
+        	tessellator.setBrightness(block.maxZ >= 1.0D ? n4 : n0);
+            tessellator.setColorOpaque_F(f11, f14, f17);
             int i1 = block.getBlockTexture(blockAccess, i, j, k, 3);
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f11 * f23 * f, f14 * f23 * f1, f17 * f23 * f2);
+                tessellator.setColorOpaque_F(f11 * f, f14 * f1, f17 * f2);
             }
             if(grassSide && block == Block.grass)
             {
@@ -2978,34 +3052,31 @@ public class RenderBlocks
         			{
         				i1 = 0;
         			}
-                    tessellator.setColorOpaque_F(f11 * f23 * f, f14 * f23 * f1, f17 * f23 * f2);
+                    tessellator.setColorOpaque_F(f11 * f, f14 * f1, f17 * f2);
             	}
             }
             renderWestFace(block, i, j, k, i1);
             if(block == Block.grass && (fancyGrass || cfgGrassFix) && (i1 != 38 && i1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
-                tessellator.setColorOpaque_F(f11 * f23 * f, f14 * f23 * f1, f17 * f23 * f2);
+                tessellator.setColorOpaque_F(f11 * f, f14 * f1, f17 * f2);
                 renderWestFace(block, i, j, k, i1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f11 * f23, f14 * f23, f17 * f23);
+                tessellator.setColorOpaque_F(f11, f14, f17);
                 renderWestFace(block, i, j, k, 37);
             }
             flag = true;
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4))
         {
-            float f24 = block.getBlockBrightness(blockAccess, i - 1, j, k);
-            if(block.minX > 0.0D)
-            {
-                f24 = f19;
-            }
-            tessellator.setColorOpaque_F(f12 * f24, f15 * f24, f18 * f24);
+        	int n5 = block.getRenderBrightness(blockAccess, i - 1, j, k);
+        	tessellator.setBrightness(block.minX <= 0.0D ? n5 : n0);
+            tessellator.setColorOpaque_F(f12, f15, f18);
             int j1 = block.getBlockTexture(blockAccess, i, j, k, 4);
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f12 * f24 * f, f15 * f24 * f1, f18 * f24 * f2);
+                tessellator.setColorOpaque_F(f12 * f, f15 * f1, f18 * f2);
             }
             if(grassSide && block == Block.grass)
             {
@@ -3028,34 +3099,31 @@ public class RenderBlocks
         			{
         				j1 = 0;
         			}
-                    tessellator.setColorOpaque_F(f12 * f24 * f, f15 * f24 * f1, f18 * f24 * f2);
+                    tessellator.setColorOpaque_F(f12 * f, f15 * f1, f18 * f2);
             	}
             }
             renderNorthFace(block, i, j, k, j1);
             if(block == Block.grass && (fancyGrass || cfgGrassFix) && (j1 != 38 && j1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
-                tessellator.setColorOpaque_F(f12 * f24 * f, f15 * f24 * f1, f18 * f24 * f2);
+                tessellator.setColorOpaque_F(f12 * f, f15 * f1, f18 * f2);
                 renderNorthFace(block, i, j, k, j1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f12 * f24, f15 * f24, f18 * f24);
+                tessellator.setColorOpaque_F(f12, f15, f18);
                 renderNorthFace(block, i, j, k, 37);
             }
             flag = true;
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5))
         {
-            float f25 = block.getBlockBrightness(blockAccess, i + 1, j, k);
-            if(block.maxX < 1.0D)
-            {
-                f25 = f19;
-            }
-            tessellator.setColorOpaque_F(f12 * f25, f15 * f25, f18 * f25);
+        	int n6 = block.getRenderBrightness(blockAccess, i + 1, j, k);
+        	tessellator.setBrightness(block.maxX >= 1.0D ? n6 : n0);
+            tessellator.setColorOpaque_F(f12, f15, f18);
             int k1 = block.getBlockTexture(blockAccess, i, j, k, 5);
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f12 * f25 * f, f15 * f25 * f1, f18 * f25 * f2);
+                tessellator.setColorOpaque_F(f12 * f, f15 * f1, f18 * f2);
             }
             if(grassSide && block == Block.grass)
             {
@@ -3078,18 +3146,18 @@ public class RenderBlocks
         			{
         				k1 = 0;
         			}
-                    tessellator.setColorOpaque_F(f12 * f25 * f, f15 * f25 * f1, f18 * f25 * f2);
+                    tessellator.setColorOpaque_F(f12 * f, f15 * f1, f18 * f2);
             	}
             }
             renderSouthFace(block, i, j, k, k1);
             if(block == Block.grass && (fancyGrass || cfgGrassFix) && (k1 != 38 && k1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
             {
-                tessellator.setColorOpaque_F(f12 * f25 * f, f15 * f25 * f1, f18 * f25 * f2);
+                tessellator.setColorOpaque_F(f12 * f, f15 * f1, f18 * f2);
                 renderSouthFace(block, i, j, k, k1 == 3 ? 38 : 39 + blockAccess.getBlockMetadata(i, j, k));
             }
             if(block == BEBlocks.appleLeaves)
             {
-                tessellator.setColorOpaque_F(f12 * f25, f15 * f25, f18 * f25);
+                tessellator.setColorOpaque_F(f12, f15, f18);
                 renderSouthFace(block, i, j, k, 37);
             }
             flag = true;
@@ -3136,33 +3204,25 @@ public class RenderBlocks
         float f17 = f5 * f2;
         float f18 = f6 * f2;
         float f19 = 0.0625F;
-        float f20 = block.getBlockBrightness(blockAccess, i, j, k);
+        int l = block.getRenderBrightness(blockAccess, i, j, k);
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0))
         {
-            float f21 = block.getBlockBrightness(blockAccess, i, j - 1, k);
-            tessellator.setColorOpaque_F(f7 * f21, f11 * f21, f15 * f21);
+            tessellator.setBrightness(block.minY <= 0.0D ? block.getRenderBrightness(blockAccess, i, j - 1, k) : l);
+            tessellator.setColorOpaque_F(f7, f11, f15);
             renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
             flag = true;
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1))
         {
-            float f22 = block.getBlockBrightness(blockAccess, i, j + 1, k);
-            if(block.maxY != 1.0D && !block.blockMaterial.getIsLiquid())
-            {
-                f22 = f20;
-            }
-            tessellator.setColorOpaque_F(f8 * f22, f12 * f22, f16 * f22);
+            tessellator.setBrightness(block.maxY >= 1.0D ? block.getRenderBrightness(blockAccess, i, j + 1, k) : l);
+            tessellator.setColorOpaque_F(f8, f12, f16);
             renderTopFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 1));
             flag = true;
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2))
         {
-            float f23 = block.getBlockBrightness(blockAccess, i, j, k - 1);
-            if(block.minZ > 0.0D)
-            {
-                f23 = f20;
-            }
-            tessellator.setColorOpaque_F(f9 * f23, f13 * f23, f17 * f23);
+            tessellator.setBrightness(block.minZ <= 0.0D ? block.getRenderBrightness(blockAccess, i, j, k - 1) : l);
+            tessellator.setColorOpaque_F(f9, f13, f17);
             tessellator.setTranslationF(0.0F, 0.0F, f19);
             renderEastFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 2));
             tessellator.setTranslationF(0.0F, 0.0F, -f19);
@@ -3170,12 +3230,8 @@ public class RenderBlocks
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3))
         {
-            float f24 = block.getBlockBrightness(blockAccess, i, j, k + 1);
-            if(block.maxZ < 1.0D)
-            {
-                f24 = f20;
-            }
-            tessellator.setColorOpaque_F(f9 * f24, f13 * f24, f17 * f24);
+            tessellator.setBrightness(block.maxZ >= 1.0D ? block.getRenderBrightness(blockAccess, i, j, k + 1) : l);
+            tessellator.setColorOpaque_F(f9, f13, f17);
             tessellator.setTranslationF(0.0F, 0.0F, -f19);
             renderWestFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 3));
             tessellator.setTranslationF(0.0F, 0.0F, f19);
@@ -3183,12 +3239,8 @@ public class RenderBlocks
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4))
         {
-            float f25 = block.getBlockBrightness(blockAccess, i - 1, j, k);
-            if(block.minX > 0.0D)
-            {
-                f25 = f20;
-            }
-            tessellator.setColorOpaque_F(f10 * f25, f14 * f25, f18 * f25);
+            tessellator.setBrightness(block.minX <= 0.0D ? block.getRenderBrightness(blockAccess, i - 1, j, k) : l);
+            tessellator.setColorOpaque_F(f10, f14, f18);
             tessellator.setTranslationF(f19, 0.0F, 0.0F);
             renderNorthFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 4));
             tessellator.setTranslationF(-f19, 0.0F, 0.0F);
@@ -3196,12 +3248,8 @@ public class RenderBlocks
         }
         if(renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5))
         {
-            float f26 = block.getBlockBrightness(blockAccess, i + 1, j, k);
-            if(block.maxX < 1.0D)
-            {
-                f26 = f20;
-            }
-            tessellator.setColorOpaque_F(f10 * f26, f14 * f26, f18 * f26);
+            tessellator.setBrightness(block.maxX >= 1.0D ? block.getRenderBrightness(blockAccess, i + 1, j, k) : l);
+            tessellator.setColorOpaque_F(f10, f14, f18);
             tessellator.setTranslationF(-f19, 0.0F, 0.0F);
             renderSouthFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 5));
             tessellator.setTranslationF(f19, 0.0F, 0.0F);
@@ -3349,111 +3397,62 @@ public class RenderBlocks
     public boolean renderBlockDoor(Block block, int i, int j, int k)
     {
         Tessellator tessellator = Tessellator.instance;
-        BlockDoor blockdoor = (BlockDoor)block;
         boolean flag = false;
         float f = bottomFaceBrightness;
         float f1 = topFaceBrightness;
         float f2 = eastWestFaceBrightness;
         float f3 = northSouthFaceBrightness;
-        float f4 = block.getBlockBrightness(blockAccess, i, j, k);
-        float f5 = block.getBlockBrightness(blockAccess, i, j - 1, k);
-        if(blockdoor.minY > 0.0D)
-        {
-            f5 = f4;
-        }
-        if(Block.lightValue[block.blockID] > 0)
-        {
-            f5 = 1.0F;
-        }
-        tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
+        int l = block.getRenderBrightness(blockAccess, i, j, k);
+        tessellator.setBrightness(block.minY <= 0.0D ? block.getRenderBrightness(blockAccess, i, j - 1, k) : l);
+        tessellator.setColorOpaque_F(f, f, f);
         renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
         flag = true;
-        f5 = block.getBlockBrightness(blockAccess, i, j + 1, k);
-        if(blockdoor.maxY < 1.0D)
-        {
-            f5 = f4;
-        }
-        if(Block.lightValue[block.blockID] > 0)
-        {
-            f5 = 1.0F;
-        }
-        tessellator.setColorOpaque_F(f1 * f5, f1 * f5, f1 * f5);
+        tessellator.setBrightness(block.maxY >= 1.0D ? block.getRenderBrightness(blockAccess, i, j + 1, k) : l);
+        tessellator.setColorOpaque_F(f1, f1, f1);
         renderTopFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 1));
         flag = true;
-        f5 = block.getBlockBrightness(blockAccess, i, j, k - 1);
-        if(blockdoor.minZ > 0.0D)
-        {
-            f5 = f4;
-        }
-        if(Block.lightValue[block.blockID] > 0)
-        {
-            f5 = 1.0F;
-        }
-        tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
-        int l = block.getBlockTexture(blockAccess, i, j, k, 2);
-        if(l < 0)
+        tessellator.setBrightness(block.minZ <= 0.0D ? block.getRenderBrightness(blockAccess, i, j, k - 1) : l);
+        tessellator.setColorOpaque_F(f2, f2, f2);
+        int i1 = block.getBlockTexture(blockAccess, i, j, k, 2);
+        if(i1 < 0)
         {
             flipTexture = true;
-            l = -l;
+            i1 = -i1;
         }
-        renderEastFace(block, i, j, k, l);
+        renderEastFace(block, i, j, k, i1);
         flag = true;
         flipTexture = false;
-        f5 = block.getBlockBrightness(blockAccess, i, j, k + 1);
-        if(blockdoor.maxZ < 1.0D)
-        {
-            f5 = f4;
-        }
-        if(Block.lightValue[block.blockID] > 0)
-        {
-            f5 = 1.0F;
-        }
-        tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
-        l = block.getBlockTexture(blockAccess, i, j, k, 3);
-        if(l < 0)
+        tessellator.setBrightness(block.maxZ >= 1.0D ? block.getRenderBrightness(blockAccess, i, j, k + 1) : l);
+        tessellator.setColorOpaque_F(f2, f2, f2);
+        i1 = block.getBlockTexture(blockAccess, i, j, k, 3);
+        if(i1 < 0)
         {
             flipTexture = true;
-            l = -l;
+            i1 = -i1;
         }
-        renderWestFace(block, i, j, k, l);
+        renderWestFace(block, i, j, k, i1);
         flag = true;
         flipTexture = false;
-        f5 = block.getBlockBrightness(blockAccess, i - 1, j, k);
-        if(blockdoor.minX > 0.0D)
-        {
-            f5 = f4;
-        }
-        if(Block.lightValue[block.blockID] > 0)
-        {
-            f5 = 1.0F;
-        }
-        tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
-        l = block.getBlockTexture(blockAccess, i, j, k, 4);
-        if(l < 0)
+        tessellator.setBrightness(block.minX <= 0.0D ? block.getRenderBrightness(blockAccess, i - 1, j, k) : l);
+        tessellator.setColorOpaque_F(f3, f3, f3);
+        i1 = block.getBlockTexture(blockAccess, i, j, k, 4);
+        if(i1 < 0)
         {
             flipTexture = true;
-            l = -l;
+            i1 = -i1;
         }
-        renderNorthFace(block, i, j, k, l);
+        renderNorthFace(block, i, j, k, i1);
         flag = true;
         flipTexture = false;
-        f5 = block.getBlockBrightness(blockAccess, i + 1, j, k);
-        if(blockdoor.maxX < 1.0D)
-        {
-            f5 = f4;
-        }
-        if(Block.lightValue[block.blockID] > 0)
-        {
-            f5 = 1.0F;
-        }
-        tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
-        l = block.getBlockTexture(blockAccess, i, j, k, 5);
-        if(l < 0)
+        tessellator.setBrightness(block.maxX >= 1.0D ? block.getRenderBrightness(blockAccess, i + 1, j, k) : l);
+        tessellator.setColorOpaque_F(f3, f3, f3);
+        i1 = block.getBlockTexture(blockAccess, i, j, k, 5);
+        if(i1 < 0)
         {
             flipTexture = true;
-            l = -l;
+            i1 = -i1;
         }
-        renderSouthFace(block, i, j, k, l);
+        renderSouthFace(block, i, j, k, i1);
         flag = true;
         flipTexture = false;
         return flag;
@@ -3554,12 +3553,16 @@ public class RenderBlocks
         if(enableAO)
         {
         	tessellator.setColorOpaque_F(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft);
+            tessellator.setBrightness(brightnessTopLeft);
         	tessellator.addVertexWithUV(minX, minY, maxZ, d8, d10);
         	tessellator.setColorOpaque_F(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft);
+            tessellator.setBrightness(brightnessBottomLeft);
         	tessellator.addVertexWithUV(minX, minY, minZ, d3, d5);
         	tessellator.setColorOpaque_F(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight);
+            tessellator.setBrightness(brightnessBottomRight);
         	tessellator.addVertexWithUV(maxX, minY, minZ, d7, d9);
         	tessellator.setColorOpaque_F(colorRedTopRight, colorGreenTopRight, colorBlueTopRight);
+            tessellator.setBrightness(brightnessTopRight);
         	tessellator.addVertexWithUV(maxX, minY, maxZ, d4, d6);
         } else
         {
@@ -3647,12 +3650,16 @@ public class RenderBlocks
         if(enableAO)
         {
         	tessellator.setColorOpaque_F(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft);
+            tessellator.setBrightness(brightnessTopLeft);
         	tessellator.addVertexWithUV(maxX, maxY, maxZ, d4, d6);
         	tessellator.setColorOpaque_F(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft);
+            tessellator.setBrightness(brightnessBottomLeft);
         	tessellator.addVertexWithUV(maxX, maxY, minZ, d7, d9);
         	tessellator.setColorOpaque_F(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight);
+            tessellator.setBrightness(brightnessBottomRight);
         	tessellator.addVertexWithUV(minX, maxY, minZ, d3, d5);
         	tessellator.setColorOpaque_F(colorRedTopRight, colorGreenTopRight, colorBlueTopRight);
+            tessellator.setBrightness(brightnessTopRight);
         	tessellator.addVertexWithUV(minX, maxY, maxZ, d8, d10);
         } else
         {
@@ -3754,12 +3761,16 @@ public class RenderBlocks
         if(enableAO)
         {
         	tessellator.setColorOpaque_F(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft);
+            tessellator.setBrightness(brightnessTopLeft);
         	tessellator.addVertexWithUV(d12, d15, d16, d8, d10);
         	tessellator.setColorOpaque_F(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft);
+            tessellator.setBrightness(brightnessBottomLeft);
         	tessellator.addVertexWithUV(d13, d15, d16, d3, d5);
         	tessellator.setColorOpaque_F(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight);
+            tessellator.setBrightness(brightnessBottomRight);
         	tessellator.addVertexWithUV(d13, d14, d16, d9, d11);
         	tessellator.setColorOpaque_F(colorRedTopRight, colorGreenTopRight, colorBlueTopRight);
+            tessellator.setBrightness(brightnessTopRight);
         	tessellator.addVertexWithUV(d12, d14, d16, d4, d6);
         } else
         {
@@ -3853,12 +3864,16 @@ public class RenderBlocks
         if(enableAO)
         {
         	tessellator.setColorOpaque_F(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft);
+            tessellator.setBrightness(brightnessTopLeft);
         	tessellator.addVertexWithUV(d12, d15, d16, d3, d5);
         	tessellator.setColorOpaque_F(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft);
+            tessellator.setBrightness(brightnessBottomLeft);
         	tessellator.addVertexWithUV(d12, d14, d16, d9, d11);
         	tessellator.setColorOpaque_F(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight);
+            tessellator.setBrightness(brightnessBottomRight);
         	tessellator.addVertexWithUV(d13, d14, d16, d4, d6);
         	tessellator.setColorOpaque_F(colorRedTopRight, colorGreenTopRight, colorBlueTopRight);
+            tessellator.setBrightness(brightnessTopRight);
         	tessellator.addVertexWithUV(d13, d15, d16, d8, d10);
         } else
         {
@@ -3952,12 +3967,16 @@ public class RenderBlocks
         if(enableAO)
         {
         	tessellator.setColorOpaque_F(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft);
+            tessellator.setBrightness(brightnessTopLeft);
         	tessellator.addVertexWithUV(d12, d14, d16, d8, d10);
         	tessellator.setColorOpaque_F(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft);
+            tessellator.setBrightness(brightnessBottomLeft);
         	tessellator.addVertexWithUV(d12, d14, d15, d3, d5);
         	tessellator.setColorOpaque_F(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight);
+            tessellator.setBrightness(brightnessBottomRight);
         	tessellator.addVertexWithUV(d12, d13, d15, d9, d11);    
         	tessellator.setColorOpaque_F(colorRedTopRight, colorGreenTopRight, colorBlueTopRight);
+            tessellator.setBrightness(brightnessTopRight);
         	tessellator.addVertexWithUV(d12, d13, d16, d4, d6);
         } else
         {
@@ -4059,12 +4078,16 @@ public class RenderBlocks
         if(enableAO)
         {     
         	tessellator.setColorOpaque_F(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft);
+            tessellator.setBrightness(brightnessTopLeft);
         	tessellator.addVertexWithUV(d12, d13, d16, d9, d11);
         	tessellator.setColorOpaque_F(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft);
+            tessellator.setBrightness(brightnessBottomLeft);
         	tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
         	tessellator.setColorOpaque_F(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight);
+            tessellator.setBrightness(brightnessBottomRight);
         	tessellator.addVertexWithUV(d12, d14, d15, d8, d10);
         	tessellator.setColorOpaque_F(colorRedTopRight, colorGreenTopRight, colorBlueTopRight);
+            tessellator.setBrightness(brightnessTopRight);
         	tessellator.addVertexWithUV(d12, d14, d16, d3, d5);
         } else
         {
@@ -4499,10 +4522,6 @@ public class RenderBlocks
     public float colorBlueBottomLeft;
     public float colorBlueBottomRight;
     public float colorBlueTopRight;
-    public float brightnessTopLeft;
-    public float brightnessTopRight;
-    public float brightnessBottomLeft;
-    public float brightnessBottomRight;
     public boolean field_22339_T;
     public boolean field_22338_U;
     public boolean field_22337_V;
@@ -4515,6 +4534,30 @@ public class RenderBlocks
     public boolean field_22359_ac;
     public boolean field_22357_ad;
     public boolean field_22355_ae;
+    private int field_35936_P;
+    private int field_35935_Q;
+    private int field_35938_R;
+    private int field_35937_S;
+    private int field_35932_T;
+    private int field_35931_U;
+    private int field_35934_V;
+    private int field_35933_W;
+    private int field_35940_X;
+    private int field_35939_Y;
+    private int field_35941_Z;
+    private int field_35951_aa;
+    private int field_35952_ab;
+    private int field_35949_ac;
+    private int field_35950_ad;
+    private int field_35955_ae;
+    private int field_35956_af;
+    private int field_35953_ag;
+    private int field_35954_ah;
+    private int field_35945_ai;
+    private int brightnessTopLeft;
+    private int brightnessBottomLeft;
+    private int brightnessBottomRight;
+    private int brightnessTopRight;
     public static float redstoneColors[][];
     static 
     {

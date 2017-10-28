@@ -6,6 +6,7 @@ package net.minecraft.src;
 
 import java.util.*;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 // Referenced classes of package net.minecraft.src:
 //            TileEntitySign, TileEntitySignRenderer, TileEntityMobSpawner, TileEntityMobSpawnerRenderer, 
@@ -77,8 +78,11 @@ public class TileEntityRenderer
     {
         if(tileentity.getDistanceFrom(playerX, playerY, playerZ) < 4096D)
         {
-            float f1 = worldObj.getLightBrightness(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
-            GL11.glColor3f(f1, f1, f1);
+            int i = worldObj.getRenderBrightness(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, 0);
+            int j = i % 0x10000;
+            int k = i / 0x10000;
+            GL13.glMultiTexCoord2f(33985 /*GL_TEXTURE1_ARB*/, (float)j / 1.0F, (float)k / 1.0F);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             renderTileEntityAt(tileentity, (double)tileentity.xCoord - staticPlayerX, (double)tileentity.yCoord - staticPlayerY, (double)tileentity.zCoord - staticPlayerZ, f);
         }
     }

@@ -60,8 +60,9 @@ public class EntityDiggingFX extends EntityFX
         float f11 = (float)((prevPosX + (posX - prevPosX) * (double)f) - interpPosX);
         float f12 = (float)((prevPosY + (posY - prevPosY) * (double)f) - interpPosY);
         float f13 = (float)((prevPosZ + (posZ - prevPosZ) * (double)f) - interpPosZ);
-        float f14 = getEntityBrightness(f);
-        tessellator.setColorOpaque_F(f14 * particleRed, f14 * particleGreen, f14 * particleBlue);
+        int n0 = getRenderBrightness(f);
+        tessellator.setBrightness(n0);
+        tessellator.setColorOpaque_F(particleRed, particleGreen, particleBlue);
         tessellator.addVertexWithUV(f11 - f1 * f10 - f4 * f10, f12 - f2 * f10, f13 - f3 * f10 - f5 * f10, f6, f9);
         tessellator.addVertexWithUV((f11 - f1 * f10) + f4 * f10, f12 + f2 * f10, (f13 - f3 * f10) + f5 * f10, f6, f8);
         tessellator.addVertexWithUV(f11 + f1 * f10 + f4 * f10, f12 + f2 * f10, f13 + f3 * f10 + f5 * f10, f7, f8);

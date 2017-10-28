@@ -180,6 +180,11 @@ public class BlockStairs extends Block
         modelBlock.onBlockClicked(world, i, j, k, entityplayer);
     }
 
+    public int getRenderBrightness(IBlockAccess iblockaccess, int i, int j, int k)
+    {
+        return modelBlock.getRenderBrightness(iblockaccess, i, j, k);
+    }
+    
     public float getBlockBrightness(IBlockAccess iblockaccess, int i, int j, int k)
     {
         return modelBlock.getBlockBrightness(iblockaccess, i, j, k);

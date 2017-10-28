@@ -32,8 +32,7 @@ public class TileEntityRendererTable extends TileEntitySpecialRenderer
         	{
         		GL11.glPushMatrix();
         		GL11.glTranslatef((i%3)/3F, 0F, (i/3)/3F);
-                float f1 = ((TileEntityTable)tileentity).worldObj.getLightBrightness(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
-        		mc.entityRenderer.itemRenderer.doRenderItem_noEntity(itemstack, d+(1/6D), d1+(l<8?1D:0.75D)+0.125D, d2+(1/6D), f1);
+        		mc.entityRenderer.itemRenderer.doRenderItem_noEntity(itemstack, d+(1/6D), d1+(l<8?1D:0.75D)+0.125D, d2+(1/6D), 1.0F);
         		GL11.glPopMatrix();
         	}
         }

@@ -650,6 +650,58 @@ public class World
         return chunk.getBlockLightValue(i, j, k, skylightSubtracted);
     }
 
+    public int getRenderLightValue(EnumSkyBlock enumskyblock, int i, int j, int k)
+    {
+        if(j < 0)
+        {
+            j = 0;
+        }
+        if(j >= 128 && enumskyblock == EnumSkyBlock.Sky)
+        {
+            return 15;
+        }
+        if(j < 0 || j >= 128 || i < 0xfe363c80 || k < 0xfe363c80 || i >= 0x1c9c380 || k >= 0x1c9c380)
+        {
+            return enumskyblock.field_1722_c;
+        }
+        int l = i >> 4;
+        int i1 = k >> 4;
+        if(!chunkExists(l, i1))
+        {
+            return 0;
+        }
+        int j1 = getBlockId(i, j, k);
+        if(j1 == Block.stairSingle.blockID || Block.blocksList[j1] instanceof BlockFarmland || j1 == Block.stairCompactCobblestone.blockID || j1 == Block.stairCompactPlanks.blockID)
+        {
+            int k1 = getSavedLightValue(enumskyblock, i, j + 1, k);
+            int l1 = getSavedLightValue(enumskyblock, i + 1, j, k);
+            int i2 = getSavedLightValue(enumskyblock, i - 1, j, k);
+            int j2 = getSavedLightValue(enumskyblock, i, j, k + 1);
+            int k2 = getSavedLightValue(enumskyblock, i, j, k - 1);
+            if(l1 > k1)
+            {
+                k1 = l1;
+            }
+            if(i2 > k1)
+            {
+                k1 = i2;
+            }
+            if(j2 > k1)
+            {
+                k1 = j2;
+            }
+            if(k2 > k1)
+            {
+                k1 = k2;
+            }
+            return k1;
+        } else
+        {
+            Chunk chunk = getChunkFromChunkCoords(l, i1);
+            return chunk.getSavedLightValue(enumskyblock, i & 0xf, j, k & 0xf);
+        }
+    }
+    
     public boolean canExistingBlockSeeTheSky(int i, int j, int k)
     {
         if(i < 0xfe17b800 || k < 0xfe17b800 || i >= 0x1e84800 || k > 0x1e84800)
@@ -786,6 +838,17 @@ public class World
         return worldProvider.lightBrightnessTable[i1];
     }
 
+    public int getRenderBrightness(int i, int j, int k, int l)
+    {
+        int i1 = getRenderLightValue(EnumSkyBlock.Sky, i, j, k);
+        int j1 = getRenderLightValue(EnumSkyBlock.Block, i, j, k);
+        if(j1 < l)
+        {
+            j1 = l;
+        }
+        return i1 << 20 | j1 << 4;
+    }
+    
     public float getLightBrightness(int i, int j, int k)
     {
         return worldProvider.lightBrightnessTable[getBlockLightValue(i, j, k)];
@@ -1169,6 +1232,25 @@ public class World
         return (int)(f2 * 11F);
     }
 
+    public float calculateSkylightSubtracted_F(float f)
+    {
+        float f1 = getCelestialAngle(f);
+        float f2 = 1.0F - (MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F);
+        if(f2 < 0.0F)
+        {
+            f2 = 0.0F;
+        }
+        if(f2 > 1.0F)
+        {
+            f2 = 1.0F;
+        }
+        f2 = 1.0F - f2;
+        f2 = (float)((double)f2 * (1.0D - (double)(func_27162_g(f) * 5F) / 16D));
+        f2 = (float)((double)f2 * (1.0D - (double)(func_27166_f(f) * 5F) / 16D));
+        f2 = 1.0F - f2;
+        return f2 * 11F;
+    }
+    
     public Vec3D func_4079_a(Entity entity, float f)
     {
         float f1 = getCelestialAngle(f);
@@ -2077,10 +2159,6 @@ public class World
         if(i != skylightSubtracted)
         {
             skylightSubtracted = i;
-            for(int j = 0; j < worldAccesses.size(); j++)
-            {
-                ((IWorldAccess)worldAccesses.get(j)).updateAllRenderers();
-            }
         }
         long l1 = worldInfo.getWorldTime() + 1L;
         if(l1 % (long)autosavePeriod == 0L)

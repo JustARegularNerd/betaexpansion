@@ -632,6 +632,22 @@ public abstract class Entity
         motionZ += f1 * f5 + f * f4;
     }
 
+    public int getRenderBrightness(float f)
+    {
+        int i = MathHelper.floor_double(posX);
+        int j = MathHelper.floor_double(posZ);
+        worldObj.getClass();
+        if(worldObj.blockExists(i, 128 / 2, j))
+        {
+            double d = (boundingBox.maxY - boundingBox.minY) * 0.66000000000000003D;
+            int k = MathHelper.floor_double((posY - (double)yOffset) + d);
+            return worldObj.getRenderBrightness(i, k, j, 0);
+        } else
+        {
+            return 0;
+        }
+    }
+    
     public float getEntityBrightness(float f)
     {
         int i = MathHelper.floor_double(posX);
