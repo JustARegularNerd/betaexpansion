@@ -142,9 +142,9 @@ public class RenderItem extends Render
                 GL11.glColor4f(f2, f4, f5, 1.0F);
             }
             GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
-            renderBlocks.field_31088_b = field_27004_a;
+            renderBlocks.useInventoryTint = field_27004_a;
             renderBlocks.renderBlockOnInventory(block, j, 1.0F);
-            renderBlocks.field_31088_b = true;
+            renderBlocks.useInventoryTint = true;
             GL11.glPopMatrix();
         } else
         if(k >= 0)

@@ -26,79 +26,16 @@ public class RenderBlocks
 
     public RenderBlocks()
     {
-        blockAccess = null;
-        overrideBlockTexture = 0;
-        flipTexture = false;
-        renderAllFaces = false;
-        field_31088_b = false;
-        eastFaceRotation = 0;
-        westFaceRotation = 0;
-        southFaceRotation = 0;
-        northFaceRotation = 0;
-        topFaceRotation = 0;
-        bottomFaceRotation = 0;
-        enableAO = false;
-        aoLightValueXNeg = 0.0F;
-        aoLightValueYNeg = 0.0F;
-        aoLightValueZNeg = 0.0F;
-        aoLightValueXPos = 0.0F;
-        aoLightValueYPos = 0.0F;
-        aoLightValueZPos = 0.0F;
-        field_22377_m = 0.0F;
-        field_22376_n = 0.0F;
-        field_22375_o = 0.0F;
-        field_22374_p = 0.0F;
-        field_22373_q = 0.0F;
-        field_22372_r = 0.0F;
-        field_22371_s = 0.0F;
-        field_22370_t = 0.0F;
-        field_22369_u = 0.0F;
-        field_22368_v = 0.0F;
-        field_22367_w = 0.0F;
-        field_22366_x = 0.0F;
-        field_22365_y = 0.0F;
-        field_22364_z = 0.0F;
-        field_22362_A = 0.0F;
-        field_22360_B = 0.0F;
-        field_22358_C = 0.0F;
-        field_22356_D = 0.0F;
-        field_22354_E = 0.0F;
-        field_22353_F = 0.0F;
-        colorRedTopLeft = 0.0F;
-        colorRedBottomLeft = 0.0F;
-        colorRedBottomRight = 0.0F;
-        colorRedTopRight = 0.0F;
-        colorGreenTopLeft = 0.0F;
-        colorGreenBottomLeft = 0.0F;
-        colorGreenBottomRight = 0.0F;
-        colorGreenTopRight = 0.0F;
-        colorBlueTopLeft = 0.0F;
-        colorBlueBottomLeft = 0.0F;
-        colorBlueBottomRight = 0.0F;
-        colorBlueTopRight = 0.0F;
-        field_22339_T = false;
-        field_22338_U = false;
-        field_22337_V = false;
-        field_22336_W = false;
-        field_22335_X = false;
-        field_22334_Y = false;
-        field_22333_Z = false;
-        field_22363_aa = false;
-        field_22361_ab = false;
-        field_22359_ac = false;
-        field_22357_ad = false;
-        field_22355_ae = false;
         overrideBlockTexture = -1;
         flipTexture = false;
         renderAllFaces = false;
-        field_31088_b = true;
+        useInventoryTint = true;
         eastFaceRotation = 0;
         westFaceRotation = 0;
         southFaceRotation = 0;
         northFaceRotation = 0;
         topFaceRotation = 0;
         bottomFaceRotation = 0;
-        field_22352_G = 1;
         mc = ModLoader.getMinecraftInstance();
     }
 
@@ -228,7 +165,6 @@ public class RenderBlocks
     
     public boolean renderBlockBed(Block block, int i, int j, int k)
     {
-        Tessellator tessellator = Tessellator.instance;
         int l = blockAccess.getBlockMetadata(i, j, k);
         int i1 = BlockBed.getDirectionFromMetadata(l);
         boolean flag = BlockBed.isBlockFootOfBed(l);
@@ -315,10 +251,10 @@ public class RenderBlocks
         tessellator.addVertexWithUV(d22, d23, d24, d13, d15);
         tessellator.addVertexWithUV(d21, d23, d24, d14, d16);
         tessellator.addVertexWithUV(d21, d23, d25, d18, d20);
-        float f17 = ModelBed.field_22280_a[i1];
+        int i2 = ModelBed.field_22280_a[i1];
         if(flag)
         {
-            f17 = ModelBed.field_22280_a[ModelBed.field_22279_b[i1]];
+        	i2 = ModelBed.field_22280_a[ModelBed.field_22279_b[i1]];
         }
         k1 = 4;
         switch(i1)
@@ -335,28 +271,28 @@ public class RenderBlocks
             k1 = 3;
             break;
         }
-        if(f17 != 2.0F && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2)))
+        if(i2 != 2 && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2)))
         {
             tessellator.setBrightness(block.minZ <= 0.0D ? block.getRenderBrightness(blockAccess, i, j, k - 1) : n0);
             tessellator.setColorOpaque_F(f8, f11, f14);
             flipTexture = k1 == 2;
             renderEastFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 2));
         }
-        if(f17 != 3F && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3)))
+        if(i2 != 3 && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3)))
         {
             tessellator.setBrightness(block.maxZ >= 1.0D ? block.getRenderBrightness(blockAccess, i, j, k + 1) : n0);
             tessellator.setColorOpaque_F(f8, f11, f14);
             flipTexture = k1 == 3;
             renderWestFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 3));
         }
-        if(f17 != 4F && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4)))
+        if(i2 != 4 && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4)))
         {
             tessellator.setBrightness(block.minZ <= 0.0D ? block.getRenderBrightness(blockAccess, i - 1, j, k) : n0);
             tessellator.setColorOpaque_F(f9, f12, f15);
             flipTexture = k1 == 4;
             renderNorthFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 4));
         }
-        if(f17 != 5F && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5)))
+        if(i2 != 5 && (renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5)))
         {
             tessellator.setBrightness(block.maxZ >= 1.0D ? block.getRenderBrightness(blockAccess, i + 1, j, k) : n0);
             tessellator.setColorOpaque_F(f9, f12, f15);
@@ -370,30 +306,22 @@ public class RenderBlocks
     public boolean renderBlockTorch(Block block, int i, int j, int k)
     {
         int l = blockAccess.getBlockMetadata(i, j, k);
-        Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(Block.lightValue[block.blockID] == 0 ? block.getRenderBrightness(blockAccess, i, j, k) : (15 << 20 | 15 << 4));
         tessellator.setColorOpaque_F(1, 1, 1);
         double d = 0.40000000596046448D;
         double d1 = 0.5D - d;
         double d2 = 0.20000000298023224D;
-        if(l == 1)
+        switch(l)
         {
-            renderTorchAtAngle(block, (double)i - d1, (double)j + d2, k, -d, 0.0D, false);
-        } else
-        if(l == 2)
-        {
-            renderTorchAtAngle(block, (double)i + d1, (double)j + d2, k, d, 0.0D, false);
-        } else
-        if(l == 3)
-        {
-            renderTorchAtAngle(block, i, (double)j + d2, (double)k - d1, 0.0D, -d, false);
-        } else
-        if(l == 4)
-        {
-            renderTorchAtAngle(block, i, (double)j + d2, (double)k + d1, 0.0D, d, false);
-        } else
-        {
-            renderTorchAtAngle(block, i, j, k, 0.0D, 0.0D, false);
+        case 1: renderTorchAtAngle(block, (double)i - d1, (double)j + d2, k, -d, 0.0D, false); break;
+        
+        case 2: renderTorchAtAngle(block, (double)i + d1, (double)j + d2, k, d, 0.0D, false); break;
+        
+        case 3: renderTorchAtAngle(block, i, (double)j + d2, (double)k - d1, 0.0D, -d, false); break;
+        
+        case 4: renderTorchAtAngle(block, i, (double)j + d2, (double)k + d1, 0.0D, d, false); break;
+        
+        default: renderTorchAtAngle(block, i, j, k, 0.0D, 0.0D, false); break;
         }
         return true;
     }
@@ -404,7 +332,6 @@ public class RenderBlocks
         int i1 = l & 3;
         int j1 = (l & 0xc) >> 2;
         renderStandardBlock(block, i, j, k);
-        Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness((15 << 20 | 15 << 4));
         float f = block.getBlockBrightness(blockAccess, i, j, k);
         if(Block.lightValue[block.blockID] > 0)
@@ -486,7 +413,7 @@ public class RenderBlocks
         return true;
     }
 
-    public void func_31078_d(Block block, int i, int j, int k)
+    public void renderPistonBaseWithAllFaces(Block block, int i, int j, int k)
     {
         renderAllFaces = true;
         renderBlockPistonBase(block, i, j, k, true);
@@ -654,7 +581,6 @@ public class RenderBlocks
         }
         int j = (i & 0xf) << 4;
         int k = i & 0xf0;
-        Tessellator tessellator = Tessellator.instance;
         double d7 = (float)(j + 0) / 256F;
         double d8 = (float)(k + 0) / 256F;
         double d9 = (((double)j + d6)) / 256D;
@@ -676,7 +602,6 @@ public class RenderBlocks
         }
         int j = (i & 0xf) << 4;
         int k = i & 0xf0;
-        Tessellator tessellator = Tessellator.instance;
         double d7 = (float)(j + 0) / 256F;
         double d8 = (float)(k + 0) / 256F;
         double d9 = (((double)j + d6) - 0.01D) / 256D;
@@ -698,7 +623,6 @@ public class RenderBlocks
         }
         int j = (i & 0xf) << 4;
         int k = i & 0xf0;
-        Tessellator tessellator = Tessellator.instance;
         double d7 = (float)(j + 0) / 256F;
         double d8 = (float)(k + 0) / 256F;
         double d9 = (((double)j + d6) - 0.01D) / 256D;
@@ -711,7 +635,7 @@ public class RenderBlocks
         tessellator.addVertexWithUV(d1, d3, d5, d9, d10);
     }
 
-    public void func_31079_a(Block block, int i, int j, int k, boolean flag, boolean launcher)
+    public void renderPistonExtensionWithAllFaces(Block block, int i, int j, int k, boolean flag, boolean launcher)
     {
         renderAllFaces = true;
         renderBlockPistonExtension(block, i, j, k, flag, launcher);
@@ -720,7 +644,6 @@ public class RenderBlocks
 
     public boolean renderBlockPistonExtension(Block block, int i, int j, int k, boolean flag, boolean launcher)
     {
-        Tessellator tessellator = Tessellator.instance;
         int l = blockAccess.getBlockMetadata(i, j, k);
         int i1 = BlockPistonExtension.func_31050_c(l);
         int n0 = block.getRenderBrightness(blockAccess, i, j, k);
@@ -991,7 +914,6 @@ public class RenderBlocks
         int l = blockAccess.getBlockMetadata(i, j, k);
         int i1 = l & 7;
         boolean flag = (l & 8) > 0;
-        Tessellator tessellator = Tessellator.instance;
         boolean flag1 = overrideBlockTexture >= 0;
         if(!flag1)
         {
@@ -1000,29 +922,19 @@ public class RenderBlocks
         float f = 0.25F;
         float f1 = 0.1875F;
         float f2 = 0.1875F;
-        if(i1 == 5)
+        switch(i1)
         {
-            block.setBlockBounds(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
-        } else
-        if(i1 == 6)
-        {
-            block.setBlockBounds(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, f2, 0.5F + f1);
-        } else
-        if(i1 == 4)
-        {
-            block.setBlockBounds(0.5F - f1, 0.5F - f, 1.0F - f2, 0.5F + f1, 0.5F + f, 1.0F);
-        } else
-        if(i1 == 3)
-        {
-            block.setBlockBounds(0.5F - f1, 0.5F - f, 0.0F, 0.5F + f1, 0.5F + f, f2);
-        } else
-        if(i1 == 2)
-        {
-            block.setBlockBounds(1.0F - f2, 0.5F - f, 0.5F - f1, 1.0F, 0.5F + f, 0.5F + f1);
-        } else
-        if(i1 == 1)
-        {
-            block.setBlockBounds(0.0F, 0.5F - f, 0.5F - f1, f2, 0.5F + f, 0.5F + f1);
+        case 1: block.setBlockBounds(0.0F, 0.5F - f, 0.5F - f1, f2, 0.5F + f, 0.5F + f1); break;
+        	
+        case 2: block.setBlockBounds(1.0F - f2, 0.5F - f, 0.5F - f1, 1.0F, 0.5F + f, 0.5F + f1); break;
+        	
+        case 3: block.setBlockBounds(0.5F - f1, 0.5F - f, 0.0F, 0.5F + f1, 0.5F + f, f2); break;
+        	
+        case 4: block.setBlockBounds(0.5F - f1, 0.5F - f, 1.0F - f2, 0.5F + f1, 0.5F + f, 1.0F); break;
+        
+        case 5: block.setBlockBounds(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f); break;
+        	
+        case 6: block.setBlockBounds(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, f2, 0.5F + f1); break;
         }
         renderStandardBlock(block, i, j, k);
         if(!flag1)
@@ -1178,7 +1090,6 @@ public class RenderBlocks
 
     public boolean renderBlockFire(Block block, int i, int j, int k)
     {
-        Tessellator tessellator = Tessellator.instance;
         int l = block.getBlockTextureFromSide(0);
         if(overrideBlockTexture >= 0)
         {
@@ -1402,7 +1313,6 @@ public class RenderBlocks
 
     public boolean renderBlockRedstoneWire(Block block, int i, int j, int k)
     {
-        Tessellator tessellator = Tessellator.instance;
         int l = blockAccess.getBlockMetadata(i, j, k);
         int i1 = block.getBlockTextureFromSideAndMetadata(1, l);
         if(overrideBlockTexture >= 0)
@@ -1600,7 +1510,6 @@ public class RenderBlocks
 
     public boolean renderBlockMinecartTrack(BlockRail blockrail, int i, int j, int k)
     {
-        Tessellator tessellator = Tessellator.instance;
         int l = blockAccess.getBlockMetadata(i, j, k);
         int i1 = blockrail.getBlockTextureFromSideAndMetadata(0, l);
         if(overrideBlockTexture >= 0)
@@ -1678,7 +1587,6 @@ public class RenderBlocks
 
     public boolean renderBlockLadder(Block block, int i, int j, int k)
     {
-        Tessellator tessellator = Tessellator.instance;
         int l = block.getBlockTextureFromSide(0);
         if(overrideBlockTexture >= 0)
         {
@@ -1760,7 +1668,6 @@ public class RenderBlocks
 
     public boolean renderBlockReed(Block block, int i, int j, int k)
     {
-        Tessellator tessellator = Tessellator.instance;
         int i1 = block.getRenderBrightness(blockAccess, i, j, k);
         int l = block.colorMultiplier(blockAccess, i, j, k);
         float f1 = (float)(l >> 16 & 0xff) / 255F;
@@ -1794,7 +1701,6 @@ public class RenderBlocks
 
     public boolean renderBlockCrops(Block block, int i, int j, int k)
     {
-        Tessellator tessellator = Tessellator.instance;
         int i1 = block.getRenderBrightness(blockAccess, i, j, k);
         tessellator.setBrightness(i1);
         renderBlockCrops_do(block, blockAccess.getBlockMetadata(i, j, k), i, (double)j - 0.0625D, k, false);
@@ -1804,7 +1710,6 @@ public class RenderBlocks
     public void renderTorchAtAngle(Block block, double d, double d1, double d2, 
             double d3, double d4, boolean flag)
     {
-        Tessellator tessellator = Tessellator.instance;
         int i = block.getBlockTextureFromSide(0);
         if(overrideBlockTexture >= 0)
         {
@@ -1856,7 +1761,6 @@ public class RenderBlocks
 
     public void renderCrossedSquares(Block block, int i, double d, double d1, double d2, boolean flag)
     {
-        Tessellator tessellator = Tessellator.instance;
         int j = block.getBlockTextureFromSideAndMetadata(0, i);
         if(overrideBlockTexture >= 0)
         {
@@ -1892,7 +1796,6 @@ public class RenderBlocks
 
     public void renderBlockCrops_do(Block block, int i, double d, double d1, double d2, boolean flag)
     {
-        Tessellator tessellator = Tessellator.instance;
         int j = block.getBlockTextureFromSideAndMetadata(0, i);
         if(overrideBlockTexture >= 0)
         {
@@ -1949,7 +1852,6 @@ public class RenderBlocks
     public boolean renderBlockFluids(Block block, int i, int j, int k)
     {
     	float texOffset = (Integer)mc.renderEngine.textureSizeIdMap.get(mc.renderEngine.getTexture("/terrain.png"))/16;
-        Tessellator tessellator = Tessellator.instance;
         int l = block.colorMultiplier(blockAccess, i, j, k);
         float f = (float)(l >> 16 & 0xff) / 255F;
         float f1 = (float)(l >> 8 & 0xff) / 255F;
@@ -2182,7 +2084,6 @@ public class RenderBlocks
         float f1 = 1.0F;
         float f2 = 0.8F;
         float f3 = 0.6F;
-        Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.setBrightness(block.getRenderBrightness(world, i, j, k));
         tessellator.setColorOpaque_F(f, f, f);
@@ -2248,18 +2149,18 @@ public class RenderBlocks
         int n3 = block.getRenderBrightness(blockAccess, i + 1, j, k);
         int n4 = block.getRenderBrightness(blockAccess, i, j + 1, k);
         int n5 = block.getRenderBrightness(blockAccess, i, j, k + 1);
-        field_22338_U = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j + 1, k)];
-        field_22359_ac = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j - 1, k)];
-        field_22334_Y = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j, k + 1)];
-        field_22363_aa = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j, k - 1)];
-        field_22337_V = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i - 1, j + 1, k)];
-        field_22357_ad = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i - 1, j - 1, k)];
-        field_22335_X = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i - 1, j, k - 1)];
-        field_22333_Z = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i - 1, j, k + 1)];
-        field_22336_W = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i, j + 1, k + 1)];
-        field_22339_T = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i, j + 1, k - 1)];
-        field_22355_ae = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i, j - 1, k + 1)];
-        field_22361_ab = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i, j - 1, k - 1)];
+        canBlockGrassPPC = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j + 1, k)];
+        canBlockGrassPNC = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j - 1, k)];
+        canBlockGrassPCP = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j, k + 1)];
+        canBlockGrassPCN = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i + 1, j, k - 1)];
+        canBlockGrassNPC = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i - 1, j + 1, k)];
+        canBlockGrassNNC = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i - 1, j - 1, k)];
+        canBlockGrassNCN = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i - 1, j, k - 1)];
+        canBlockGrassNCP = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i - 1, j, k + 1)];
+        canBlockGrassCPP = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i, j + 1, k + 1)];
+        canBlockGrassCPN = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i, j + 1, k - 1)];
+        canBlockGrassCNP = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i, j - 1, k + 1)];
+        canBlockGrassCNN = mod_BetaExpansion.canBlockGrass[blockAccess.getBlockId(i, j - 1, k - 1)];
         if(block.blockIndexInTexture == 3)
         {
             flag1 = flag3 = flag4 = flag5 = flag6 = false;
@@ -2274,66 +2175,60 @@ public class RenderBlocks
             float f13;
             float f19;
             float f25;
-            if(field_22352_G > 0)
+            j--;
+            field_22376_n = block.getAOBrightness(blockAccess, i - 1, j, k);
+            field_22374_p = block.getAOBrightness(blockAccess, i, j, k - 1);
+            field_22373_q = block.getAOBrightness(blockAccess, i, j, k + 1);
+            field_22371_s = block.getAOBrightness(blockAccess, i + 1, j, k);
+            field_35935_Q = block.getRenderBrightness(blockAccess, i - 1, j, k);
+            field_35937_S = block.getRenderBrightness(blockAccess, i, j, k - 1);
+            field_35932_T = block.getRenderBrightness(blockAccess, i, j, k + 1);
+            field_35934_V = block.getRenderBrightness(blockAccess, i + 1, j, k);
+            if(canBlockGrassCNN || canBlockGrassNNC)
             {
-                j--;
-                field_22376_n = block.getAOBrightness(blockAccess, i - 1, j, k);
-                field_22374_p = block.getAOBrightness(blockAccess, i, j, k - 1);
-                field_22373_q = block.getAOBrightness(blockAccess, i, j, k + 1);
-                field_22371_s = block.getAOBrightness(blockAccess, i + 1, j, k);
-                field_35935_Q = block.getRenderBrightness(blockAccess, i - 1, j, k);
-                field_35937_S = block.getRenderBrightness(blockAccess, i, j, k - 1);
-                field_35932_T = block.getRenderBrightness(blockAccess, i, j, k + 1);
-                field_35934_V = block.getRenderBrightness(blockAccess, i + 1, j, k);
-                if(field_22361_ab || field_22357_ad)
-                {
-                    field_22377_m = block.getAOBrightness(blockAccess, i - 1, j, k - 1);;
-                    field_35936_P = block.getRenderBrightness(blockAccess, i - 1, j, k - 1);
-                } else
-                {
-                    field_22377_m = field_22376_n;
-                    field_35936_P = field_35935_Q;
-                }
-                if(field_22355_ae || field_22357_ad)
-                {
-                    field_22375_o = block.getAOBrightness(blockAccess, i - 1, j, k + 1);;
-                    field_35938_R = block.getRenderBrightness(blockAccess, i - 1, j, k + 1);
-                } else
-                {
-                    field_22375_o = field_22376_n;
-                    field_35938_R = field_35935_Q;
-                }
-                if(field_22361_ab || field_22359_ac)
-                {
-                    field_22372_r = block.getAOBrightness(blockAccess, i + 1, j, k - 1);;
-                    field_35931_U = block.getRenderBrightness(blockAccess, i + 1, j, k - 1);
-                } else
-                {
-                    field_22372_r = field_22371_s;
-                    field_35931_U = field_35934_V;
-                }
-                if(field_22355_ae || field_22359_ac)
-                {
-                    field_22370_t = block.getAOBrightness(blockAccess, i + 1, j, k + 1);;
-                    field_35933_W = block.getRenderBrightness(blockAccess, i + 1, j, k + 1);
-                } else
-                {
-                    field_22370_t = field_22371_s;
-                    field_35933_W = field_35934_V;
-                }
-                j++;
-                f7 = (field_22375_o + field_22376_n + field_22373_q + aoLightValueYNeg) / 4F;
-                f25 = (field_22373_q + aoLightValueYNeg + field_22370_t + field_22371_s) / 4F;
-                f19 = (aoLightValueYNeg + field_22374_p + field_22371_s + field_22372_r) / 4F;
-                f13 = (field_22376_n + field_22377_m + aoLightValueYNeg + field_22374_p) / 4F;
-                brightnessTopLeft = aoAverage(field_35938_R, field_35935_Q, field_35932_T, n1);
-                brightnessTopRight = aoAverage(field_35932_T, field_35933_W, field_35934_V, n1);
-                brightnessBottomRight = aoAverage(field_35937_S, field_35934_V, field_35931_U, n1);
-                brightnessBottomLeft = aoAverage(field_35935_Q, field_35936_P, field_35937_S, n1);
+                field_22377_m = block.getAOBrightness(blockAccess, i - 1, j, k - 1);
+                field_35936_P = block.getRenderBrightness(blockAccess, i - 1, j, k - 1);
             } else
             {
-                f7 = f13 = f19 = f25 = aoLightValueYNeg;
+                field_22377_m = field_22376_n;
+                field_35936_P = field_35935_Q;
             }
+            if(canBlockGrassCNP || canBlockGrassNNC)
+            {
+                field_22375_o = block.getAOBrightness(blockAccess, i - 1, j, k + 1);
+                field_35938_R = block.getRenderBrightness(blockAccess, i - 1, j, k + 1);
+            } else
+            {
+                field_22375_o = field_22376_n;
+                field_35938_R = field_35935_Q;
+            }
+            if(canBlockGrassCNN || canBlockGrassPNC)
+            {
+                field_22372_r = block.getAOBrightness(blockAccess, i + 1, j, k - 1);
+                field_35931_U = block.getRenderBrightness(blockAccess, i + 1, j, k - 1);
+            } else
+            {
+                field_22372_r = field_22371_s;
+                field_35931_U = field_35934_V;
+            }
+            if(canBlockGrassCNP || canBlockGrassPNC)
+            {
+                field_22370_t = block.getAOBrightness(blockAccess, i + 1, j, k + 1);
+                field_35933_W = block.getRenderBrightness(blockAccess, i + 1, j, k + 1);
+            } else
+            {
+                field_22370_t = field_22371_s;
+                field_35933_W = field_35934_V;
+            }
+            j++;
+            f7 = (field_22375_o + field_22376_n + field_22373_q + aoLightValueYNeg) / 4F;
+            f25 = (field_22373_q + aoLightValueYNeg + field_22370_t + field_22371_s) / 4F;
+            f19 = (aoLightValueYNeg + field_22374_p + field_22371_s + field_22372_r) / 4F;
+            f13 = (field_22376_n + field_22377_m + aoLightValueYNeg + field_22374_p) / 4F;
+            brightnessTopLeft = aoAverage(field_35938_R, field_35935_Q, field_35932_T, n1);
+            brightnessTopRight = aoAverage(field_35932_T, field_35933_W, field_35934_V, n1);
+            brightnessBottomRight = aoAverage(field_35937_S, field_35934_V, field_35931_U, n1);
+            brightnessBottomLeft = aoAverage(field_35935_Q, field_35936_P, field_35937_S, n1);
             setAOValues((flag1 ? f : 1.0F) * bottomFaceBrightness, (flag1 ? f1 : 1.0F) * bottomFaceBrightness, (flag1 ? f2 : 1.0F) * bottomFaceBrightness, f7, f13, f19, f25);
             renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
             if(block == BEBlocks.appleLeaves)
@@ -2349,66 +2244,60 @@ public class RenderBlocks
             float f14;
             float f20;
             float f26;
-            if(field_22352_G > 0)
+            j++;
+            field_22368_v = block.getAOBrightness(blockAccess, i - 1, j, k);
+            field_22364_z = block.getAOBrightness(blockAccess, i + 1, j, k);
+            field_22366_x = block.getAOBrightness(blockAccess, i, j, k - 1);
+            field_22362_A = block.getAOBrightness(blockAccess, i, j, k + 1);
+            field_35939_Y = block.getRenderBrightness(blockAccess, i - 1, j, k);
+            field_35949_ac = block.getRenderBrightness(blockAccess, i + 1, j, k);
+            field_35951_aa = block.getRenderBrightness(blockAccess, i, j, k - 1);
+            field_35950_ad = block.getRenderBrightness(blockAccess, i, j, k + 1);
+            if(canBlockGrassCPN || canBlockGrassNPC)
             {
-                j++;
-                field_22368_v = block.getAOBrightness(blockAccess, i - 1, j, k);;
-                field_22364_z = block.getAOBrightness(blockAccess, i + 1, j, k);;
-                field_22366_x = block.getAOBrightness(blockAccess, i, j, k - 1);;
-                field_22362_A = block.getAOBrightness(blockAccess, i, j, k + 1);;
-                field_35939_Y = block.getRenderBrightness(blockAccess, i - 1, j, k);
-                field_35949_ac = block.getRenderBrightness(blockAccess, i + 1, j, k);
-                field_35951_aa = block.getRenderBrightness(blockAccess, i, j, k - 1);
-                field_35950_ad = block.getRenderBrightness(blockAccess, i, j, k + 1);
-                if(field_22339_T || field_22337_V)
-                {
-                    field_22369_u = block.getAOBrightness(blockAccess, i - 1, j, k - 1);;
-                    field_35940_X = block.getRenderBrightness(blockAccess, i - 1, j, k - 1);
-                } else
-                {
-                    field_22369_u = field_22368_v;
-                    field_35940_X = field_35939_Y;
-                }
-                if(field_22339_T || field_22338_U)
-                {
-                    field_22365_y = block.getAOBrightness(blockAccess, i + 1, j, k - 1);;
-                    field_35952_ab = block.getRenderBrightness(blockAccess, i + 1, j, k - 1);
-                } else
-                {
-                    field_22365_y = field_22364_z;
-                    field_35952_ab = field_35949_ac;
-                }
-                if(field_22336_W || field_22337_V)
-                {
-                    field_22367_w = block.getAOBrightness(blockAccess, i - 1, j, k + 1);;
-                    field_35941_Z = block.getRenderBrightness(blockAccess, i - 1, j, k + 1);
-                } else
-                {
-                    field_22367_w = field_22368_v;
-                    field_35941_Z = field_35939_Y;
-                }
-                if(field_22336_W || field_22338_U)
-                {
-                    field_22360_B = block.getAOBrightness(blockAccess, i + 1, j, k + 1);;
-                    field_35955_ae = block.getRenderBrightness(blockAccess, i + 1, j, k + 1);
-                } else
-                {
-                    field_22360_B = field_22364_z;
-                    field_35955_ae = field_35949_ac;
-                }
-                j--;
-                f26 = (field_22367_w + field_22368_v + field_22362_A + aoLightValueYPos) / 4F;
-                f8 = (field_22362_A + aoLightValueYPos + field_22360_B + field_22364_z) / 4F;
-                f14 = (aoLightValueYPos + field_22366_x + field_22364_z + field_22365_y) / 4F;
-                f20 = (field_22368_v + field_22369_u + aoLightValueYPos + field_22366_x) / 4F;
-                brightnessTopRight = aoAverage(field_35941_Z, field_35939_Y, field_35950_ad, n4);
-                brightnessTopLeft = aoAverage(field_35950_ad, field_35955_ae, field_35949_ac, n4);
-                brightnessBottomLeft = aoAverage(field_35951_aa, field_35949_ac, field_35952_ab, n4);
-                brightnessBottomRight = aoAverage(field_35939_Y, field_35940_X, field_35951_aa, n4);
+                field_22369_u = block.getAOBrightness(blockAccess, i - 1, j, k - 1);
+                field_35940_X = block.getRenderBrightness(blockAccess, i - 1, j, k - 1);
             } else
             {
-                f8 = f14 = f20 = f26 = aoLightValueYPos;
+                field_22369_u = field_22368_v;
+                field_35940_X = field_35939_Y;
             }
+            if(canBlockGrassCPN || canBlockGrassPPC)
+            {
+                field_22365_y = block.getAOBrightness(blockAccess, i + 1, j, k - 1);
+                field_35952_ab = block.getRenderBrightness(blockAccess, i + 1, j, k - 1);
+            } else
+            {
+                field_22365_y = field_22364_z;
+                field_35952_ab = field_35949_ac;
+            }
+            if(canBlockGrassCPP || canBlockGrassNPC)
+            {
+                field_22367_w = block.getAOBrightness(blockAccess, i - 1, j, k + 1);
+                field_35941_Z = block.getRenderBrightness(blockAccess, i - 1, j, k + 1);
+            } else
+            {
+                field_22367_w = field_22368_v;
+                field_35941_Z = field_35939_Y;
+            }
+            if(canBlockGrassCPP || canBlockGrassPPC)
+            {
+                field_22360_B = block.getAOBrightness(blockAccess, i + 1, j, k + 1);
+                field_35955_ae = block.getRenderBrightness(blockAccess, i + 1, j, k + 1);
+            } else
+            {
+                field_22360_B = field_22364_z;
+                field_35955_ae = field_35949_ac;
+            }
+            j--;
+            f26 = (field_22367_w + field_22368_v + field_22362_A + aoLightValueYPos) / 4F;
+            f8 = (field_22362_A + aoLightValueYPos + field_22360_B + field_22364_z) / 4F;
+            f14 = (aoLightValueYPos + field_22366_x + field_22364_z + field_22365_y) / 4F;
+            f20 = (field_22368_v + field_22369_u + aoLightValueYPos + field_22366_x) / 4F;
+            brightnessTopRight = aoAverage(field_35941_Z, field_35939_Y, field_35950_ad, n4);
+            brightnessTopLeft = aoAverage(field_35950_ad, field_35955_ae, field_35949_ac, n4);
+            brightnessBottomLeft = aoAverage(field_35951_aa, field_35949_ac, field_35952_ab, n4);
+            brightnessBottomRight = aoAverage(field_35939_Y, field_35940_X, field_35951_aa, n4);
             setAOValues(flag2 ? f : topFaceBrightness, flag2 ? f1 : topFaceBrightness, flag2 ? f2 : topFaceBrightness, f8, f14, f20, f26);
             int l = block.getBlockTexture(blockAccess, i, j, k, 1);
             renderTopFace(block, i, j, k, l);
@@ -2425,66 +2314,60 @@ public class RenderBlocks
             float f15;
             float f21;
             float f27;
-            if(field_22352_G > 0)
+            k--;
+            field_22358_C = block.getAOBrightness(blockAccess, i - 1, j, k);
+            field_22374_p = block.getAOBrightness(blockAccess, i, j - 1, k);
+            field_22366_x = block.getAOBrightness(blockAccess, i, j + 1, k);
+            field_22356_D = block.getAOBrightness(blockAccess, i + 1, j, k);
+            field_35956_af = block.getRenderBrightness(blockAccess, i - 1, j, k);
+            field_35937_S = block.getRenderBrightness(blockAccess, i, j - 1, k);
+            field_35951_aa = block.getRenderBrightness(blockAccess, i, j + 1, k);
+            field_35953_ag = block.getRenderBrightness(blockAccess, i + 1, j, k);
+            if(canBlockGrassNCN || canBlockGrassCNN)
             {
-                k--;
-                field_22358_C = block.getAOBrightness(blockAccess, i - 1, j, k);
-                field_22374_p = block.getAOBrightness(blockAccess, i, j - 1, k);
-                field_22366_x = block.getAOBrightness(blockAccess, i, j + 1, k);
-                field_22356_D = block.getAOBrightness(blockAccess, i + 1, j, k);
-                field_35956_af = block.getRenderBrightness(blockAccess, i - 1, j, k);
-                field_35937_S = block.getRenderBrightness(blockAccess, i, j - 1, k);
-                field_35951_aa = block.getRenderBrightness(blockAccess, i, j + 1, k);
-                field_35953_ag = block.getRenderBrightness(blockAccess, i + 1, j, k);
-                if(field_22335_X || field_22361_ab)
-                {
-                    field_22377_m = block.getAOBrightness(blockAccess, i - 1, j - 1, k);
-                    field_35936_P = block.getRenderBrightness(blockAccess, i - 1, j - 1, k);
-                } else
-                {
-                    field_22377_m = field_22358_C;
-                    field_35936_P = field_35956_af;
-                }
-                if(field_22335_X || field_22339_T)
-                {
-                    field_22369_u = block.getAOBrightness(blockAccess, i - 1, j + 1, k);
-                    field_35940_X = block.getRenderBrightness(blockAccess, i - 1, j + 1, k);
-                } else
-                {
-                    field_22369_u = field_22358_C;
-                    field_35940_X = field_35956_af;
-                }
-                if(field_22363_aa || field_22361_ab)
-                {
-                    field_22372_r = block.getAOBrightness(blockAccess, i + 1, j - 1, k);
-                    field_35931_U = block.getRenderBrightness(blockAccess, i + 1, j - 1, k);
-                } else
-                {
-                    field_22372_r = field_22356_D;
-                    field_35931_U = field_35953_ag;
-                }
-                if(field_22363_aa || field_22339_T)
-                {
-                    field_22365_y = block.getAOBrightness(blockAccess, i + 1, j + 1, k);
-                    field_35952_ab = block.getRenderBrightness(blockAccess, i + 1, j + 1, k);
-                } else
-                {
-                    field_22365_y = field_22356_D;
-                    field_35952_ab = field_35953_ag;
-                }
-                k++;
-                f9 = (field_22358_C + field_22369_u + aoLightValueZNeg + field_22366_x) / 4F;
-                f15 = (aoLightValueZNeg + field_22366_x + field_22356_D + field_22365_y) / 4F;
-                f21 = (field_22374_p + aoLightValueZNeg + field_22372_r + field_22356_D) / 4F;
-                f27 = (field_22377_m + field_22358_C + field_22374_p + aoLightValueZNeg) / 4F;
-                brightnessTopLeft = aoAverage(field_35956_af, field_35940_X, field_35951_aa, n2);
-                brightnessBottomLeft = aoAverage(field_35951_aa, field_35953_ag, field_35952_ab, n2);
-                brightnessBottomRight = aoAverage(field_35937_S, field_35931_U, field_35953_ag, n2);
-                brightnessTopRight = aoAverage(field_35936_P, field_35956_af, field_35937_S, n2);
+                field_22377_m = block.getAOBrightness(blockAccess, i - 1, j - 1, k);
+                field_35936_P = block.getRenderBrightness(blockAccess, i - 1, j - 1, k);
             } else
             {
-                f9 = f15 = f21 = f27 = aoLightValueZNeg;
+                field_22377_m = field_22358_C;
+                field_35936_P = field_35956_af;
             }
+            if(canBlockGrassNCN || canBlockGrassCPN)
+            {
+                field_22369_u = block.getAOBrightness(blockAccess, i - 1, j + 1, k);
+                field_35940_X = block.getRenderBrightness(blockAccess, i - 1, j + 1, k);
+            } else
+            {
+                field_22369_u = field_22358_C;
+                field_35940_X = field_35956_af;
+            }
+            if(canBlockGrassPCN || canBlockGrassCNN)
+            {
+                field_22372_r = block.getAOBrightness(blockAccess, i + 1, j - 1, k);
+                field_35931_U = block.getRenderBrightness(blockAccess, i + 1, j - 1, k);
+            } else
+            {
+                field_22372_r = field_22356_D;
+                field_35931_U = field_35953_ag;
+            }
+            if(canBlockGrassPCN || canBlockGrassCPN)
+            {
+                field_22365_y = block.getAOBrightness(blockAccess, i + 1, j + 1, k);
+                field_35952_ab = block.getRenderBrightness(blockAccess, i + 1, j + 1, k);
+            } else
+            {
+                field_22365_y = field_22356_D;
+                field_35952_ab = field_35953_ag;
+            }
+            k++;
+            f9 = (field_22358_C + field_22369_u + aoLightValueZNeg + field_22366_x) / 4F;
+            f15 = (aoLightValueZNeg + field_22366_x + field_22356_D + field_22365_y) / 4F;
+            f21 = (field_22374_p + aoLightValueZNeg + field_22372_r + field_22356_D) / 4F;
+            f27 = (field_22377_m + field_22358_C + field_22374_p + aoLightValueZNeg) / 4F;
+            brightnessTopLeft = aoAverage(field_35956_af, field_35940_X, field_35951_aa, n2);
+            brightnessBottomLeft = aoAverage(field_35951_aa, field_35953_ag, field_35952_ab, n2);
+            brightnessBottomRight = aoAverage(field_35937_S, field_35931_U, field_35953_ag, n2);
+            brightnessTopRight = aoAverage(field_35936_P, field_35956_af, field_35937_S, n2);
             setAOValues((flag3 ? f : 1.0F) * eastWestFaceBrightness, (flag3 ? f1 : 1.0F) * eastWestFaceBrightness, (flag3 ? f2 : 1.0F) * eastWestFaceBrightness, f9, f15, f21, f27);
             int i1 = block.getBlockTexture(blockAccess, i, j, k, 2);
             if(grassSide && block == Block.grass)
@@ -2499,17 +2382,17 @@ public class RenderBlocks
             			i1 = 66;
             		}
             	}else
-            		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i, j-1, k-1) == Block.grass.blockID)
-            		{
-                    	aoMultRGB(f, f1, f2);
-            			if(i1 != 3)
-            			{
-            				i1 = 38;
-            			}else
-            			{
-            				i1 = 0;
-            			}
-            		}
+        		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i, j-1, k-1) == Block.grass.blockID)
+        		{
+                	aoMultRGB(f, f1, f2);
+        			if(i1 != 3)
+        			{
+        				i1 = 38;
+        			}else
+        			{
+        				i1 = 0;
+        			}
+        		}
             }
             renderEastFace(block, i, j, k, i1);
             if(block == Block.grass && (fancyGrass || cfgGrassFix) && (i1 != 38 && i1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
@@ -2530,66 +2413,60 @@ public class RenderBlocks
             float f16;
             float f22;
             float f28;
-            if(field_22352_G > 0)
+            k++;
+            field_22354_E = block.getAOBrightness(blockAccess, i - 1, j, k);
+            field_22353_F = block.getAOBrightness(blockAccess, i + 1, j, k);
+            field_22373_q = block.getAOBrightness(blockAccess, i, j - 1, k);
+            field_22362_A = block.getAOBrightness(blockAccess, i, j + 1, k);
+            field_35954_ah = block.getRenderBrightness(blockAccess, i - 1, j, k);
+            field_35945_ai = block.getRenderBrightness(blockAccess, i + 1, j, k);
+            field_35932_T = block.getRenderBrightness(blockAccess, i, j - 1, k);
+            field_35950_ad = block.getRenderBrightness(blockAccess, i, j + 1, k);
+            if(canBlockGrassNCP || canBlockGrassCNP)
             {
-                k++;
-                field_22354_E = block.getAOBrightness(blockAccess, i - 1, j, k);
-                field_22353_F = block.getAOBrightness(blockAccess, i + 1, j, k);
-                field_22373_q = block.getAOBrightness(blockAccess, i, j - 1, k);
-                field_22362_A = block.getAOBrightness(blockAccess, i, j + 1, k);
-                field_35954_ah = block.getRenderBrightness(blockAccess, i - 1, j, k);
-                field_35945_ai = block.getRenderBrightness(blockAccess, i + 1, j, k);
-                field_35932_T = block.getRenderBrightness(blockAccess, i, j - 1, k);
-                field_35950_ad = block.getRenderBrightness(blockAccess, i, j + 1, k);
-                if(field_22333_Z || field_22355_ae)
-                {
-                    field_22375_o = block.getAOBrightness(blockAccess, i - 1, j - 1, k);
-                    field_35938_R = block.getRenderBrightness(blockAccess, i - 1, j - 1, k);
-                } else
-                {
-                    field_22375_o = field_22354_E;
-                    field_35938_R = field_35954_ah;
-                }
-                if(field_22333_Z || field_22336_W)
-                {
-                    field_22367_w = block.getAOBrightness(blockAccess, i - 1, j + 1, k);
-                    field_35941_Z = block.getRenderBrightness(blockAccess, i - 1, j + 1, k);
-                } else
-                {
-                    field_22367_w = field_22354_E;
-                    field_35941_Z = field_35954_ah;
-                }
-                if(field_22334_Y || field_22355_ae)
-                {
-                    field_22370_t = block.getAOBrightness(blockAccess, i + 1, j - 1, k);
-                    field_35933_W = block.getRenderBrightness(blockAccess, i + 1, j - 1, k);
-                } else
-                {
-                    field_22370_t = field_22353_F;
-                    field_35933_W = field_35945_ai;
-                }
-                if(field_22334_Y || field_22336_W)
-                {
-                    field_22360_B = block.getAOBrightness(blockAccess, i + 1, j + 1, k);
-                    field_35955_ae = block.getRenderBrightness(blockAccess, i + 1, j + 1, k);
-                } else
-                {
-                    field_22360_B = field_22353_F;
-                    field_35955_ae = field_35945_ai;
-                }
-                k--;
-                f10 = (field_22354_E + field_22367_w + aoLightValueZPos + field_22362_A) / 4F;
-                f28 = (aoLightValueZPos + field_22362_A + field_22353_F + field_22360_B) / 4F;
-                f22 = (field_22373_q + aoLightValueZPos + field_22370_t + field_22353_F) / 4F;
-                f16 = (field_22375_o + field_22354_E + field_22373_q + aoLightValueZPos) / 4F;
-                brightnessTopLeft = aoAverage(field_35954_ah, field_35941_Z, field_35950_ad, n5);
-                brightnessTopRight = aoAverage(field_35950_ad, field_35945_ai, field_35955_ae, n5);
-                brightnessBottomRight = aoAverage(field_35932_T, field_35933_W, field_35945_ai, n5);
-                brightnessBottomLeft = aoAverage(field_35938_R, field_35954_ah, field_35932_T, n5);
+                field_22375_o = block.getAOBrightness(blockAccess, i - 1, j - 1, k);
+                field_35938_R = block.getRenderBrightness(blockAccess, i - 1, j - 1, k);
             } else
             {
-                f10 = f16 = f22 = f28 = aoLightValueZPos;
+                field_22375_o = field_22354_E;
+                field_35938_R = field_35954_ah;
             }
+            if(canBlockGrassNCP || canBlockGrassCPP)
+            {
+                field_22367_w = block.getAOBrightness(blockAccess, i - 1, j + 1, k);
+                field_35941_Z = block.getRenderBrightness(blockAccess, i - 1, j + 1, k);
+            } else
+            {
+                field_22367_w = field_22354_E;
+                field_35941_Z = field_35954_ah;
+            }
+            if(canBlockGrassPCP || canBlockGrassCNP)
+            {
+                field_22370_t = block.getAOBrightness(blockAccess, i + 1, j - 1, k);
+                field_35933_W = block.getRenderBrightness(blockAccess, i + 1, j - 1, k);
+            } else
+            {
+                field_22370_t = field_22353_F;
+                field_35933_W = field_35945_ai;
+            }
+            if(canBlockGrassPCP || canBlockGrassCPP)
+            {
+                field_22360_B = block.getAOBrightness(blockAccess, i + 1, j + 1, k);
+                field_35955_ae = block.getRenderBrightness(blockAccess, i + 1, j + 1, k);
+            } else
+            {
+                field_22360_B = field_22353_F;
+                field_35955_ae = field_35945_ai;
+            }
+            k--;
+            f10 = (field_22354_E + field_22367_w + aoLightValueZPos + field_22362_A) / 4F;
+            f28 = (aoLightValueZPos + field_22362_A + field_22353_F + field_22360_B) / 4F;
+            f22 = (field_22373_q + aoLightValueZPos + field_22370_t + field_22353_F) / 4F;
+            f16 = (field_22375_o + field_22354_E + field_22373_q + aoLightValueZPos) / 4F;
+            brightnessTopLeft = aoAverage(field_35954_ah, field_35941_Z, field_35950_ad, n5);
+            brightnessTopRight = aoAverage(field_35950_ad, field_35945_ai, field_35955_ae, n5);
+            brightnessBottomRight = aoAverage(field_35932_T, field_35933_W, field_35945_ai, n5);
+            brightnessBottomLeft = aoAverage(field_35938_R, field_35954_ah, field_35932_T, n5);
             setAOValues((flag4 ? f : 1.0F) * eastWestFaceBrightness, (flag4 ? f1 : 1.0F) * eastWestFaceBrightness, (flag4 ? f2 : 1.0F) * eastWestFaceBrightness, f10, f16, f22, f28);
             int j1 = block.getBlockTexture(blockAccess, i, j, k, 3);
             if(grassSide && block == Block.grass)
@@ -2604,17 +2481,17 @@ public class RenderBlocks
             			j1 = 66;
             		}
             	}else
-            		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i, j-1, k+1) == Block.grass.blockID)
-            		{
-                    	aoMultRGB(f, f1, f2);
-            			if(j1 != 3)
-            			{
-            				j1 = 38;
-            			}else
-            			{
-            				j1 = 0;
-            			}
-            		}
+        		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i, j-1, k+1) == Block.grass.blockID)
+        		{
+                	aoMultRGB(f, f1, f2);
+        			if(j1 != 3)
+        			{
+        				j1 = 38;
+        			}else
+        			{
+        				j1 = 0;
+        			}
+        		}
             }
             renderWestFace(block, i, j, k, j1);
             if(block == Block.grass && (fancyGrass || cfgGrassFix) && (j1 != 38 && j1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
@@ -2635,66 +2512,60 @@ public class RenderBlocks
             float f17;
             float f23;
             float f29;
-            if(field_22352_G > 0)
+            i--;
+            field_22376_n = block.getAOBrightness(blockAccess, i, j - 1, k);
+            field_22358_C = block.getAOBrightness(blockAccess, i, j, k - 1);
+            field_22354_E = block.getAOBrightness(blockAccess, i, j, k + 1);
+            field_22368_v = block.getAOBrightness(blockAccess, i, j + 1, k);
+            field_35935_Q = block.getRenderBrightness(blockAccess, i, j - 1, k);
+            field_35956_af = block.getRenderBrightness(blockAccess, i, j, k - 1);
+            field_35954_ah = block.getRenderBrightness(blockAccess, i, j, k + 1);
+            field_35939_Y = block.getRenderBrightness(blockAccess, i, j + 1, k);
+            if(canBlockGrassNCN || canBlockGrassNNC)
             {
-                i--;
-                field_22376_n = block.getAOBrightness(blockAccess, i, j - 1, k);;
-                field_22358_C = block.getAOBrightness(blockAccess, i, j, k - 1);;
-                field_22354_E = block.getAOBrightness(blockAccess, i, j, k + 1);;
-                field_22368_v = block.getAOBrightness(blockAccess, i, j + 1, k);;
-                field_35935_Q = block.getRenderBrightness(blockAccess, i, j - 1, k);
-                field_35956_af = block.getRenderBrightness(blockAccess, i, j, k - 1);
-                field_35954_ah = block.getRenderBrightness(blockAccess, i, j, k + 1);
-                field_35939_Y = block.getRenderBrightness(blockAccess, i, j + 1, k);
-                if(field_22335_X || field_22357_ad)
-                {
-                    field_22377_m = block.getAOBrightness(blockAccess, i, j - 1, k - 1);;
-                    field_35936_P = block.getRenderBrightness(blockAccess, i, j - 1, k - 1);
-                } else
-                {
-                    field_22377_m = field_22358_C;
-                    field_35936_P = field_35956_af;
-                }
-                if(field_22333_Z || field_22357_ad)
-                {
-                    field_22375_o = block.getAOBrightness(blockAccess, i, j - 1, k + 1);;
-                    field_35938_R = block.getRenderBrightness(blockAccess, i, j - 1, k + 1);
-                } else
-                {
-                    field_22375_o = field_22354_E;
-                    field_35938_R = field_35954_ah;
-                }
-                if(field_22335_X || field_22337_V)
-                {
-                    field_22369_u = block.getAOBrightness(blockAccess, i, j + 1, k - 1);;
-                    field_35940_X = block.getRenderBrightness(blockAccess, i, j + 1, k - 1);
-                } else
-                {
-                    field_22369_u = field_22358_C;
-                    field_35940_X = field_35956_af;
-                }
-                if(field_22333_Z || field_22337_V)
-                {
-                    field_22367_w = block.getAOBrightness(blockAccess, i, j + 1, k + 1);;
-                    field_35941_Z = block.getRenderBrightness(blockAccess, i, j + 1, k + 1);
-                } else
-                {
-                    field_22367_w = field_22354_E;
-                    field_35941_Z = field_35954_ah;
-                }
-                i++;
-                f29 = (field_22376_n + field_22375_o + aoLightValueXNeg + field_22354_E) / 4F;
-                f11 = (aoLightValueXNeg + field_22354_E + field_22368_v + field_22367_w) / 4F;
-                f17 = (field_22358_C + aoLightValueXNeg + field_22369_u + field_22368_v) / 4F;
-                f23 = (field_22377_m + field_22376_n + field_22358_C + aoLightValueXNeg) / 4F;
-                brightnessTopRight = aoAverage(field_35935_Q, field_35938_R, field_35954_ah, n0);
-                brightnessTopLeft = aoAverage(field_35954_ah, field_35939_Y, field_35941_Z, n0);
-                brightnessBottomLeft = aoAverage(field_35956_af, field_35940_X, field_35939_Y, n0);
-                brightnessBottomRight = aoAverage(field_35936_P, field_35935_Q, field_35956_af, n0);
+                field_22377_m = block.getAOBrightness(blockAccess, i, j - 1, k - 1);
+                field_35936_P = block.getRenderBrightness(blockAccess, i, j - 1, k - 1);
             } else
             {
-                f11 = f17 = f23 = f29 = aoLightValueXNeg;
+                field_22377_m = field_22358_C;
+                field_35936_P = field_35956_af;
             }
+            if(canBlockGrassNCP || canBlockGrassNNC)
+            {
+                field_22375_o = block.getAOBrightness(blockAccess, i, j - 1, k + 1);
+                field_35938_R = block.getRenderBrightness(blockAccess, i, j - 1, k + 1);
+            } else
+            {
+                field_22375_o = field_22354_E;
+                field_35938_R = field_35954_ah;
+            }
+            if(canBlockGrassNCN || canBlockGrassNPC)
+            {
+                field_22369_u = block.getAOBrightness(blockAccess, i, j + 1, k - 1);
+                field_35940_X = block.getRenderBrightness(blockAccess, i, j + 1, k - 1);
+            } else
+            {
+                field_22369_u = field_22358_C;
+                field_35940_X = field_35956_af;
+            }
+            if(canBlockGrassNCP || canBlockGrassNPC)
+            {
+                field_22367_w = block.getAOBrightness(blockAccess, i, j + 1, k + 1);
+                field_35941_Z = block.getRenderBrightness(blockAccess, i, j + 1, k + 1);
+            } else
+            {
+                field_22367_w = field_22354_E;
+                field_35941_Z = field_35954_ah;
+            }
+            i++;
+            f29 = (field_22376_n + field_22375_o + aoLightValueXNeg + field_22354_E) / 4F;
+            f11 = (aoLightValueXNeg + field_22354_E + field_22368_v + field_22367_w) / 4F;
+            f17 = (field_22358_C + aoLightValueXNeg + field_22369_u + field_22368_v) / 4F;
+            f23 = (field_22377_m + field_22376_n + field_22358_C + aoLightValueXNeg) / 4F;
+            brightnessTopRight = aoAverage(field_35935_Q, field_35938_R, field_35954_ah, n0);
+            brightnessTopLeft = aoAverage(field_35954_ah, field_35939_Y, field_35941_Z, n0);
+            brightnessBottomLeft = aoAverage(field_35956_af, field_35940_X, field_35939_Y, n0);
+            brightnessBottomRight = aoAverage(field_35936_P, field_35935_Q, field_35956_af, n0);
             setAOValues((flag5 ? f : 1.0F) * northSouthFaceBrightness, (flag5 ? f1 : 1.0F) * northSouthFaceBrightness, (flag5 ? f2 : 1.0F) * northSouthFaceBrightness, f11, f17, f23, f29);
             int k1 = block.getBlockTexture(blockAccess, i, j, k, 4);
             
@@ -2710,17 +2581,17 @@ public class RenderBlocks
             			k1 = 66;
             		}
             	}else
-            		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i-1, j-1, k) == Block.grass.blockID)
-            		{
-                    	aoMultRGB(f, f1, f2);
-            			if(k1 != 3)
-            			{
-            				k1 = 38;
-            			}else
-            			{
-            				k1 = 0;
-            			}
-            		}
+        		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i-1, j-1, k) == Block.grass.blockID)
+        		{
+                	aoMultRGB(f, f1, f2);
+        			if(k1 != 3)
+        			{
+        				k1 = 38;
+        			}else
+        			{
+        				k1 = 0;
+        			}
+        		}
             }
             renderNorthFace(block, i, j, k, k1);
             if(block == Block.grass && (fancyGrass || cfgGrassFix) && (k1 != 38 && k1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
@@ -2741,66 +2612,60 @@ public class RenderBlocks
             float f18;
             float f24;
             float f30;
-            if(field_22352_G > 0)
+            i++;
+            field_22371_s = block.getAOBrightness(blockAccess, i, j - 1, k);
+            field_22356_D = block.getAOBrightness(blockAccess, i, j, k - 1);
+            field_22353_F = block.getAOBrightness(blockAccess, i, j, k + 1);
+            field_22364_z = block.getAOBrightness(blockAccess, i, j + 1, k);
+            field_35934_V = block.getRenderBrightness(blockAccess, i, j - 1, k);
+            field_35953_ag = block.getRenderBrightness(blockAccess, i, j, k - 1);
+            field_35945_ai = block.getRenderBrightness(blockAccess, i, j, k + 1);
+            field_35949_ac = block.getRenderBrightness(blockAccess, i, j + 1, k);
+            if(canBlockGrassPNC || canBlockGrassPCN)
             {
-                i++;
-                field_22371_s = block.getAOBrightness(blockAccess, i, j - 1, k);;
-                field_22356_D = block.getAOBrightness(blockAccess, i, j, k - 1);;
-                field_22353_F = block.getAOBrightness(blockAccess, i, j, k + 1);;
-                field_22364_z = block.getAOBrightness(blockAccess, i, j + 1, k);;
-                field_35934_V = block.getRenderBrightness(blockAccess, i, j - 1, k);
-                field_35953_ag = block.getRenderBrightness(blockAccess, i, j, k - 1);
-                field_35945_ai = block.getRenderBrightness(blockAccess, i, j, k + 1);
-                field_35949_ac = block.getRenderBrightness(blockAccess, i, j + 1, k);
-                if(field_22359_ac || field_22363_aa)
-                {
-                    field_22372_r = block.getAOBrightness(blockAccess, i, j - 1, k - 1);;
-                    field_35931_U = block.getRenderBrightness(blockAccess, i, j - 1, k - 1);
-                } else
-                {
-                    field_22372_r = field_22356_D;
-                    field_35931_U = field_35953_ag;
-                }
-                if(field_22359_ac || field_22334_Y)
-                {
-                    field_22370_t = block.getAOBrightness(blockAccess, i, j - 1, k + 1);;
-                    field_35933_W = block.getRenderBrightness(blockAccess, i, j - 1, k + 1);
-                } else
-                {
-                    field_22370_t = field_22353_F;
-                    field_35933_W = field_35945_ai;
-                }
-                if(field_22338_U || field_22363_aa)
-                {
-                    field_22365_y = block.getAOBrightness(blockAccess, i, j + 1, k - 1);;
-                    field_35952_ab = block.getRenderBrightness(blockAccess, i, j + 1, k - 1);
-                } else
-                {
-                    field_22365_y = field_22356_D;
-                    field_35952_ab = field_35953_ag;
-                }
-                if(field_22338_U || field_22334_Y)
-                {
-                    field_22360_B = block.getAOBrightness(blockAccess, i, j + 1, k + 1);;
-                    field_35955_ae = block.getRenderBrightness(blockAccess, i, j + 1, k + 1);
-                } else
-                {
-                    field_22360_B = field_22353_F;
-                    field_35955_ae = field_35945_ai;
-                }
-                i--;
-                f12 = (field_22371_s + field_22370_t + aoLightValueXPos + field_22353_F) / 4F;
-                f30 = (aoLightValueXPos + field_22353_F + field_22364_z + field_22360_B) / 4F;
-                f24 = (field_22356_D + aoLightValueXPos + field_22365_y + field_22364_z) / 4F;
-                f18 = (field_22372_r + field_22371_s + field_22356_D + aoLightValueXPos) / 4F;
-                brightnessTopLeft = aoAverage(field_35934_V, field_35933_W, field_35945_ai, n3);
-                brightnessTopRight = aoAverage(field_35945_ai, field_35949_ac, field_35955_ae, n3);
-                brightnessBottomRight = aoAverage(field_35953_ag, field_35952_ab, field_35949_ac, n3);
-                brightnessBottomLeft = aoAverage(field_35931_U, field_35934_V, field_35953_ag, n3);
+                field_22372_r = block.getAOBrightness(blockAccess, i, j - 1, k - 1);
+                field_35931_U = block.getRenderBrightness(blockAccess, i, j - 1, k - 1);
             } else
             {
-                f12 = f18 = f24 = f30 = aoLightValueXPos;
+                field_22372_r = field_22356_D;
+                field_35931_U = field_35953_ag;
             }
+            if(canBlockGrassPNC || canBlockGrassPCP)
+            {
+                field_22370_t = block.getAOBrightness(blockAccess, i, j - 1, k + 1);
+                field_35933_W = block.getRenderBrightness(blockAccess, i, j - 1, k + 1);
+            } else
+            {
+                field_22370_t = field_22353_F;
+                field_35933_W = field_35945_ai;
+            }
+            if(canBlockGrassPPC || canBlockGrassPCN)
+            {
+                field_22365_y = block.getAOBrightness(blockAccess, i, j + 1, k - 1);
+                field_35952_ab = block.getRenderBrightness(blockAccess, i, j + 1, k - 1);
+            } else
+            {
+                field_22365_y = field_22356_D;
+                field_35952_ab = field_35953_ag;
+            }
+            if(canBlockGrassPPC || canBlockGrassPCP)
+            {
+                field_22360_B = block.getAOBrightness(blockAccess, i, j + 1, k + 1);
+                field_35955_ae = block.getRenderBrightness(blockAccess, i, j + 1, k + 1);
+            } else
+            {
+                field_22360_B = field_22353_F;
+                field_35955_ae = field_35945_ai;
+            }
+            i--;
+            f12 = (field_22371_s + field_22370_t + aoLightValueXPos + field_22353_F) / 4F;
+            f30 = (aoLightValueXPos + field_22353_F + field_22364_z + field_22360_B) / 4F;
+            f24 = (field_22356_D + aoLightValueXPos + field_22365_y + field_22364_z) / 4F;
+            f18 = (field_22372_r + field_22371_s + field_22356_D + aoLightValueXPos) / 4F;
+            brightnessTopLeft = aoAverage(field_35934_V, field_35933_W, field_35945_ai, n3);
+            brightnessTopRight = aoAverage(field_35945_ai, field_35949_ac, field_35955_ae, n3);
+            brightnessBottomRight = aoAverage(field_35953_ag, field_35952_ab, field_35949_ac, n3);
+            brightnessBottomLeft = aoAverage(field_35931_U, field_35934_V, field_35953_ag, n3);
             setAOValues((flag6 ? f : 1.0F) * northSouthFaceBrightness, (flag6 ? f1 : 1.0F) * northSouthFaceBrightness, (flag6 ? f2 : 1.0F) * northSouthFaceBrightness, f12, f18, f24, f30);
             int l1 = block.getBlockTexture(blockAccess, i, j, k, 5);
             if(grassSide && block == Block.grass)
@@ -2815,17 +2680,17 @@ public class RenderBlocks
             			l1 = 66;
             		}
             	}else
-            		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i+1, j-1, k) == Block.grass.blockID)
-            		{
-                    	aoMultRGB(f, f1, f2);
-            			if(l1 != 3)
-            			{
-            				l1 = 38;
-            			}else
-            			{
-            				l1 = 0;
-            			}
-            		}
+        		if(((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && blockAccess.getBlockId(i+1, j-1, k) == Block.grass.blockID)
+        		{
+                	aoMultRGB(f, f1, f2);
+        			if(l1 != 3)
+        			{
+        				l1 = 38;
+        			}else
+        			{
+        				l1 = 0;
+        			}
+        		}
             }
             renderSouthFace(block, i, j, k, l1);
             if(block == Block.grass && (fancyGrass || cfgGrassFix) && (l1 != 38 && l1 != 0) && ((BlockGrass)block).isBlockSideGrass(blockAccess, i, j, k) && overrideBlockTexture < 0)
@@ -2903,7 +2768,6 @@ public class RenderBlocks
     public boolean renderStandardBlockWithColorMultiplier(Block block, int i, int j, int k, float f, float f1, float f2)
     {
         enableAO = false;
-        Tessellator tessellator = Tessellator.instance;
         boolean flag = false;
         float f3 = 0.5F;
         float f4 = 1.0F;
@@ -3180,12 +3044,11 @@ public class RenderBlocks
             f1 = f4;
             f2 = f5;
         }
-        return func_1230_b(block, i, j, k, f, f1, f2);
+        return renderBlockCactus_do(block, i, j, k, f, f1, f2);
     }
 
-    public boolean func_1230_b(Block block, int i, int j, int k, float f, float f1, float f2)
+    public boolean renderBlockCactus_do(Block block, int i, int j, int k, float f, float f1, float f2)
     {
-        Tessellator tessellator = Tessellator.instance;
         boolean flag = false;
         float f3 = 0.5F;
         float f4 = 1.0F;
@@ -3396,7 +3259,6 @@ public class RenderBlocks
 
     public boolean renderBlockDoor(Block block, int i, int j, int k)
     {
-        Tessellator tessellator = Tessellator.instance;
         boolean flag = false;
         float f = bottomFaceBrightness;
         float f1 = topFaceBrightness;
@@ -3461,7 +3323,6 @@ public class RenderBlocks
     public void renderBottomFace(Block block, double d, double d1, double d2, 
             int i)
     {
-        Tessellator tessellator = Tessellator.instance;
         if(overrideBlockTexture >= 0)
         {
             i = overrideBlockTexture;
@@ -3576,7 +3437,6 @@ public class RenderBlocks
     public void renderTopFace(Block block, double d, double d1, double d2, 
             int i)
     {
-        Tessellator tessellator = Tessellator.instance;
         if(overrideBlockTexture >= 0)
         {
             i = overrideBlockTexture;
@@ -3673,7 +3533,6 @@ public class RenderBlocks
     public void renderEastFace(Block block, double d, double d1, double d2, 
             int i)
     {
-        Tessellator tessellator = Tessellator.instance;
         if(overrideBlockTexture >= 0)
         {
             i = overrideBlockTexture;
@@ -3784,7 +3643,6 @@ public class RenderBlocks
     public void renderWestFace(Block block, double d, double d1, double d2, 
             int i)
     {
-        Tessellator tessellator = Tessellator.instance;
         if(overrideBlockTexture >= 0)
         {
             i = overrideBlockTexture;
@@ -3887,7 +3745,6 @@ public class RenderBlocks
     public void renderNorthFace(Block block, double d, double d1, double d2, 
             int i)
     {
-        Tessellator tessellator = Tessellator.instance;
         if(overrideBlockTexture >= 0)
         {
             i = overrideBlockTexture;
@@ -3990,7 +3847,6 @@ public class RenderBlocks
     public void renderSouthFace(Block block, double d, double d1, double d2, 
             int i)
     {
-        Tessellator tessellator = Tessellator.instance;
         if(overrideBlockTexture >= 0)
         {
             i = overrideBlockTexture;
@@ -4100,8 +3956,7 @@ public class RenderBlocks
 
     public void renderBlockOnInventory(Block block, int i, float f)
     {
-        Tessellator tessellator = Tessellator.instance;
-        if(field_31088_b)
+        if(useInventoryTint)
         {
             int j = block.getRenderColor(i);
             float f1 = (float)(j >> 16 & 0xff) / 255F;
@@ -4383,47 +4238,31 @@ public class RenderBlocks
             {
             	if(i > 7)
             	{
-            		if(i1 == 0)
+            		switch(i1)
             		{
-            			block.setBlockBounds(0.0625F, 0F, 0.0625F, 0.1875F, 0.625F, 0.1875F);
-            		}
-            		if(i1 == 1)
-            		{
-            			block.setBlockBounds(0.8125F, 0F, 0.0625F, 0.9375F, 0.625F, 0.1875F);
-            		}
-            		if(i1 == 2)
-            		{
-            			block.setBlockBounds(0.0625F, 0F, 0.8125F, 0.1875F, 0.625F, 0.9375F);
-            		}
-            		if(i1 == 3)
-            		{
-            			block.setBlockBounds(0.8125F, 0F, 0.8125F, 0.9375F, 0.625F, 0.9375F);
-            		}
-            		if(i1 == 4)
-            		{
-            			block.setBlockBounds(0F, 0.625F, 0F, 1F, 0.75F, 1F);
+            		case 0: block.setBlockBounds(0.0625F, 0F, 0.0625F, 0.1875F, 0.625F, 0.1875F); break;
+            		
+            		case 1: block.setBlockBounds(0.8125F, 0F, 0.0625F, 0.9375F, 0.625F, 0.1875F); break;
+            		
+            		case 2: block.setBlockBounds(0.0625F, 0F, 0.8125F, 0.1875F, 0.625F, 0.9375F); break;
+            		
+            		case 3: block.setBlockBounds(0.8125F, 0F, 0.8125F, 0.9375F, 0.625F, 0.9375F); break;
+            		
+            		case 4: block.setBlockBounds(0F, 0.625F, 0F, 1F, 0.75F, 1F); break;
             		}
             	}else
             	{
-            		if(i1 == 0)
+            		switch(i1)
             		{
-                		block.setBlockBounds(0F, 0F, 0F, 0.125F, 0.875F, 0.125F);
-            		}
-            		if(i1 == 1)
-            		{
-                		block.setBlockBounds(0.875F, 0F, 0F, 1F, 0.875F, 0.125F);
-            		}
-            		if(i1 == 2)
-            		{
-                		block.setBlockBounds(0F, 0F, 0.875F, 0.125F, 0.875F, 1F);
-            		}
-            		if(i1 == 3)
-            		{
-                		block.setBlockBounds(0.875F, 0F, 0.875F, 1F, 0.875F, 1F);
-            		}
-            		if(i1 == 4)
-            		{
-                		block.setBlockBounds(0F, 0.875F, 0F, 1F, 1F, 1F);
+            		case 0: block.setBlockBounds(0F, 0F, 0F, 0.125F, 0.875F, 0.125F); break;
+            		
+            		case 1: block.setBlockBounds(0.875F, 0F, 0F, 1F, 0.875F, 0.125F); break;
+            		
+            		case 2: block.setBlockBounds(0F, 0F, 0.875F, 0.125F, 0.875F, 1F); break;
+            		
+            		case 3: block.setBlockBounds(0.875F, 0F, 0.875F, 1F, 0.875F, 1F); break;
+            		
+            		case 4: block.setBlockBounds(0F, 0.875F, 0F, 1F, 1F, 1F); break;
             		}
             	}
                 tessellator.startDrawingQuads();
@@ -4462,6 +4301,7 @@ public class RenderBlocks
     	}
     }
     
+    public static Tessellator tessellator = Tessellator.instance;
     public static float bottomFaceBrightness = 0.5F;
     public static float topFaceBrightness = 1.0F;
     public static float eastWestFaceBrightness = 0.8F;
@@ -4475,7 +4315,7 @@ public class RenderBlocks
     public boolean renderAllFaces;
     public static boolean fancyGrass = true;
     public static boolean cfgGrassFix = true;
-    public boolean field_31088_b;
+    public boolean useInventoryTint;
     public int eastFaceRotation;
     public int westFaceRotation;
     public int southFaceRotation;
@@ -4509,7 +4349,6 @@ public class RenderBlocks
     public float field_22356_D;
     public float field_22354_E;
     public float field_22353_F;
-    public int field_22352_G;
     public float colorRedTopLeft;
     public float colorRedBottomLeft;
     public float colorRedBottomRight;
@@ -4522,18 +4361,18 @@ public class RenderBlocks
     public float colorBlueBottomLeft;
     public float colorBlueBottomRight;
     public float colorBlueTopRight;
-    public boolean field_22339_T;
-    public boolean field_22338_U;
-    public boolean field_22337_V;
-    public boolean field_22336_W;
-    public boolean field_22335_X;
-    public boolean field_22334_Y;
-    public boolean field_22333_Z;
-    public boolean field_22363_aa;
-    public boolean field_22361_ab;
-    public boolean field_22359_ac;
-    public boolean field_22357_ad;
-    public boolean field_22355_ae;
+    public boolean canBlockGrassCPN;
+    public boolean canBlockGrassPPC;
+    public boolean canBlockGrassNPC;
+    public boolean canBlockGrassCPP;
+    public boolean canBlockGrassNCN;
+    public boolean canBlockGrassPCP;
+    public boolean canBlockGrassNCP;
+    public boolean canBlockGrassPCN;
+    public boolean canBlockGrassCNN;
+    public boolean canBlockGrassPNC;
+    public boolean canBlockGrassNNC;
+    public boolean canBlockGrassCNP;
     private int field_35936_P;
     private int field_35935_Q;
     private int field_35938_R;

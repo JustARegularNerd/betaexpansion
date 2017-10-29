@@ -49,25 +49,25 @@ public class TileEntityRendererPiston extends TileEntitySpecialRenderer
             tessellator.setColorOpaque(1, 1, 1);
             if(block == Block.pistonExtension && tileentitypiston.func_31008_a(f) < 0.5F)
             {
-                field_31071_b.func_31079_a(block, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord, false, false);
+                field_31071_b.renderPistonExtensionWithAllFaces(block, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord, false, false);
             } else
             if(block == BEBlocks.launcherExtension && tileentitypiston.func_31008_a(f) < 0.5F)
             {
-            	field_31071_b.func_31079_a(block, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord, false, true);
+            	field_31071_b.renderPistonExtensionWithAllFaces(block, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord, false, true);
             }else
             if(tileentitypiston.func_31012_k() && !tileentitypiston.func_31015_b())
             {
                 Block.pistonExtension.func_31052_a_(((BlockPistonBase)block).func_31040_i());
                 if(block == BEBlocks.launcherBase || block == BEBlocks.launcherExtension)
                 {
-                	field_31071_b.func_31079_a(BEBlocks.launcherExtension, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord, tileentitypiston.func_31008_a(f) < 0.5F, true);
+                	field_31071_b.renderPistonExtensionWithAllFaces(BEBlocks.launcherExtension, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord, tileentitypiston.func_31008_a(f) < 0.5F, true);
                 }else
                 {
-                	field_31071_b.func_31079_a(Block.pistonExtension, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord, tileentitypiston.func_31008_a(f) < 0.5F, false);
+                	field_31071_b.renderPistonExtensionWithAllFaces(Block.pistonExtension, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord, tileentitypiston.func_31008_a(f) < 0.5F, false);
                 }
                 Block.pistonExtension.func_31051_a();
                 tessellator.setTranslationD((float)d - (float)tileentitypiston.xCoord, (float)d1 - (float)tileentitypiston.yCoord, (float)d2 - (float)tileentitypiston.zCoord);
-                field_31071_b.func_31078_d(block, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord);
+                field_31071_b.renderPistonBaseWithAllFaces(block, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord);
             } else
             {
                 field_31071_b.renderBlockWithAllFaces(block, tileentitypiston.xCoord, tileentitypiston.yCoord, tileentitypiston.zCoord);
