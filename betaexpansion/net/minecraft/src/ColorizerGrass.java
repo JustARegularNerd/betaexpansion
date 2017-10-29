@@ -21,11 +21,6 @@ public class ColorizerGrass
     	}
     }
     
-    public static final double lerp(double d, int d1, int d2)
-    {
-        return d1 + d * (d2 - d1);
-    }
-    
     public static int getGrassColor(double d, double d1)
     {
         d1 *= d;
@@ -43,14 +38,14 @@ public class ColorizerGrass
         int j1 = ((grassBuffer[(current+1)%4][index2] >> 16) & 0xff);
         int k1 = ((grassBuffer[(current+1)%4][index2] >> 8) & 0xff);
         int l1 = ((grassBuffer[(current+1)%4][index2]) & 0xff);
-        int i2 = (int)lerp((double)avg, i, i1)&0xff;
-        int j2 = (int)lerp((double)avg, j, j1)&0xff;
-        int k2 = (int)lerp((double)avg, k, k1)&0xff;
-        int l2 = (int)lerp((double)avg, l, l1)&0xff;
+        int i2 = (int)MathHelper.lerp_double(avg, i, i1)&0xff;
+        int j2 = (int)MathHelper.lerp_double(avg, j, j1)&0xff;
+        int k2 = (int)MathHelper.lerp_double(avg, k, k1)&0xff;
+        int l2 = (int)MathHelper.lerp_double(avg, l, l1)&0xff;
         return i2 << 24 | j2 << 16 | k2 << 8 | l2;
     }
 
     private static int grassBuffer[][] = new int[4][0x10000];
-    public static float avg = 0f;
+    public static double avg = 0D;
     public static int current = 0;
 }

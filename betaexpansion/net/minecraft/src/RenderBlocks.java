@@ -1867,13 +1867,13 @@ public class RenderBlocks
             float f6 = (float)(l3 >> 16 & 0xff) / 255F;
             float f7 = (float)(l3 >> 8 & 0xff) / 255F;
             float f8 = (float)(l3 & 0xff) / 255F;
-            f3  = mod_BetaExpansion.lerp(avg, f3, f6);
-            f4  = mod_BetaExpansion.lerp(avg, f4, f7);
-            f5  = mod_BetaExpansion.lerp(avg, f5, f8);
+            f3  = MathHelper.lerp_float(avg, f3, f6);
+            f4  = MathHelper.lerp_float(avg, f4, f7);
+            f5  = MathHelper.lerp_float(avg, f5, f8);
             float l2 = ((float)chunk.getSavedLightValue(EnumSkyBlock.Sky, i & 0xf, j, k & 0xf)/15F) * 1.7f - 0.7f;
-            f  = mod_BetaExpansion.lerp(l2, f, f3);
-            f1  = mod_BetaExpansion.lerp(l2, f1, f4);
-            f2  = mod_BetaExpansion.lerp(l2, f2, f5);
+            f  = MathHelper.lerp_float(l2, f, f3);
+            f1  = MathHelper.lerp_float(l2, f1, f4);
+            f2  = MathHelper.lerp_float(l2, f2, f5);
         }
         boolean flag = block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1);
         boolean flag1 = block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0);

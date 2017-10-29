@@ -686,15 +686,6 @@ public class RenderGlobal
         cloudOffsetX++;
     }
 
-    public final float lerp(float d, float d1, float d2)
-    {
-        return d1 + d * (d2 - d1);
-    }
-    
-    public final double lerp(double d, double d1, double d2)
-    {
-        return d1 + d * (d2 - d1);
-    }
     
     public void renderSky(float f)
     {
@@ -716,9 +707,9 @@ public class RenderGlobal
         	float[] c = mod_BetaExpansion.saturation[currentSeason];
         	float[] c2 = mod_BetaExpansion.saturation[(currentSeason+1)%4];
         	float avg = (f1 + f2 + f3) / 3f;
-        	f1 = lerp(1.0f-v,lerp(1.0f-c[0], f1, avg),lerp(1.0f-c2[0], f1, avg));
-        	f2 = lerp(1.0f-v,lerp(1.0f-c[1], f2, avg),lerp(1.0f-c2[1], f2, avg));
-        	f3 = lerp(1.0f-v,lerp(1.0f-c[2], f3, avg),lerp(1.0f-c2[2], f3, avg));
+        	f1 = MathHelper.lerp_float(1.0f-v,MathHelper.lerp_float(1.0f-c[0], f1, avg),MathHelper.lerp_float(1.0f-c2[0], f1, avg));
+        	f2 = MathHelper.lerp_float(1.0f-v,MathHelper.lerp_float(1.0f-c[1], f2, avg),MathHelper.lerp_float(1.0f-c2[1], f2, avg));
+        	f3 = MathHelper.lerp_float(1.0f-v,MathHelper.lerp_float(1.0f-c[2], f3, avg),MathHelper.lerp_float(1.0f-c2[2], f3, avg));
         }
         if(mc.gameSettings.anaglyph)
         {

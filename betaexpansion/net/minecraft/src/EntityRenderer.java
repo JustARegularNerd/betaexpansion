@@ -138,7 +138,7 @@ public class EntityRenderer
             }
             float f2 = mc.theWorld.worldProvider.lightBrightnessTable[i1];
             float f3 = mc.theWorld.worldProvider.lightBrightnessTable[i2];
-            float f4 = mod_BetaExpansion.lerp(lerp, f2, f3);
+            float f4 = MathHelper.lerp_float(lerp, f2, f3);
             int l = (int)(f4 * 255F);
             int l1 = 255;
             lightmapImageData[i * 4 + 0] = (byte)(l&0xff);
@@ -253,7 +253,7 @@ public class EntityRenderer
         float f1 = 70F;
         if(flag)
         {
-        	f1 += mod_BetaExpansion.lerp((float)((mod_BetaExpansion.lerp(f,(float)prevZoomProgress,(float)zoomProgress) - 1D)/3D), mc.gameSettings.fov * 40F, 0);
+        	f1 += MathHelper.lerp_float((float)((MathHelper.lerp_float(f,(float)prevZoomProgress,(float)zoomProgress) - 1D)/3D), mc.gameSettings.fov * 40F, 0);
         }
         if(entityliving.isInsideOfMaterial(Material.water))
         {
@@ -1005,11 +1005,6 @@ public class EntityRenderer
         GL11.glLoadIdentity();
         GL11.glTranslatef(0.0F, 0.0F, -2000F);
     }
-
-    public final float lerp(float d, float d1, float d2)
-    {
-        return d1 + d * (d2 - d1);
-    }
     
     private void updateFogColor(float f)
     {
@@ -1086,9 +1081,9 @@ public class EntityRenderer
         	float[] c = mod_BetaExpansion.saturation[currentSeason];
         	float[] c2 = mod_BetaExpansion.saturation[(currentSeason+1)%4];
         	float avg = (fogColorRed + fogColorGreen + fogColorBlue) / 3f;
-        	fogColorRed = lerp(1.0f-v,lerp(1.0f-c[0], fogColorRed, avg),lerp(1.0f-c2[0], fogColorRed, avg));
-        	fogColorGreen = lerp(1.0f-v,lerp(1.0f-c[1], fogColorGreen, avg),lerp(1.0f-c2[1], fogColorGreen, avg));
-        	fogColorBlue = lerp(1.0f-v,lerp(1.0f-c[2], fogColorBlue, avg),lerp(1.0f-c2[2], fogColorBlue, avg));
+        	fogColorRed = MathHelper.lerp_float(1.0f-v,MathHelper.lerp_float(1.0f-c[0], fogColorRed, avg),MathHelper.lerp_float(1.0f-c2[0], fogColorRed, avg));
+        	fogColorGreen = MathHelper.lerp_float(1.0f-v,MathHelper.lerp_float(1.0f-c[1], fogColorGreen, avg),MathHelper.lerp_float(1.0f-c2[1], fogColorGreen, avg));
+        	fogColorBlue = MathHelper.lerp_float(1.0f-v,MathHelper.lerp_float(1.0f-c[2], fogColorBlue, avg),MathHelper.lerp_float(1.0f-c2[2], fogColorBlue, avg));
         }
         GL11.glClearColor(fogColorRed, fogColorGreen, fogColorBlue, 0.0F);
     }
