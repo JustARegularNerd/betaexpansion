@@ -119,9 +119,9 @@ public class ChunkProviderGenerate
     public void replaceBlocksForBiome(int i, int j, byte abyte0[], NibbleArray data, BiomeGenBase abiomegenbase[])
     {
         double d = 0.03125D;
-        sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
+        sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, 0.0D, j * 16, 16, 1, 16, d, 1.0D, d);
         gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, i * 16, 109.0134D, j * 16, 16, 1, 16, d, 1.0D, d);
-        stoneNoise = field_908_o.generateNoiseOctaves(stoneNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d * 2D, d * 2D, d * 2D);
+        stoneNoise = field_908_o.generateNoiseOctaves(stoneNoise, i * 16, 0.0D, j * 16, 16, 1, 16, d * 2D, d * 2D, d * 2D);
         for(int k = 0; k < 16; k++)
         {
             for(int l = 0; l < 16; l++)
@@ -166,18 +166,12 @@ public class ChunkProviderGenerate
                             byte2 = biomegenbase.fillerBlock;
                             if(flag1)
                             {
-                                byte1 = 0;
-                            }
-                            if(flag1)
-                            {
+                                byte1 = (byte)Block.gravel.blockID;
                                 byte2 = (byte)Block.gravel.blockID;
                             }
-                            if(flag)
+                            else if(flag)
                             {
                                 byte1 = (byte)Block.sand.blockID;
-                            }
-                            if(flag)
-                            {
                                 byte2 = (byte)Block.sand.blockID;
                             }
                         }
