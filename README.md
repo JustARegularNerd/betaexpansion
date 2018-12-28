@@ -12,3 +12,7 @@ For code editors, Eclipse is supported and the eclipse folder that mcp uses will
 Running "extract.sh" will copy modified source files into the betaexpansion folder, replacing any source files already present.
 
 Scripts from MCP can also be used.
+
+# JustARegularNerd's Plans
+
+I intend on changing a few recipes and porting this mod to ModLoaderMp.
